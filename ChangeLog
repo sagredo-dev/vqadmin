@@ -1,3 +1,26 @@
+2.4
+10/12/2023 Roberto Puzzanghera https://notes.sagredo.eu
+
+
+* edit lang.c to lowercase the language file to solve compatibility issues with google-chrome and to avoid
+  errors due to "invalid language file" in some browsers.
+* replace the files config.sub and config.guess (copied from vpopmail dir) to allow compilation on 64b
+  platforms as well.
+* edit user.c to avoid that the clear pwd field will be showed (delete that part if you compiled vpopmail
+  with --enable-clear-password)
+* edited html/mod_user.html to prevent the erase of the password when modifying a user in case clear passwords
+  are disabled. Now the password field is not shown anymore.
+* edit user.c and domain.c to make the dynamic web page retrieve the vqadmin.css style sheet
+* edit Makefile.in to solve a bug that caused me a missing vqadmin.css file
+
+* added a big patch by Ali Erturk TURKER:
+  ** gets vqadmin to save vpopmail limits to database
+  ** fixed a core-dump due to SIGILL caused by memcpy
+  ** adds missing limits and permissions, changed the UI to be more user-friendly
+  more info here https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825
+  https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch
+
+
 2.3.7
 1/11/05		Jeremy Kitchen
 		  - added SpamAssassin support from vpopmail
