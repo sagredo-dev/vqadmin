@@ -510,14 +510,14 @@ install-exec-local:
 	$(mkinstalldirs)  @cgibindir@
 	$(mkinstalldirs)  @cgibindir@/vqadmin
 	$(mkinstalldirs)  @cgibindir@/vqadmin/html
-	$(mkinstalldirs)  @wwwroot@/images/vqadmin
+	$(mkinstalldirs)  @cgibindir@/vqadmin/images/vqadmin
 
 install-data-local:
 	cp vqadmin         @cgibindir@/vqadmin/vqadmin.cgi
 	strip              @cgibindir@/vqadmin/vqadmin.cgi
 	cp -R html/*       @cgibindir@/vqadmin/html
 	cp -R html/en      @cgibindir@/vqadmin/html/en-us
-	cp html/vqadmin.css   @wwwroot@/images/vqadmin
+	cp html/vqadmin.css   @cgibindir@/vqadmin/images/vqadmin
 	rm @cgibindir@/vqadmin/html/vqadmin.css
 
 	if test -f @cgibindir@/vqadmin/vqadmin.acl ; then \
@@ -536,11 +536,11 @@ install-data-local:
 	chmod 755          @cgibindir@/vqadmin
 	chmod 755          @cgibindir@/vqadmin/html
 
-	chown              @vpopuser@ @wwwroot@/images/vqadmin
-	chgrp              @vpopgroup@ @wwwroot@/images/vqadmin
-	chown -R           @vpopuser@ @wwwroot@/images/vqadmin/*
-	chgrp -R           @vpopgroup@ @wwwroot@/images/vqadmin/*
-	chmod 755          @wwwroot@/images/vqadmin
+	chown              @vpopuser@ @cgibindir@/vqadmin/images/vqadmin
+	chgrp              @vpopgroup@ @cgibindir@/vqadmin/images/vqadmin
+	chown -R           @vpopuser@ @cgibindir@/vqadmin/images/vqadmin/*
+	chgrp -R           @vpopgroup@ @cgibindir@/vqadmin/images/vqadmin/*
+	chmod 755          @cgibindir@/vqadmin/images/vqadmin
 
 	if test -f @cgibindir@/vqadmin/.htaccess ; then \
 		echo ".htaccess file already in place" ; \

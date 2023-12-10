@@ -193,3 +193,45 @@ void global_exit(int exit_code)
   vclose();
   exit(exit_code);
 }
+
+/* quota_to_bytes: used to convert user entered quota (given in MB)
+                   back to bytes for vpasswd file
+   return value: 0 for success, 1 for failure
+*/
+int quota_to_bytes(char returnval[], char *quota) {
+    storage_t tmp;
+
+    if (quota == NULL) { return 1; }
+    if ((tmp = strtoll(quota, NULL, 10))) {
+        tmp *= 1048576;
+        sprintf(returnval, "%.0lf", (double)tmp);
+        return 0;
+    } else {
+	strcpy (returnval, "");
+	return 1;
+    }
+}
+
+/* quota_to_megabytes: used to convert vpasswd representation of quota
+                       to number of megabytes.
+   return value: 0 for success, 1 for failure
+*/
+int quota_to_megabytes(char *returnval, char *quota) {
+    storage_t tmp;
+    int i;
+
+    if (quota == NULL) { return 1; }
+    i = strlen(quota);
+    if ((quota[i-1] == 'M') || (quota[i-1] == 'm')) {
+        tmp = strtoll(quota, NULL, 10);  /* already in megabytes */
+    } else if ((quota[i-1] == 'K') || (quota[i-1] == 'k')) {
+	tmp = strtoll(quota, NULL, 10) * 1024;  /* convert kilobytes to megabytes */
+    } else if ((tmp = strtoll(quota, NULL, 10))) {
+        tmp /= 1048576.0;
+    } else {
+	strcpy (returnval, "");
+	return 1;
+    }
+    sprintf(returnval, "%.2lf", (double)tmp);
+    return 0;
+}

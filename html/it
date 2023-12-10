@@ -10,7 +10,7 @@
 009 Cancella Email Dominio
 010 Nome Dominio
 011 Password di Postmaster
-012 Opzioni
+012 Limiti per i domini
 013 Limite 
 014 Illimitato 
 015 Utente
@@ -22,29 +22,29 @@
 021 Password
 022 Nome Completo
 023 Autenticazione Fallita
-024 vQadmin non poteva determinare il vostro username, questo
-025 significa che il vostro webserver è configurato impropriamente per funzionare 
+024 vQadmin non ha potuto determinare il vostro username. Questo
+025 significa che il vostro webserver &egrave; configurato impropriamente per funzionare 
 026 con questo cgi. Per i motivi di sicurezza, questo script
-027 non funzionerà senza il file htaccess di Apache. 
-028 Errore non ricoverabile
-029 Errore non ricoverabile durante l'elaborazione della vostra richiesta. 
-030 Contattare l'amministratore se questo continua. 
+027 non funzioner&agrave; senza il file .htaccess di Apache. 
+028 Errore critico
+029 Errore critico durante l'elaborazione della richiesta. 
+030 Contattare l'amministratore se il problema non si risolve. 
 031 Errore
 032 Errore durante l'inizializzazione dell'interfaccia.
 033 Modifica Dominio
-034 Utenti
-035 Directory
+034 Accounts
+035 Mail Directory
 036 ID Utente
 037 ID Gruppo
 038 Modifica Email Utente
-039 Spazio in byte
+039 Spazio in Mbyte
 040 Permessi
 041 Mostra Domini 
-042 Disabilita accesso pop 
+042 Disabilita accesso POP
 043 Disabilita accesso web
-044 Disabilita accesso imap
+044 Disabilita accesso IMAP
 045 Disabilita cambio password
-046 Rimbalza email 
+046 Respingi email 
 047 Disabilita email relay
 048 Amministratore dominio
 049 Disabilita accesso dialup
@@ -52,7 +52,7 @@
 051 Orario ultima autenticazione
 052 Ultimo ip autenticato
 053 Mostra Domini
-054 Il nome dominio contiene:<BR>Lasciare vuoto per tutti i domini.
+054 Il nome dominio contiene:<br>Lasciare vuoto per tutti i domini.
 055 #000066
 056 #FFFFFF
 057 Verdana
@@ -62,3 +62,15 @@
 061 Qmail Control Files
 062 Modify Control File
 063 Modify File
+067 utente:
+068 permessi:
+069 Disabilita SpamAssassin
+070 Disabilita accesso SMTP
+071 Cancella email spam
+072 Disabilita maildrop
+073 Massimo numero di email per dominio
+074 Quota/Utente (Mbyte)
+075 Mail/Utente
+076 Aggiorna
+077 Lascia in bianco per defaults
+078 Permessi per il dominio

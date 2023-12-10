@@ -3,67 +3,111 @@
 </HEAD>
 <body onLoad="javascript:form1.dname.focus();">
 
-
 <div align="center"><B>%-W</B></div>
 <div align="center">#-003 %-U (%-G)</div>
-<B>#-003</B><BR>
-<hr size="1" noshade>
+
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
-<table border="0" cellspacing="0" cellpadding="2">
-<tr><td class="clsLabelR">#-010</td>
-    <td><input type="text" name="dname" size="30" title="#-010" onBlur="fillForm();"></td></tr>
-<tr><td class="clsLabelR">#-011</td>
-    <td><input type="text" name="pp" size="30" title="#-011"></td></tr>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr><td colspan="3"><B>#-003</B></td></tr>
+<tr><td colspan="3"><hr size="1" noshade></td></tr>
+<tr>
+    <td class="clsLabelR" width="200">#-010</td>
+    <td colspan="2"><input type="text" name="dname" size="30" title="#-010"></td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-011</td>
+    <td colspan="2"><input type="password" name="ppass" size="30" title="#-011"></td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-035</td>
+    <td colspan="2"><input type="text" value="" size="50" disabled></td>
+</tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3"><b>#-012</b></td></tr>
+<tr><td colspan="3"><hr size="1" noshade></td>
+<tr>
+    <td class="clsLabelR">#-015</td>
+    <td><input type="text" name="lusers" value="" size="4" title="#-015"></td>
+    <td class="clsInfo">#-050</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-016</td>
+    <td><INPUT TYPE="TEXT" NAME="lfor" value="" SIZE="4" title="#-016"></td>
+    <td class="clsInfo">#-050</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-017</td>
+    <td><INPUT TYPE="TEXT" NAME="lalias" value="" SIZE="4" title="#-017"></td>
+    <td class="clsInfo">#-050</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-018</td>
+    <td><INPUT TYPE="TEXT" NAME="lresponder" value="" SIZE="4" title="#-018"></td>
+    <td class="clsInfo">#-050</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-019</td>
+    <td><INPUT TYPE="TEXT" NAME="llists" value="" SIZE="4" title="#-019"></td>
+    <td class="clsInfo">#-050</td>
+</tr>
+<!-- README.quotas file in vpopmail disttribution says domain quotas are broken. Hide these options.
+<tr>
+    <td class="clsLabelR">#-039</td>
+    <td><input type="text" name="quota" value="" size="10" title="#-039" disabled></td>
+    <td class="clsInfo">#-077</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-073</td>
+    <td><input type="text" name="maxmsgcount" value="" size="10" title="#-073" disabled></td>
+    <td class="clsInfo">#-077</td>
+</tr>
+-->
+<tr>
+    <td class="clsLabelR">#-074</td>
+    <td><input type="text" name="defaultquota" value="" size="10" title="#-074"></td>
+    <td class="clsInfo">#-077</td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-075</td>
+    <td><input type="text" name="defaultmaxmsgcount" value="" size="10" title="#-075"></td>
+    <td class="clsInfo">#-077</td>
+</tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3"><B>#-078</B></td></tr>
+<tr><td colspan="3"><hr size="1" noshade></td></tr>
+<tr>
+    <td colspan="3" align="center">
+	<table border="0" cellspacing="0" cellpadding="0">
+	    <tr>
+		<td>
+		<table border="0" cellspacing="0" cellpadding="0">
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="upop" id="upop" value="1"><label for="upop" title="#-042">#-042</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap" value="1"><label for="uimap" title="#-044">#-044</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="udialup" id="udialup" value="1"><label for="udialup" title="#-049">#-049</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" value="1"><label for="upassc" title="#-045">#-045</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb" value="1"><label for="uweb" title="#-043">#-043</label></td></tr>
+		</table>
+		</td>
+		<td width="20">&nbsp;</td>
+		<td>
+		<table border="0" cellspacing="0" cellpadding="0">
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay" value="1"><label for="urelay" title="#-047">#-047</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam" value="1"><label for="uspam" title="#-069">#-069</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="usmtp" id="usmtp" value="1"><label for="usmtp" title="#-070">#-070</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="umaildrop" id="udisablemaildrop" value="1"><label for="udisablemaildrop" title="#-072">#-072</label></td></tr>
+		    <tr><td><INPUT TYPE="CHECKBOX" NAME="udeletespam" id="udeletespam" value="1"><label for="udeletespam" title="#-071">#-071</label></td></tr>
+		</table>
+		</td>
+	    </tr>
+	</table>
+    </td>
+</tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3" align="center"><input type="submit" value="#-003" title="#-003"></td></tr>
 </table>
-  <INPUT TYPE="HIDDEN" NAME="nav" VALUE="add_domain">
-<HR>
-<b>#-012</b><BR>
-<table border="0" cellspacing="0" cellpadding="2">
-<tr><td class="clsLabelR">#-015</td>
-    <td><input type="text" name="lusers" size="4" title="#-015"></td>
-    <td class="clsInfo">#-050</td></tr>
-<tr><td class="clsLabelR">#-016</td>
-    <td><INPUT TYPE="TEXT" NAME="lfor" SIZE="4" title="#-016" ></td>
-    <td class="clsInfo">#-050</td></tr>
-<tr><td class="clsLabelR">#-017</td>
-    <td><INPUT TYPE="TEXT" NAME="lalias" SIZE="4" title="#-017"></td>
-    <td class="clsInfo">#-050</td></tr>
-<tr><td class="clsLabelR">#-018</td>
-    <td><INPUT TYPE="TEXT" NAME="lresponder" SIZE="4" title="#-018"></td>
-    <td class="clsInfo">#-050</td></tr>
-<tr><td class="clsLabelR">#-019</td>
-    <td><INPUT TYPE="TEXT" NAME="llists" SIZE="4" title="#-019"></td>
-    <td class="clsInfo">#-050</td></tr>
-<tr><td class="clsLabelR">#-039</td>
-    <td><input type="text" name="quota" size="10" title="#-039"></td></tr>
-</table>
-
-<table border="0" cellspacing="0" cellpadding="0">
-
-<tr><td><INPUT TYPE="CHECKBOX" NAME="upop" id="upop"><label for="upop" title="#-042">#-042</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap"><label for="uimap" title="#-044">#-044</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="udialup" id="udialup"><label for="udialup" title="#-049">#-049</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" ><label for="upassc" title="#-045">#-045</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb"><label for="uweb" title="#-043">#-043</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay"><label for="urelay" title="#-047">#-047</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam"><label for="uspam" title="#-069">#-069</label></td></tr>
-
-<tr><td><br>
-  <input type="submit" name="Submit" value="#-003" title="#-003"></td></tr>
-</table>
-</FORM>
-<script language="JavaScript">
-	function fillForm() {
-	form1.lusers.value = '';
-	form1.lfor.value = '';
-	form1.lalias.value = '';
-	form1.lresponder.value = '';
-	form1.llists.value = '';
-	form1.quota.value = '';
-	}
-</script>
-
+<INPUT TYPE="HIDDEN" NAME="nav" VALUE="add_domain">
+</form>
 <hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi">#-000</a><BR><BR>
 %-V
 </BODY></HTML>

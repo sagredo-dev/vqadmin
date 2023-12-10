@@ -1,49 +1,74 @@
-<HTML><HEAD><TITLE>#-038 %-U (%-G)</TITLE>
-      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
+<HTML>
+<HEAD>
+    <TITLE>#-008 %-U (%-G)</TITLE>
+    <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
 </HEAD>
 <body onLoad="javascript:form1.eaddr.focus();">
-
-
 <div align="center"><B>%-W</B></div>
 <div align="center">#-008 %-U (%-G)</div>
-<B>#-008</B>
-<hr size="1" noshade>
+<br>
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
 <table border="0" cellspacing="2" cellpadding="2">
-<tr><td class="clsLabelR">#-020</td>
-    <td><INPUT TYPE="TEXT" NAME="eaddr" SIZE="30" VALUE="$-UA"></td></tr>
-<tr><td class="clsLabelR">#-021</td>
-    <td><INPUT TYPE="TEXT" NAME="cpass" SIZE="30" VALUE="$-UO"></td></tr>
-<tr><td class="clsLabelR">#-039</td>
-    <td><INPUT TYPE="TEXT" NAME="quota" SIZE="30" VALUE="$-UQ"></td></tr>
-<tr><td class="clsLabelR">#-022</td>
-    <td><INPUT TYPE="TEXT" NAME="fname" SIZE="30" VALUE="$-UN"></td></tr>
-<tr><td class="clsLabel">#-040</td> </tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3"><B>#-008</B></td></tr>
+<tr><td colspan="3"><hr size="1" noshade></td></tr>
+<tr>
+    <td class="clsLabelR">#-020</td>
+    <td><INPUT TYPE="TEXT" NAME="eaddr" SIZE="30" VALUE="$-UA"></td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-021</td>
+    <td><INPUT TYPE="PASSWORD" NAME="cpass" SIZE="30" VALUE="$-UO"></td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-039</td>
+    <td><INPUT TYPE="TEXT" NAME="quota" SIZE="30" VALUE="$-UQ"></td>
+</tr>
+<tr>
+    <td class="clsLabelR">#-022</td>
+    <td><INPUT TYPE="TEXT" NAME="fname" SIZE="30" VALUE="$-UN"></td>
+</tr>
+<tr><td class="clsLabelR">#-051</td><td><input type="text" value="" size="30" disabled></td></tr>
+<tr><td class="clsLabelR">#-052</td><td><input type="text" value="" size="30" disabled></td></tr>
+<tr><td class="clsLabelR">#-035</td><td><input type="text" value="" size="50" disabled></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3"><B>#-040</B></td></tr>
+<tr><td colspan="3"><hr size="1" noshade></td></tr>
+<tr>
+    <td colspan="3" align="center">
+        <table border="0" cellspacing="2" cellpadding="0">
+            <tr>
+                <td>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr><td><input TYPE="checkbox" NAME="upop" id="upop" title="#-042" value="1"><label for="upop" title="#-042">#-042</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="uimap" id="uimap" title="#-044" value="1"><label for="uimap" title="#-044">#-044</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="udialup" id="udialup" title="#-049" value="1"><label for="udialup" title="#-049">#-049</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="upassc" id="upassc" title="#-045" value="1"><label for="upassc" title="#-045">#-045</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="uweb" id="uweb" title="#-043" value="1"><label for="uweb" title="#-043">#-043</label></td></tr>
+                    <tr><td><INPUT TYPE="checkbox" NAME="ubounce" id="ubounce" title="#-046" value="1"><label for="ubounce" title="#-046">#-046</label></td> </tr>
+                </table>
+                </td>
+                <td width="20">&nbsp;</td>
+                <td>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr><td><input TYPE="checkbox" NAME="urelay" id="urelay" title="#-047" value="1"><label for="urelay" title="#-047">#-047</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="uspam" id="uspam" title="#-069" value="1"><label for="uspam" title="#-069">#-069</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="usmtp" id="usmtp" title="#-070" value="1"><label for="usmtp" title="#-070">#-070</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="umaildrop" id="udisablemaildrop" title="#-072" value="1"><label for="udisablemaildrop" title="#-072">#-072</label></td></tr>
+                    <tr><td><input TYPE="checkbox" NAME="udeletespam" id="udeletespam" title="#-071" value="1"><label for="udeletespam" title="#-071">#-071</label></td></tr>
+                    <tr><td><INPUT TYPE="checkbox" NAME="uqadmin" id="uqadmin" title="#-048" value="1"><label for="uqadmin" title="#-048">#-048</label></td></tr>
+                </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td colspan="3" align="center"><input TYPE="SUBMIT" NAME="Submit" VALUE="#-008"></td></tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr><td><INPUT TYPE="CHECKBOX" NAME="udisable" id="udisable" $-UP>
-   <label for="udisable" title="#-042">#-042</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb" $-UW>
-    <label for="uweb" title="#-043">#-043</label></td></tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap" $-UI>
-   <label for="uimap" title="#-044">#-044</label></td> </tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" $-UC>
-   <label for="upassc" title="#-045">#-045</label></td> </tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="ubounce" id="ubounce" $-UB>
-   <label for="ubounce" title="#-046">#-046</label></td> </tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay" $-US>
-   <label for="urelay" title="#-047">#-047</label></td> </tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam" $-UF>
-   <label for="uspam" title="#-069">#-069</label></td> </tr>
-<tr><td><INPUT TYPE="CHECKBOX" NAME="uqadmin" id="uqadmin" $-UK>
-   <label for="uqadmin" title="#-048">#-048</label></td></tr>
-<tr><td><br>
-  <input type="submit" name="Submit" value="#-008" title="#-008">
-  <INPUT TYPE="HIDDEN" NAME="nav" VALUE="add_user"></td></tr>
-</table>
-
+<input TYPE="HIDDEN" NAME="nav" VALUE="add_user">
 </FORM>
 <hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi">#-000</a><BR><BR>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
 %-V
 </BODY></HTML>

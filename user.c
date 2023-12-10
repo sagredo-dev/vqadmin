@@ -116,15 +116,23 @@ void mod_user()
  static char domain[156];
  char *gecos;
  char *passwd;
- char *shell;
- char *udisable;
- char *uweb;
+ char *uquota;
+
+ char *upop;
  char *uimap;
+ char *udialup;
  char *upassc;
+ char *uweb;
  char *ubounce;
  char *urelay;
  char *uspam;
+ char *usmtp;
+ char *umaildrop;
+ char *udeletespam;
  char *uqadmin;
+
+ char *formattedquota = NULL;
+ char qconvert[11];
  int   ret;
  int   i;
  int   GidFlag = 0;
@@ -138,24 +146,30 @@ void mod_user()
   eaddr = cgi_is_var("eaddr");
   gecos = cgi_is_var("fname");
   passwd = cgi_is_var("cpass");
-  shell = cgi_is_var("quota");
-  udisable = cgi_is_var("udisable");
-  uweb = cgi_is_var("uweb");
+  uquota = cgi_is_var("quota");
+
+  upop = cgi_is_var("upop");
   uimap = cgi_is_var("uimap");
+  udialup = cgi_is_var("udialup");
   upassc = cgi_is_var("upassc");
+  uweb = cgi_is_var("uweb");
   ubounce = cgi_is_var("ubounce");
+
   urelay = cgi_is_var("urelay"); 
   uspam = cgi_is_var("uspam"); 
+  usmtp = cgi_is_var("usmtp"); 
+  umaildrop = cgi_is_var("umaildrop"); 
+  udeletespam = cgi_is_var("udeletespam"); 
   uqadmin = cgi_is_var("uqadmin");
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Modify Email Account: Failed: no email address given");
     t_open("html/mod_user.html", 1);
   }
-
+ 
   parse_email( eaddr, user, domain, 156);
 
-  vpw = vauth_getpw(user,domain);
+  vpw = vauth_getpw(user, domain);
   if (vpw == NULL) {
     global_warning("Modify User: account does not exist");
     t_open("html/mod_user.html", 1);
@@ -179,32 +193,45 @@ void mod_user()
     vpw->pw_gecos = gecos;
   }
 
-  if ( shell!=NULL && strlen(shell)>0 ){
-    vpw->pw_shell = shell;
+  // UPDATE USER QUOTA ("maildirsize" file will be created at the end, only if the update is successfull.
+  formattedquota="NOQUOTA"; // START WITH DEAFULT "NOQUOTA"
+  if (uquota!=NULL) { // QUOTA FIELD IS SET
+    if (strlen(uquota)==0 || strcmp(uquota, "NOQUOTA")==0 || strcmp(uquota, "BADQUOTA")==0) {  // RESET QUOTA
+      formattedquota = "NOQUOTA";
+    } else { // QUOTA IS REQUESTED, CONVERT bytes->Mbytes
+      if (quota_to_bytes(qconvert, uquota)) {
+        global_warning("Invalid quota string.");
+        t_open("html/mod_user.html", 1);
+      } else {
+        formattedquota = format_maildirquota(qconvert);
+      }
+    }
   }
+  vpw->pw_shell = formattedquota;
 
-  if (udisable!=NULL) GidFlag |= NO_POP;
-  if (uweb!=NULL) GidFlag |= NO_WEBMAIL;
+  // UPDATE PERMISSIONS
+  if (upop!=NULL) GidFlag |= NO_POP;
   if (uimap!=NULL) GidFlag |= NO_IMAP;
-  if (ubounce!=NULL) GidFlag |= BOUNCE_MAIL;
+  if (udialup!=NULL) GidFlag |= NO_DIALUP;
   if (upassc!=NULL) GidFlag |= NO_PASSWD_CHNG;
+  if (uweb!=NULL) GidFlag |= NO_WEBMAIL;
+  if (ubounce!=NULL) GidFlag |= BOUNCE_MAIL;
   if (urelay!=NULL) GidFlag |= NO_RELAY;
-#ifdef SPAMASSASSIN
+  if (usmtp!=NULL) GidFlag |= NO_SMTP;
   if (uspam!=NULL) GidFlag |= NO_SPAMASSASSIN;
-#endif
+  if (udeletespam!=NULL) GidFlag |= DELETE_SPAM;
+  if (umaildrop!=NULL) GidFlag |= NO_MAILDROP;
   if (uqadmin!=NULL) GidFlag |= QA_ADMIN;
 
   vpw->pw_gid = GidFlag;
 
   ret = vauth_setpw(vpw, domain);
   if ( ret != VA_SUCCESS ) {
-    snprintf(WarningBuff, MAX_WARNING_BUFF, 
+   snprintf(WarningBuff, MAX_WARNING_BUFF,
         "Modify Account %s error %s", eaddr, verror(ret));
     global_warning(WarningBuff);
   } else {
-    snprintf(WarningBuff, MAX_WARNING_BUFF, 
-        "Modify Account %s success", eaddr);
-    global_warning(WarningBuff);
+    update_maildirsize(domain, vpw->pw_dir, formattedquota); // CREATE "maildirsize" file in user's Maildir.
   }
   post_email_info( eaddr, vpw, domain);
 
@@ -214,6 +241,7 @@ void mod_user()
 
 void post_email_info( char *eaddr, struct vqpasswd *vpw, char *domain)
 {
+ char qconvert[11];
 #ifdef ENABLE_AUTH_LOGGING
  time_t mytime;
  char *authip;
@@ -221,30 +249,36 @@ void post_email_info( char *eaddr, struct vqpasswd *vpw, char *domain)
 
   global_par("UA", eaddr);
   global_par("UN", vpw->pw_gecos);
-  global_par("UQ", vpw->pw_shell);
+
+// SHOW USER QUOTA IN MB
+  if (strncmp(vpw->pw_shell, "NOQUOTA", 2) != 0) {
+    if(quota_to_megabytes(qconvert, vpw->pw_shell)) {
+      global_par("UQ", "BADQUOTA");
+    }
+    else {
+      global_par("UQ", qconvert);
+    }
+  }
+
   global_par("UD", vpw->pw_dir);
 
 #ifdef CLEAR_PASS
   global_par("UO", vpw->pw_clear_passwd);
 #endif
 
-  if (vpw->pw_gid & NO_PASSWD_CHNG) global_par("UC", "CHECKED");
+  if (vpw->pw_gid & NO_POP) global_par("MP", "CHECKED");
+  if (vpw->pw_gid & NO_IMAP) global_par("MI", "CHECKED");
+  if (vpw->pw_gid & NO_DIALUP) global_par("MD", "CHECKED");
+  if (vpw->pw_gid & NO_PASSWD_CHNG) global_par("MC", "CHECKED");
+  if (vpw->pw_gid & NO_WEBMAIL) global_par("MW", "CHECKED");
+  if (vpw->pw_gid & BOUNCE_MAIL) global_par("MB", "CHECKED");
 
-  if (vpw->pw_gid & NO_POP) global_par("UP", "CHECKED");
-
-  if (vpw->pw_gid & NO_WEBMAIL) global_par("UW", "CHECKED");
-
-  if (vpw->pw_gid & NO_IMAP) global_par("UI", "CHECKED");
-
-  if (vpw->pw_gid & BOUNCE_MAIL) global_par("UB", "CHECKED");
-
-  if (vpw->pw_gid & NO_RELAY) global_par("US", "CHECKED");
-
-#ifdef SPAMASSASSIN
-  if (vpw->pw_gid & NO_SPAMASSASSIN) global_par("UF", "CHECKED");
-#endif
-
-  if (vpw->pw_gid & QA_ADMIN) global_par("UK", "CHECKED");
+  if (vpw->pw_gid & NO_RELAY) global_par("MS", "CHECKED");
+  if (vpw->pw_gid & NO_SMTP) global_par("MH", "CHECKED");
+  if (vpw->pw_gid & NO_SPAMASSASSIN) global_par("MZ", "CHECKED");
+  if (vpw->pw_gid & DELETE_SPAM) global_par("ML", "CHECKED");
+  if (vpw->pw_gid & NO_MAILDROP) global_par("MN", "CHECKED");
+  if (vpw->pw_gid & QA_ADMIN) global_par("MK", "CHECKED");
 
 #ifdef ENABLE_AUTH_LOGGING
   mytime = vget_lastauth(vpw, domain);
@@ -315,9 +349,8 @@ void show_users()
   strncpy( face, get_lang_code("057"), 29);
   strncpy( size, get_lang_code("058"), 29);
 
-  printf("<HTML><HEAD><TITLE>Show Users</TITLE></HEAD>\n");
-  printf("<body bgcolor=%s vlink=%s link=%s alink=%s>\n",
-    bgcolor, fgcolor, fgcolor, fgcolor);
+  printf("<HTML><HEAD><TITLE>Show Users</TITLE><link href=\"/images/vqadmin/vqadmin.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\" media=\"all\"></HEAD>\n");
+  printf("<body>\n");
   printf("<FONT face=\"%s\" SIZE=\"%s\" color=\"%s\">\n",
     face, size, fgcolor);
 
@@ -330,10 +363,12 @@ void show_users()
   } else {
     printf("<tr><th align=left><FONT face=%s color=\"%s\">User</FONT></th>\n",
           face, fgcolor);
+/*
 #ifdef CLEAR_PASS
     printf("<th><FONT face=%s color=\"%s\">Password</FONT></th>\n",
           face, fgcolor);
 #endif
+*/
     printf("<th><FONT face=%s color=\"%s\">Forward</FONT></th>\n",
           face, fgcolor);
     printf("<th><FONT face=%s color=\"%s\">Vacation</FONT></th>\n",
@@ -343,7 +378,7 @@ void show_users()
     printf("<th><FONT face=%s color=\"%s\">Domain Administrator</FONT></th>\n",
           face, fgcolor);
     printf("<th><FONT face=%s color=\"%s\">Last Logon</FONT></th></tr><BR>\n",
-	  face, fgcolor);
+  face, fgcolor);
   }
   count = 0;
   while(vpw != NULL && count < 128000 ){
@@ -353,12 +388,12 @@ void show_users()
       printf("<a href=vqadmin.cgi?nav=view_user&eaddr=%s@%s>",
         vpw->pw_name, domain);
       printf("%s</a></FONT></td>\n", vpw->pw_name);
-
+/*
 #ifdef CLEAR_PASS
       printf("<td align=middle><FONT face=%s color=\"%s\">%s</FONT></td>\n", 
           face, fgcolor, vpw->pw_clear_passwd);
 #endif
-
+*/
       printf("<td align=middle><FONT face=%s color=\"%s\">", face, fgcolor );
       snprintf(workdir, 156, "%s/.qmail", vpw->pw_dir);
       fs=fopen(workdir,"r");
@@ -471,7 +506,6 @@ void show_users()
             *tmpstr = 0;
                     while (*tmpstr!='/') --tmpstr;
                     ++tmpstr;
-   
             printf("<FONT face=%s color=\"%s\">alias: %s</FONT><BR>\n", 
             face, fgcolor, tmpstr);
                 }
@@ -529,14 +563,23 @@ void add_user()
  static char domain[156];
  char *gecos;
  char *passwd;
- char *shell;
- char *udisable;
- char *uweb;
+ char *uquota;
+
+ char *upop;
  char *uimap;
+ char *udialup;
  char *upassc;
+ char *uweb;
  char *ubounce;
  char *urelay;
+ char *uspam;
+ char *usmtp;
+ char *umaildrop;
+ char *udeletespam;
  char *uqadmin;
+
+ char *formattedquota = NULL;
+ char qconvert[11];
  int   ret;
  int   GidFlag = 0;
  struct vqpasswd *vpw;
@@ -549,14 +592,22 @@ void add_user()
   eaddr = cgi_is_var("eaddr");
   gecos = cgi_is_var("fname");
   passwd = cgi_is_var("cpass");
-  shell = cgi_is_var("quota");
-  udisable = cgi_is_var("udisable");
-  uweb = cgi_is_var("uweb");
+  uquota = cgi_is_var("quota");
+
+  upop = cgi_is_var("upop");
   uimap = cgi_is_var("uimap");
+  udialup = cgi_is_var("udialup");
   upassc = cgi_is_var("upassc");
+  uweb = cgi_is_var("uweb");
   ubounce = cgi_is_var("ubounce");
+
   urelay = cgi_is_var("urelay"); 
+  uspam = cgi_is_var("uspam"); 
+  usmtp = cgi_is_var("usmtp"); 
+  umaildrop = cgi_is_var("umaildrop"); 
+  udeletespam = cgi_is_var("udeletespam"); 
   uqadmin = cgi_is_var("uqadmin");
+
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Add Email Account: Failed: no email address given");
@@ -591,24 +642,48 @@ void add_user()
 
   vpw = vauth_getpw(user, domain);
 
-  if (udisable!=NULL) GidFlag |= NO_POP;
-  if (uweb!=NULL) GidFlag |= NO_WEBMAIL;
+  // UPDATE USER QUOTA ("maildirsize" file will be created at the end, only if the update is successfull.
+  formattedquota="NOQUOTA"; // START WITH DEAFULT "NOQUOTA"
+  if (uquota!=NULL) { // QUOTA FIELD IS SET
+    if (strlen(uquota)==0 || strcmp(uquota, "NOQUOTA")==0 || strcmp(uquota, "BADQUOTA")==0) {  // RESET QUOTA
+      formattedquota = "NOQUOTA";
+    } else { // QUOTA IS REQUESTED, CONVERT bytes->Mbytes
+      if (quota_to_bytes(qconvert, uquota)) {
+        global_warning("Invalid quota string.");
+        t_open("html/mod_user.html", 1);
+      } else {
+        formattedquota = format_maildirquota(qconvert);
+      }
+    }
+  }
+  vpw->pw_shell = formattedquota;
+
+  // USER PERMISSIONS
+  if (upop!=NULL) GidFlag |= NO_POP;
   if (uimap!=NULL) GidFlag |= NO_IMAP;
-  if (ubounce!=NULL) GidFlag |= BOUNCE_MAIL;
+  if (udialup!=NULL) GidFlag |= NO_DIALUP;
   if (upassc!=NULL) GidFlag |= NO_PASSWD_CHNG;
+  if (uweb!=NULL) GidFlag |= NO_WEBMAIL;
+  if (ubounce!=NULL) GidFlag |= BOUNCE_MAIL;
   if (urelay!=NULL) GidFlag |= NO_RELAY;
+  if (usmtp!=NULL) GidFlag |= NO_SMTP;
+  if (uspam!=NULL) GidFlag |= NO_SPAMASSASSIN;
+  if (udeletespam!=NULL) GidFlag |= DELETE_SPAM;
+  if (umaildrop!=NULL) GidFlag |= NO_MAILDROP;
   if (uqadmin!=NULL) GidFlag |= QA_ADMIN;
 
   vpw->pw_gid = GidFlag;
-  if ( shell != NULL && strlen(shell) > 0 ) vpw->pw_shell = shell;
 
   ret = vauth_setpw(vpw, domain);
   if ( ret != VA_SUCCESS ) {
     snprintf(WarningBuff, MAX_WARNING_BUFF, 
         "Add Account: Failure:  %s set options", eaddr);
     global_warning(WarningBuff);
+  } else {
+    update_maildirsize(domain, vpw->pw_dir, formattedquota); // CREATE "maildirsize" file in user's Maildir.
   }
-  post_email_info( eaddr, vpw, domain);
+
+  post_email_info(eaddr, vpw, domain);
 
   t_open(T_MAIN, 1);
 

@@ -31,6 +31,7 @@
 #include "vpopmail.h"
 #include "vpopmail_config.h"
 #include "vauth.h"
+#include "vlimits.h"
 
 #define TOKENS " :\t\n\r"
 
@@ -47,12 +48,13 @@ void add_domain()
 {
  char *domain = NULL;
  char *passwd = NULL;
+
  char *lusers = NULL;
  char *lfor = NULL;
  char *lalias = NULL;
  char *lresponder = NULL;
  char *llists = NULL;
- char *quota = NULL;
+
  char *upop = NULL;
  char *uimap = NULL;
  char *udialup = NULL;
@@ -60,44 +62,30 @@ void add_domain()
  char *uweb = NULL;
  char *urelay = NULL;
  char *uspam = NULL;
+ char *usmtp = NULL;
+ char *udeletespam  = NULL;
+ char *umaildrop  = NULL;
+
+ char *quota = NULL;
+ char *maxmsgcount = NULL;
+ char *defaultquota = NULL;
+ char *defaultmaxmsgcount = NULL;
+ storage_t tmpdefaultquota;
+
  int   ret;
- char dir[156];
- uid_t uid;
- gid_t gid;
- FILE *fs;
+ int limitsmodified = 0;
+ struct vlimits defaultlimits;
+ struct vlimits limits;
 
   if (!(acl_features & ACL_DOMAIN_CREATE)) {
     global_warning("Create Domain: Permission denied");
     t_open(T_MAIN, 1);
   }
 
-  domain = cgi_is_var("dname");
-  passwd = cgi_is_var("pp");
-
-  lusers = cgi_is_var("lusers");
-  lfor = cgi_is_var("lfor");
-  lalias = cgi_is_var("lalias");
-  lresponder = cgi_is_var("lresponder");
-  llists = cgi_is_var("llists");
-
-  quota   = cgi_is_var("quota");
-  upop    = cgi_is_var("upop");
-  uimap   = cgi_is_var("uimap");
-  udialup = cgi_is_var("udialup");
-  upassc  = cgi_is_var("upassc");
-  uweb    = cgi_is_var("uweb");
-  urelay  = cgi_is_var("urelay");
-  uspam  = cgi_is_var("uspam");
-
   /* get the domain name */
+  domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0) {
     global_warning("Create Domain: Failed: Must supply domain name");
-    t_open("html/add_domain.html", 1);
-  }
-
-  /* get the password */
-  if (passwd==NULL || strlen(passwd)==0 ) {
-    global_warning("Create Domain: Failed: Must supply password");
     t_open("html/add_domain.html", 1);
   }
 
@@ -110,43 +98,14 @@ void add_domain()
     global_warning("Created Domain");
   }
 
-  /* setup the .qmailadmin-limits file */
-  vget_assign(domain,dir,156,&uid,&gid);
-  strncat(dir,"/.qmailadmin-limits", 156);
-  if ( (fs = fopen(dir,"w+")) == NULL ) {
-    global_warning("Create Domain: open .qmailadmin-limits failed");
-    t_open(T_MAIN, 1);
+  /* get the password for postmaster */
+  passwd = cgi_is_var("ppass");
+  if (passwd==NULL || strlen(passwd)==0 ) {
+    global_warning("Create Domain: Failed: Must supply password");
+    t_open("html/add_domain.html", 1);
   }
 
-  if (lusers!=NULL&&strlen(lusers)>0)  
-    fprintf(fs, "maxpopaccounts: %s\n", lusers);
-
-  if (lalias!=NULL&&strlen(lalias)>0)  
-    fprintf(fs, "maxaliases: %s\n", lalias);
-
-  if (lfor!=NULL&&strlen(lfor)>0)  
-    fprintf(fs, "maxforwards: %s\n", lfor);
-
-  if (lresponder!=NULL&&strlen(lresponder)>0)  
-    fprintf(fs, "maxautoresponders: %s\n", lresponder);
-
-  if (llists!=NULL&&strlen(llists)>0)  
-    fprintf(fs, "maxmailinglists: %s\n", llists);
-
-  if (quota!=NULL && strlen(quota)>0) 
-    fprintf(fs,"default_quota: %s\n",quota);
-
-  if (upop!=NULL)  fprintf(fs, "disable_pop\n");
-  if (uimap!=NULL) fprintf(fs, "disable_imap\n");
-  if (udialup!=NULL) fprintf(fs, "disable_dialup\n");
-  if (upassc!=NULL) fprintf(fs, "disable_password_changing\n");
-  if (uweb!=NULL) fprintf(fs, "disable_webmail\n");
-  if (urelay!=NULL) fprintf(fs, "disable_external_relay\n");
-  if (uspam!=NULL) fprintf(fs, "disable_spamassasin\n");
-  fclose(fs);
-  chown(dir,uid, gid);
-  chmod(dir, S_IRUSR | S_IWUSR);
-
+  /* add the postmaster user */
   ret = vadduser("postmaster", domain, passwd, "Postmaster", USE_POP );
   if (ret != VA_SUCCESS) {
     global_warning(verror(ret));
@@ -154,6 +113,125 @@ void add_domain()
   } else {
     global_warning("Domain postmaster added");
   }
+
+//-------------- FORM VALUES --------------
+
+  //-------------- DOMAIN LIMITS --------------
+  lusers = cgi_is_var("lusers");
+  lfor = cgi_is_var("lfor");
+  lalias = cgi_is_var("lalias");
+  lresponder = cgi_is_var("lresponder");
+  llists = cgi_is_var("llists");
+  quota   = cgi_is_var("quota");
+  maxmsgcount = cgi_is_var("maxmsgcount");
+  defaultquota = cgi_is_var("defaultquota");
+  defaultmaxmsgcount = cgi_is_var("defaultmaxmsgcount");
+
+  //-------------- DOMAIN PERMISSIONS --------------
+  upop    = cgi_is_var("upop");
+  uimap   = cgi_is_var("uimap");
+  udialup = cgi_is_var("udialup");
+  upassc  = cgi_is_var("upassc");
+  uweb    = cgi_is_var("uweb");
+  urelay  = cgi_is_var("urelay");
+  uspam  = cgi_is_var("uspam");
+  usmtp  = cgi_is_var("usmtp");
+  udeletespam  = cgi_is_var("udeletespam");
+  umaildrop  = cgi_is_var("umaildrop"); 
+
+  // INITIALIZE DEFAULT STRUCTS
+  vdefault_limits (&defaultlimits);
+
+  // FETCH DEFAULT DOMAIN LIMITS FROM "VLIMITS_DEFAULT_FILE"
+  if (vlimits_read_limits_file (VLIMITS_DEFAULT_FILE, &defaultlimits) != 0) {
+    snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to get limits from vlimits_default_file for domain %s", domain); 
+    global_warning(WarningBuff);
+    global_par("DN", domain);
+    t_open("html/view_domain.html", 1);
+  }
+
+  // CLONE DEFAULT LIMITS TO DETECT IF THE USER CHANGED THE DEFAULTS
+  memcpy(&limits, &defaultlimits, sizeof(limits));
+
+  // PROCESS NEW LIMITS
+  if (lusers!=NULL && strlen(lusers)>0) {
+    limits.maxpopaccounts = atoi(lusers);
+  }
+  if (lfor!=NULL && strlen(lfor)>0) {
+    limits.maxforwards = atoi(lfor);
+  }
+  if (lalias!=NULL && strlen(lalias)>0) {
+    limits.maxaliases = atoi(lalias);
+  }
+  if (lresponder!=NULL && strlen(lresponder)>0) {
+    limits.maxautoresponders = atoi(lresponder);
+  }
+  if (llists!=NULL && strlen(llists)>0) {
+    limits.maxmailinglists = atoi(llists);
+  }
+  if (quota!=NULL && strlen(quota)>0) {
+    limits.diskquota = strtoll(quota, NULL, 10);
+  }
+  if (maxmsgcount!=NULL && strlen(maxmsgcount)>0) {
+    limits.maxmsgcount = strtoll(maxmsgcount, NULL, 10);
+  }
+  if (defaultquota!=NULL && strlen(defaultquota)>0) {
+    // CONVERT bytes->Mbytes
+    if ((tmpdefaultquota = strtoll(defaultquota, NULL, 10))) {
+        tmpdefaultquota *= 1048576;
+        limits.defaultquota = tmpdefaultquota;
+    }
+  }
+  if (defaultmaxmsgcount!=NULL && strlen(defaultmaxmsgcount)>0) {
+    limits.defaultmaxmsgcount = strtoll(defaultmaxmsgcount, NULL, 10);
+  }
+
+  // PROCESS NEW PERMISSIONS
+  if (upop!=NULL) {limits.disable_pop = 1;}
+  if (uimap!=NULL) {limits.disable_imap = 1;}
+  if (udialup!=NULL) {limits.disable_dialup = 1;}
+  if (upassc!=NULL) {limits.disable_passwordchanging = 1;}
+  if (uweb!=NULL) {limits.disable_webmail = 1;}
+  if (urelay!=NULL) {limits.disable_relay = 1;}
+  if (uspam!=NULL) {limits.disable_spamassassin = 1;}
+  if (usmtp!=NULL) {limits.disable_smtp = 1;}
+  if (udeletespam!=NULL) {limits.delete_spam = 1;}
+  if (umaildrop!=NULL) {limits.disable_maildrop = 1;}
+
+  // DETECT DEVIATIONS FROM DEFAULT LIMITS, IF ANY
+  if (limits.maxpopaccounts != defaultlimits.maxpopaccounts) {limitsmodified = 1;}
+  if (limits.maxaliases != defaultlimits.maxaliases) {limitsmodified = 1;}
+  if (limits.maxforwards != defaultlimits.maxforwards) {limitsmodified = 1;}
+  if (limits.maxautoresponders != defaultlimits.maxautoresponders) {limitsmodified = 1;}
+  if (limits.maxmailinglists != defaultlimits.maxmailinglists) {limitsmodified = 1;}
+  if (limits.diskquota != defaultlimits.diskquota) {limitsmodified = 1;}
+  if (limits.maxmsgcount != defaultlimits.maxmsgcount) {limitsmodified = 1;}
+  if (limits.defaultquota != defaultlimits.defaultquota) {limitsmodified = 1;}
+  if (limits.defaultmaxmsgcount != defaultlimits.defaultmaxmsgcount) {limitsmodified = 1;}
+
+  // DETECT DEVIATIONS FROM DEFAULT PERMISSIONS, IF ANY
+  if (limits.disable_pop != defaultlimits.disable_pop) {limitsmodified = 1;}
+  if (limits.disable_imap != defaultlimits.disable_imap) {limitsmodified = 1;}
+  if (limits.disable_dialup != defaultlimits.disable_dialup) {limitsmodified = 1;}
+  if (limits.disable_passwordchanging != defaultlimits.disable_passwordchanging) {limitsmodified = 1;}
+  if (limits.disable_webmail != defaultlimits.disable_webmail) {limitsmodified = 1;}
+  if (limits.disable_relay != defaultlimits.disable_relay) {limitsmodified = 1;}
+  if (limits.disable_smtp != defaultlimits.disable_smtp) {limitsmodified = 1;}
+  if (limits.disable_spamassassin != defaultlimits.disable_spamassassin) {limitsmodified = 1;}
+  if (limits.delete_spam != defaultlimits.delete_spam) {limitsmodified = 1;}
+  if (limits.disable_maildrop != defaultlimits.disable_maildrop) {limitsmodified = 1;}
+
+  // APPLY NEW LIMITS, IF ANY CHANGE DETECTED
+  if (limitsmodified) {
+    if (vset_limits(domain,&limits) != 0) {
+      snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to set limits for domain %s", domain);
+      global_warning(WarningBuff);
+      global_par("DN", domain);
+      t_open("html/view_domain.html", 1);
+    }
+  }
+
+//-------------- DOMAIN LIMITS FINISHED --------------
 
 #ifdef ENABLE_ISOQLOG
   add_isoqlog(domain); /* add the domain to isoqlog's domains file */
@@ -178,15 +256,15 @@ void del_domain()
     global_warning("Delete Domain: Failed: Must supply domain name");
     t_open("html/del_domain.html", 1);
   }
-  
+
   ret = vdeldomain(domain);
   if (ret != VA_SUCCESS) global_warning("Delete Domain: Failed");
   else global_warning("Deleted Domain");
-  
+
 #ifdef ENABLE_ISOQLOG
   del_isoqlog(domain); /* remove the domain from the isoqlog domains file */
 #endif
-  
+
   t_open(T_MAIN, 1);
 }
 
@@ -216,97 +294,200 @@ void view_domain()
 void mod_domain()
 {
  char *domain = NULL;
- char *ppass = NULL;
+ char *passwd = NULL;
+
  char *lusers = NULL;
  char *lfor = NULL;
  char *lalias = NULL;
  char *lresponder = NULL;
  char *llists = NULL;
  char *quota = NULL;
+
  char *upop = NULL;
  char *uimap = NULL;
  char *udialup = NULL;
  char *upassc = NULL;
  char *uweb = NULL;
  char *urelay = NULL;
- int   ret;
- char dir[156];
- uid_t uid;
- gid_t gid;
- FILE *fs;
+ char *uspam = NULL;
+ char *usmtp = NULL;
+ char *udeletespam  = NULL;
+ char *umaildrop  = NULL;
+ char *maxmsgcount = NULL;
+ char *defaultquota = NULL;
+ char *defaultmaxmsgcount = NULL;
+ storage_t tmpdefaultquota;
+
+ int ret;
+ int limitsmodified = 0;
+ struct vlimits defaultlimits;
+ struct vlimits limits;
 
   if (!(acl_features & ACL_DOMAIN_MOD)) {
     global_warning("Mod Domain: Permission denied");
     t_open(T_MAIN, 1);
   }
 
-  domain = cgi_is_var("dname");
-
   /* get the domain name */
+  domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0) {
-    global_warning("Mod Domain: Failed: Must supply domain name");
+    global_warning("Mod Domain: Failed: Missing domain name");
     t_open("html/mod_domain.html", 1);
   }
 
+  /* Change the postmaster password (if requested) */
+  passwd = cgi_is_var("ppass");
+  if (passwd!=NULL && strlen(passwd)>0) {
+    ret = vpasswd("postmaster", domain, passwd, USE_POP);
+    if ( ret != VA_SUCCESS ) {
+      snprintf(WarningBuff, MAX_WARNING_BUFF,
+          "Postmaster Password error %s", verror(ret));
+      global_warning(WarningBuff);
+    } else {
+      global_warning("Postmaster password set");
+    }
+  }
+
+//-------------- FORM VALUES --------------
+
+  //-------------- DOMAIN LIMITS --------------
   lusers = cgi_is_var("lusers");
   lfor = cgi_is_var("lfor");
   lalias = cgi_is_var("lalias");
   lresponder = cgi_is_var("lresponder");
   llists = cgi_is_var("llists");
+
   quota   = cgi_is_var("quota");
+  maxmsgcount = cgi_is_var("maxmsgcount");
+  defaultquota = cgi_is_var("defaultquota");
+  defaultmaxmsgcount = cgi_is_var("defaultmaxmsgcount");
+
+  //-------------- DOMAIN PERMISSIONS --------------
   upop    = cgi_is_var("upop");
   uimap   = cgi_is_var("uimap");
   udialup = cgi_is_var("udialup");
   upassc  = cgi_is_var("upassc");
   uweb    = cgi_is_var("uweb");
   urelay  = cgi_is_var("urelay");
+  uspam  = cgi_is_var("uspam");
+  usmtp  = cgi_is_var("usmtp");
+  udeletespam  = cgi_is_var("udeletespam");
+  umaildrop  = cgi_is_var("umaildrop");
 
-  vget_assign(domain,dir,156,&uid,&gid);
-  strncat(dir,"/.qmailadmin-limits", 156);
-  if ( (fs = fopen(dir,"w+")) == NULL ) {
-    global_warning("Create Domain: open .qmailadmin-limits failed");
-    t_open(T_MAIN, 1);
+
+  // INITIALIZE DEFAULT STRUCT
+  vdefault_limits (&defaultlimits);
+
+  // FETCH DEFAULT DOMAIN LIMITS FROM "VLIMITS_DEFAULT_FILE"
+  if (vlimits_read_limits_file (VLIMITS_DEFAULT_FILE, &defaultlimits) != 0) {
+    snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to get limits from vlimits_default_file for domain %s", domain); 
+    global_warning(WarningBuff);
+    global_par("DN", domain);
+    t_open("html/view_domain.html", 1);
   }
-  if ( lusers!=NULL && strlen(lusers) > 0 ) 
-    fprintf(fs, "maxpopaccounts: %s\n", lusers);
-  if ( lalias!=NULL && strlen(lalias) > 0 ) 
-    fprintf(fs, "maxaliases: %s\n", lalias);
-  if ( lfor!=NULL && strlen(lfor) > 0 ) 
-    fprintf(fs, "maxforwards: %s\n", lfor);
-  if ( lresponder!=NULL && strlen(lresponder) > 0 ) 
-    fprintf(fs, "maxautoresponders: %s\n", lresponder);
-  if ( llists!=NULL && strlen(llists) > 0 ) 
-    fprintf(fs, "maxmailinglists: %s\n", llists);
-  if (quota!=NULL && strlen(quota)>0) 
-    fprintf(fs,"default_quota: %s\n",quota);
 
-  if (upop!=NULL)  fprintf(fs, "disable_pop\n");
-  if (uimap!=NULL) fprintf(fs, "disable_imap\n");
-  if (udialup!=NULL) fprintf(fs, "disable_dialup\n");
-  if (upassc!=NULL) fprintf(fs, "disable_password_changing\n");
-  if (uweb!=NULL) fprintf(fs, "disable_webmail\n");
-  if (urelay!=NULL) fprintf(fs, "disable_external_relay\n");
+#ifdef ENABLE_MYSQL_LIMITS
+  // DUMMY CALL TO "vget_limits", OTHERWISE "vdel_limits" WILL CORE DUMP AT THE END
+  if (vget_limits(domain, &limits) != 0) {
+    snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to vget_limits for domain %s", domain);
+    global_warning(WarningBuff);
+    global_par("DN", domain);
+    t_open("html/view_domain.html", 1);
+  }
+#endif
 
-  fclose(fs);
-  chown(dir,uid, gid);
-  chmod(dir, S_IRUSR | S_IWUSR);
+  // CLONE LIMITS TO CHECK IF THE USER CHANGED THE DEFAULTS
+  memcpy(&limits, &defaultlimits, sizeof(limits));
 
-  ppass = cgi_is_var("ppass");
-  if (ppass!=NULL && strlen(ppass)>0) {
-    ret = vpasswd("postmaster", domain, ppass, USE_POP);
-    if ( ret != VA_SUCCESS ) {
-      snprintf(WarningBuff, MAX_WARNING_BUFF, 
-          "Postmaster Password error %s", verror(ret)); 
-      global_warning(WarningBuff);
-    } else {
-      global_warning("Postmaster password set");
+  // PROCESS NEW LIMITS
+  if (lusers!=NULL && strlen(lusers)>0) {
+    limits.maxpopaccounts = atoi(lusers);
+  }
+  if (lfor!=NULL && strlen(lfor)>0) {
+    limits.maxforwards = atoi(lfor);
+  }
+  if (lalias!=NULL && strlen(lalias)>0) {
+    limits.maxaliases = atoi(lalias);
+  }
+  if (lresponder!=NULL && strlen(lresponder)>0) {
+    limits.maxautoresponders = atoi(lresponder);
+  }
+  if (llists!=NULL && strlen(llists)>0) {
+    limits.maxmailinglists = atoi(llists);
+  }
+  if (quota!=NULL && strlen(quota)>0) {
+    limits.diskquota = strtoll(quota, NULL, 10);
+  }
+  if (maxmsgcount!=NULL && strlen(maxmsgcount)>0) {
+    limits.maxmsgcount = strtoll(maxmsgcount, NULL, 10);
+  }
+  if (defaultquota!=NULL && strlen(defaultquota)>0) {
+    // CONVERT bytes->Mbytes
+    if ((tmpdefaultquota = strtoll(defaultquota, NULL, 10))) {
+        tmpdefaultquota *= 1048576;
+        limits.defaultquota = tmpdefaultquota;
     }
-  } 
+  }
+  if (defaultmaxmsgcount!=NULL && strlen(defaultmaxmsgcount)>0) {
+    limits.defaultmaxmsgcount = strtoll(defaultmaxmsgcount, NULL, 10);
+  }
+
+  // PROCESS NEW PERMISSIONS
+  if (upop!=NULL) {limits.disable_pop = 1;}
+  if (uimap!=NULL) {limits.disable_imap = 1;}
+  if (udialup!=NULL) {limits.disable_dialup = 1;}
+  if (upassc!=NULL) {limits.disable_passwordchanging = 1;}
+  if (uweb!=NULL) {limits.disable_webmail = 1;}
+  if (urelay!=NULL) {limits.disable_relay = 1;}
+  if (uspam!=NULL) {limits.disable_spamassassin = 1;}
+  if (usmtp!=NULL) {limits.disable_smtp = 1;}
+  if (udeletespam!=NULL) {limits.delete_spam = 1;}
+  if (umaildrop!=NULL) {limits.disable_maildrop = 1;}
+
+  // DETECT DEVIATIONS FROM DEFAULT, IF ANY
+  if (limits.maxpopaccounts != defaultlimits.maxpopaccounts) {limitsmodified = 1;}
+  if (limits.maxaliases != defaultlimits.maxaliases) {limitsmodified = 1;}
+  if (limits.maxforwards != defaultlimits.maxforwards) {limitsmodified = 1;}
+  if (limits.maxautoresponders != defaultlimits.maxautoresponders) {limitsmodified = 1;}
+  if (limits.maxmailinglists != defaultlimits.maxmailinglists) {limitsmodified = 1;}
+  if (limits.diskquota != defaultlimits.diskquota) {limitsmodified = 1;}
+  if (limits.maxmsgcount != defaultlimits.maxmsgcount) {limitsmodified = 1;}
+  if (limits.defaultquota != defaultlimits.defaultquota) {limitsmodified = 1;}
+  if (limits.defaultmaxmsgcount != defaultlimits.defaultmaxmsgcount) {limitsmodified = 1;}
+
+  // DETECT DEVIATIONS FROM DEFAULT PERMISSIONS, IF ANY
+  if (limits.disable_pop != defaultlimits.disable_pop) {limitsmodified = 1;}
+  if (limits.disable_imap != defaultlimits.disable_imap) {limitsmodified = 1;}
+  if (limits.disable_dialup != defaultlimits.disable_dialup) {limitsmodified = 1;}
+  if (limits.disable_passwordchanging != defaultlimits.disable_passwordchanging) {limitsmodified = 1;}
+  if (limits.disable_webmail != defaultlimits.disable_webmail) {limitsmodified = 1;}
+  if (limits.disable_relay != defaultlimits.disable_relay) {limitsmodified = 1;}
+  if (limits.disable_smtp != defaultlimits.disable_smtp) {limitsmodified = 1;}
+  if (limits.disable_spamassassin != defaultlimits.disable_spamassassin) {limitsmodified = 1;}
+  if (limits.delete_spam != defaultlimits.delete_spam) {limitsmodified = 1;}
+  if (limits.disable_maildrop != defaultlimits.disable_maildrop) {limitsmodified = 1;}
+
+  // PURGE EXISTING DOMAIN LIMITS
+  if (vdel_limits(domain)!=0) {
+    snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to reset limits for domain %s", domain); 
+    global_warning(WarningBuff);
+    global_par("DN", domain);
+    t_open("html/view_domain.html", 1);
+  }
+
+  // APPLY NEW LIMITS, IF ANY CHANGE DETECTED
+  if (limitsmodified) {
+    if (vset_limits(domain,&limits) != 0) {
+      snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to set limits for domain %s", domain);
+      global_warning(WarningBuff);
+      global_par("DN", domain);
+      t_open("html/view_domain.html", 1);
+    }
+  }
+//-------------- DOMAIN LIMITS FINISHED --------------
 
   post_domain_info(domain);
-
   t_open("html/mod_domain.html", 1);
-
 }
 
 void post_domain_info(char *domain)
@@ -315,12 +496,12 @@ void post_domain_info(char *domain)
  char cuid[10];
  char cgid[10];
  char cusers[10];
- char *tmpstr1;
- char *tmpstr2;
+ char qconvert[11];
  uid_t uid;
  gid_t gid;
- FILE *fs;
+ struct vlimits limits;
  struct vqpasswd *vpw;
+ storage_t tmpdefaultquota;
 
   if ( vget_assign(domain,Dir,156,&uid,&gid) == NULL ) {
     snprintf(WarningBuff, MAX_WARNING_BUFF, 
@@ -348,67 +529,73 @@ void post_domain_info(char *domain)
   if ( vpw != NULL ) global_par("DP", vpw->pw_clear_passwd);
   else global_par("DP", "Domain has no postmaster!!");
 
-  strncat(Dir,"/.qmailadmin-limits", 156);
-  fs = fopen(Dir,"r");
-  if ( fs != NULL ) {
-    global_par("QL", "CHECKED");
-    while(fgets(Dir,156,fs)!=NULL) {
-      if ( (tmpstr1 = strtok(Dir,TOKENS))==NULL) continue;
+//	FETCH DOMAIN LIMITS
 
-      if ( strcmp(tmpstr1, "maxpopaccounts") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MU", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "maxaliases") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MA", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "maxforwards") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MF", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "maxautoresponders") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MR", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "maxmailinglists") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("ML", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "quota") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MQ", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "default_quota") == 0 ) {
-        if ( (tmpstr2 = strtok(NULL,TOKENS))==NULL) continue;
-        global_par("MQ", tmpstr2);
-
-      } else if ( strcmp(tmpstr1, "disable_pop") == 0 ) {
-        global_par("MP", "checked");
-
-      } else if ( strcmp(tmpstr1, "disable_imap") == 0 ) {
-        global_par("MI", "checked");
-
-      } else if ( strcmp(tmpstr1, "disable_dialup") == 0 ) {
-        global_par("MD", "checked");
-
-      } else if ( strcmp(tmpstr1, "disable_password_changing") == 0 ) {
-        global_par("MC", "checked");
-
-      } else if ( strcmp(tmpstr1, "disable_external_relay") == 0 ) {
-        global_par("MS", "checked");
-		
-	  } else if ( strcmp(tmpstr1, "disable_spamassassin") == 0 ) {
-		global_par("MZ", "checked");
-
-      } else if ( strcmp(tmpstr1, "disable_webmail") == 0 ) {
-        global_par("MW", "checked");
-
-      }
-    }
-    fclose(fs);
+  if (vget_limits(domain, &limits) != 0) {
+    snprintf(WarningBuff, MAX_WARNING_BUFF,
+        "Failed to vget_limits for domain %s", domain); 
+    global_warning(WarningBuff);
+    global_par("DN", domain);
+    t_open("html/view_domain.html", 1);
   } else {
-    global_par("QU", "CHECKED");
+    char buffer[20];
+
+    if(limits.maxpopaccounts != -1) {
+      snprintf(buffer, sizeof(buffer), "%d", limits.maxpopaccounts);
+      global_par("MU", buffer);
+    }
+
+    if(limits.maxaliases != -1) {
+      snprintf(buffer, sizeof(buffer), "%d", limits.maxaliases);
+      global_par("MA", buffer);
+    }
+
+    if(limits.maxforwards != -1) {
+      snprintf(buffer, sizeof(buffer), "%d", limits.maxforwards);
+      global_par("MF", buffer);
+    }
+
+    if(limits.maxautoresponders != -1) {
+      snprintf(buffer, sizeof(buffer), "%d", limits.maxautoresponders);
+      global_par("MR", buffer);
+    }
+
+    if(limits.maxmailinglists != -1) {
+      snprintf(buffer, sizeof(buffer), "%d", limits.maxmailinglists);
+      global_par("ML", buffer);
+    }
+
+    if(limits.diskquota != 0) {
+      snprintf(buffer, sizeof(buffer), "%lu", limits.diskquota);
+      global_par("MQ", buffer);
+    }
+
+    if(limits.maxmsgcount != 0) {
+      snprintf(buffer, sizeof(buffer), "%lu", limits.maxmsgcount);
+      global_par("ME", buffer);
+    }
+
+    if(limits.defaultquota != 0) {
+      tmpdefaultquota = limits.defaultquota/1048576.0;
+      sprintf(qconvert, "%.2lf", (double)tmpdefaultquota);
+      global_par("MB", qconvert);
+    }
+
+    if(limits.defaultmaxmsgcount != 0) {
+      snprintf(buffer, sizeof(buffer), "%lu", limits.defaultmaxmsgcount);
+      global_par("MG", buffer);
+    }
+
+    if (limits.disable_pop) global_par("MP", "checked");
+    if (limits.disable_imap) global_par("MI", "checked");
+    if (limits.disable_dialup) global_par("MD", "checked");
+    if (limits.disable_passwordchanging) global_par("MC", "checked");
+    if (limits.disable_webmail) global_par("MW", "checked");
+    if (limits.disable_relay) global_par("MS", "checked");
+    if (limits.disable_smtp) global_par("MH", "checked");
+    if (limits.disable_spamassassin) global_par("MZ", "checked");
+    if (limits.delete_spam) global_par("ML", "checked");
+    if (limits.disable_maildrop) global_par("MN", "checked");
   }
 
 }
@@ -446,9 +633,8 @@ void list_domains()
   strncpy( face, get_lang_code("057"), 30);
   strncpy( size, get_lang_code("058"), 30);
 
-  printf("<HTML><HEAD><TITLE>List Domains</TITLE></HEAD>\n");
-  printf("<body bgcolor=%s vlink=%s link=%s alink=%s>\n",
-    bgcolor, fgcolor, fgcolor, fgcolor);
+  printf("<HTML><HEAD><TITLE>List Domains</TITLE><link href=\"/images/vqadmin/vqadmin.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\" media=\"all\"></HEAD>\n");
+  printf("<body>\n");
   printf("<FONT face=\"%s\" SIZE=\"%s\" color=\"%s\">\n",
     face, size, fgcolor);
 
@@ -476,18 +662,17 @@ void list_domains()
       printf("<a href=vqadmin.cgi?nav=view_domain&dname=%s>%s</a><BR>\n",
         assign_alias_domain, assign_alias_domain);
     } else {
-      printf(
-"<a href=vqadmin.cgi?nav=view_domain&dname=%s>%s</a> Aliased to %s<BR>\n",
+      printf("<a href=vqadmin.cgi?nav=view_domain&dname=%s>%s</a> Aliased to %s<BR>\n",
         assign_alias_domain, assign_domain, assign_alias_domain);
     }
   }
   fclose(fs);
-    
+
   printf("<HR>\n");
   printf("<a href=\"/cgi-bin/vqadmin/vqadmin.cgi\">Main VqAdmin Menu</a><BR><BR>\n");
-  printf("<a href=http://www.inter7.com/vqadmin/>%s</a> %s<BR>\n", 
+  printf("<a href=http://www.inter7.com/vqadmin/>%s</a> %s<BR>\n",
     VQA_PACKAGE, VQA_VERSION);
-  printf("<a href=http://www.inter7.com/vpopmail/>%s</a> %s<BR>\n", 
+  printf("<a href=http://www.inter7.com/vpopmail/>%s</a> %s<BR>\n",
     PACKAGE, VERSION);
 
   free(tmpbuf);
@@ -546,7 +731,7 @@ void add_isoqlog (char *domain)
  char *dom; /* pointer to temp buffer */
  char tmpbuf[100];
  char status[100];
-	
+
   snprintf(tmpbuf, 100, "%s.tmp", ISOQLOGPATH);
   infile = fopen(ISOQLOGPATH, "a+"); /* open the existing domains file */
   if (infile == NULL) {
@@ -555,7 +740,7 @@ have to add the domain to isoqlog manually", ISOQLOGPATH);
     global_warning(status);
     return;
   } /* reports error opening input file */
-	
+
   tmpfile = fopen(tmpbuf,"w+"); /* open the temporary file */
   if (tmpfile == NULL) {
    snprintf(status, 100, "Error: Unable to open temporary file %s You \
@@ -563,15 +748,15 @@ may have to add the domain to isoqlog manually.", tmpbuf);
     global_warning(status);
     return;
   } /* reports error opening temp file */
-	
-	
+
+
   /* 
    * this loop is pretty pointless.  it simply copies one file into the other
    * and then we add to it right after the loop completes.  However, it
    * does attempt to clean up a messy file, which is good, who likes
    * messy files? :)
    */
-	
+
   /* while there's something to be read */
   while( fgets (buffer, 100, infile) != NULL ) {
     /* munge */
@@ -596,9 +781,9 @@ void del_isoqlog (char *domain)
  char *dom; /* pointer to temp buffer */
  char tmpbuf[100];
  char status[100];
-	
+
   snprintf(tmpbuf, 100, "%s.tmp", ISOQLOGPATH);
-	
+
   infile = fopen(ISOQLOGPATH, "r+"); /* open the existing domains file */
   if (infile == NULL) {
     snprintf(status, 100, "Error: Unable to open input file %s you may \
@@ -606,23 +791,23 @@ have to remove the domain from isoqlog manually.", ISOQLOGPATH);
     global_warning(status);
     return;
   } /* reports error opening input file */
-	
+
   tmpfile = fopen(tmpbuf,"w+"); /* open the temporary file */
   if (tmpfile == NULL) {
     snprintf(status, 100, "Error: Unable to open temporary file %s you may have to remove the domain from isoqlog manually", tmpbuf);
     global_warning(status);
     return;
   } /* reports error opening temp file */
-	
+
   while( fgets (buffer, 100, infile) != NULL ) { /* while there's something to be read */
     dom = strtok( buffer, " \n\t\r"); /* munge */
     if (dom == NULL) continue; /* blank line */
     if (strcmp(dom, domain) == 0) continue; /* hey! we found our domain! */
     fprintf(tmpfile, "%s\n", dom); /* nope, wasn't him, spit it out */
-  }	
-	
+  }
+
    fclose(infile); fclose(tmpfile); /* close files */
-	
+
    rename ( tmpbuf, ISOQLOGPATH ); /* move the modified file into place */
 }
 

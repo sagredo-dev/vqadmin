@@ -1,8 +1,8 @@
 000 VqAdmin Main Menu
-001 Domains 
+001 Domains
 002 View Domain
 003 Add Domain
-004 Delete Domain 
+004 Delete Domain
 005 Email Accounts
 006 View Email Account
 007 Show Users
@@ -10,7 +10,7 @@
 009 Delete Email Account
 010 Domain Name
 011 Postmaster Password
-012 Options
+012 Domain Limits
 013 Limit
 014 Unlimited
 015 Accounts
@@ -32,23 +32,23 @@
 031 Error
 032 error occured while initiating the interface.
 033 Modify Domain
-034 Users
-035 Directory
+034 Accounts
+035 Mail Directory
 036 User ID
 037 Group ID
 038 Modify Email Account
-039 Quota in bytes
+039 Quota in Mbytes
 040 Permissions
 041 List Domains
-042 Disable pop access 
-043 Disable web access
-044 Disable imap access
+042 Disable POP access
+043 Disable webmail access
+044 Disable IMAP access
 045 Disable change password
-046 Bounce email 
-047 Disable email relay 
+046 Bounce email
+047 Disable email relay
 048 Domain Administrator
 049 Disable dialup access
-050 0 disables this feature
+050 0 = disabled
 051 Last authentication time
 052 Last authentication ip
 053 List Domains
@@ -62,7 +62,15 @@
 061 Qmail Control Files
 062 Modify Control File
 063 Modify File
-067 user: 
+067 user:
 068 permission:
-069 Disable SpamAssassin
-
+069 Disable spamassassin
+070 Disable SMTP access
+071 Delete spam mails
+072 Disable maildrop
+073 Max Mail Count/Domain
+074 Quota/User (Mbytes)
+075 Mails/User
+076 Update
+077 Leave blank for defaults
+078 Domain Permissions

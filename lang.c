@@ -25,6 +25,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#include <vpopmail.h>
+
 #include "global.h"
 #include "vauth.h"
 
@@ -70,9 +73,13 @@ int open_lang( char *lang)
  char tmpfile[MAX_TMPBUF];
  struct stat mystat;
 
+  /* Lowercase the language name to fix a bug where chrome users can't access
+   * the page. */
+  lowerit(lang);
+
   /* only open files in the local directory */
   if ( strstr(lang, ".") != NULL || strstr(lang, "/") != NULL ) {
-    global_error("invalid language file",1,0); 
+    strcpy(lang, "en");
   }
 
   if ( lang_fs == NULL ) {

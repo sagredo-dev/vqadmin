@@ -164,7 +164,7 @@ void cgi_parse_hex(void)
             
         *p = r;
 
-        memcpy((char *)(p + 1), (char *)(p + 3), (len - 2));
+        memmove((char *)(p + 1), (char *)(p + 3), (len - 2));
 
         *(p + len - 1) = '\0';
       }         

@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <vauth.h>
+#include <stdint.h>
 
 #define MAX_WARNING_BUFF 500
 
@@ -146,3 +147,7 @@ void display_file();
 void modify_file();
 void show_controls();
 void delete_file();
+
+typedef uint64_t storage_t;
+int quota_to_bytes(char[], char*);     //jhopper prototype
+int quota_to_megabytes(char[], char*); //jhopper prototype
