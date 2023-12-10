@@ -1,4 +1,4 @@
-Installation and Configuration of vQadmin (vol@inter7.com)
+Installation and Configuration of vQadmin
 ------------------------------------------------------------------------------
 
 vQadmin comes with full HTML templates.  This means that the CGI
@@ -11,25 +11,24 @@ the template forms.  It also comes with an example access list file,
 which explains pretty well how to set access restrictions upon users,
 and their usergroups.
 
-0.  Contents
-------------
+##  Contents
 1.  What's needed to install vQadmin
 2.  Installing and configuring vQadmin
 3.  Setting up Apache
 4.  All of the above key-by-key
 5.  Troubleshooting
+6.  More info and support
 
-1.  What's needed to install vQadmin
-------------------------------------
+## 1.  What's needed to install vQadmin
 vQadmin will run on any Unix-based system that has
 vpopmail 4.9.8 or higher, Apache, and a C compiler installed.
 
-2.  Installing and configuring vQadmin
---------------------------------------
+## 2.  Installing and configuring vQadmin
+```
 $ ./configure 
 # make
 # make install-strip
-
+```
 Now you want to edit your vqadmin.acl file, which is your access list
 definitions.  Please read that file for information on how to define users
 and usergroups.
@@ -41,22 +40,22 @@ these two command-line operations are going to be very hard to document
 because of the system-specific nature of this portion of the installation.
 (See section 5)
 
-3. Setting up Apache
---------------------
+## 3. Setting up Apache
+
 vQadmin will require it's own CGI-allowed, access-protected,
 directory to operate.  First, you will need to create a <Directory>
 tag inside your Apache configuration, which sets the directory
 to have ExecCGI permissions, allows the directory to override
 authority, and sets the directory to deny everyone by default.
 vQadmin will not function without this setup.
-
+```
 <Directory "/usr/local/apache/cgi-bin/vqadmin">
     deny from all
     Options ExecCGI
     AllowOverride AuthConfig
     Order deny,allow
 </Directory>
-
+```
 After you've created the directory, you will need to create an
 htaccess for the directory so Apache knows how to authenticate
 users trying to access the directory.  In our example directory
@@ -66,17 +65,17 @@ password file somewhere the webserver isn't capable of displaying,
 such as the conf directory.  The realm (AuthName) is not important,
 so you may call it whatever you'd like.  You will want to chown
 the file to the webserver user, and chmod it 600.
-
+```
 AuthType Basic
 AuthUserFile /usr/local/apache/conf/vqadmin.passwd
 AuthName vqadmin
 require valid-user
 satisfy any
-
+```
 Now, create a user.  In your Apache installation root directory, under
 the bin subdirectory is a program called 'htpasswd'.  This program is used
 to create, and maintain the vqadmin.passwd file.
-
+```
   Usage:
 	htpasswd [-cmdps] passwordfile username
 	htpasswd -b[cmdps] passwordfile username password
@@ -89,13 +88,13 @@ to create, and maintain the vqadmin.passwd file.
    -b  Use the password from the command line rather than prompting for it.
   On Windows and TPF systems the '-m' flag is used by default.
   On all other systems, the '-p' flag will probably not work.
-
+```
 We're only interested in the c (or maybe b) option for now.
 To create a vqadmin.passwd file, with a login of 'test', and a
 password of 'test'.
-
+```
   /usr/local/apache/bin/htpasswd -bc /usr/local/apache/conf/vqadmin.passwd test test
-
+```
 That's it.  Just remember that you made a user named 'test'!  You need
 to know this for configuring vqadmin.
 
@@ -106,10 +105,10 @@ Note for isoqlog support: the isoqlog.domains file must exist (but can be
 empty) for adding or deleting domains to/from isoqlog to work.  This may
 be changed in a later version.
 
-4.  All of the above key-by-key
--------------------------------
-Here we go, a very quick and dirty key-by-key installation guide...
+## 4.  All of the above key-by-key
 
+Here we go, a very quick and dirty key-by-key installation guide...
+```
 # tar zxf vqadmin-X.X.tar.gz 
 # cd vqadmin* 
 # ./configure
@@ -136,16 +135,16 @@ Here we go, a very quick and dirty key-by-key installation guide...
 # /usr/local/apache/bin/htpasswd -bc /usr/local/apache/conf/vqadmin.passwd admin adminpass
 # /usr/local/apache/bin/apachectl stop 
 # /usr/local/apache/bin/apachectl start 
-
+```
 As you can see, once you've done it once, it's pretty simple to just run
 through it in 5 or 10 minutes.
 
-5.  Troubleshooting
--------------------
+## 5.  Troubleshooting
+
 I could only think of a few troubleshooting things to document.
 Just little problems I ran into when coding, or installing it during
 production testing.
-
+```
   * Apache shuts down after re-starting, and wont re-start
   + The <Directory> information you entered was probably in an invalid
     format, or you forgot your </Directory> tag. 
@@ -164,7 +163,11 @@ production testing.
 
   * Other
   + info@inter7.com
+```
+
+## 6. More info and support
+
+You can find more info and ask for support at https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html.
 
 ------------------------------------------------------------------------------
 Inter7 Internet Technologies, Inc.
-vol@inter7.com
