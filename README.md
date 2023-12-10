@@ -1,3 +1,5 @@
+vQadmin is a web based control panel that allows system administrators to perform actions which require root access — for example, adding and deleting domains.
+
 Installation and Configuration of vQadmin
 ------------------------------------------------------------------------------
 
