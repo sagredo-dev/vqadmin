@@ -1,0 +1,76 @@
+<HTML><HEAD><TITLE>#-033 %-U (%-G)</TITLE>
+      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
+</HEAD>
+<body onLoad="javascript:form1.ppass.focus();">
+
+
+<div align="center"><B>%-W</B></div>
+<div align="center">#-033 %-U (%-G)</div>
+<B>#-033</B>
+<hr size="1" noshade>
+<form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
+<table border="0" cellspacing="2" cellpadding="2">
+<tr>
+  <td class="clsLabelR">#-010</td>
+  <td><input type="text" name="dname" value="$-DN" size="30" readonly title="$-DN"></td>
+</tr>
+<tr>
+  <td class="clsLabelR">#-034</td>
+  <td>$-DS</td>
+</tr>
+<tr>
+  <td class="clsLabelR">#-011</td>
+  <td><input type="text" name="ppass" value="$-DP" size="30"></td>
+</tr>
+<tr>
+  <td class="clsLabelR">#-035</td>
+  <td>$-DD</td>
+</tr>
+</table>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr>
+  <td class="clsLabelR">#-036</td>
+  <td>$-DU</td>
+</tr>
+<tr>
+  <td class="clsLabelR">#-037</td>
+  <td>$-DG</td>
+</tr>
+<tr><td class="clsLabelR">#-015</td>
+    <td><input type="text" name="lusers" value="$-MU" size="4" title="#-015"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-016</td>
+    <td><input type="text" name="lfor" value="$-MF" size="4" title="#-016"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-017</td>
+    <td><input type="text" name="lalias" value="$-MA" size="4" title="#-017"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-018</td>
+    <td><input type="text" name="lresponder" value="$-MR" size="4" title="#-018"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-019</td>
+    <td><input type="text" name="llists" value="$-ML" size="4" title="#-019"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-039</td>
+    <td><input type="text" name="quota" value="$-MQ" size="10" title="#-039"></td></tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td><input TYPE="checkbox" NAME="upop" id="upop"$-MP title="#-042"><label for="upop" title="#-042">#-042</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="uimap" id="uimap" $-MI title="#-044"><label for="uimap" title="#-044">#-044</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="udialup" id="udialup" $-MD title="#-049"><label for="udialup" title="#-049">#-049</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="upassc" id="upassc" $-MC title="#-045"><label for="upassc" title="#-045">#-045</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="uweb" id="uweb" $-MW title="#-043"><label for="uweb" title="#-043">#-043</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="urelay" id="urelay"$-MS title="#-047"><label for="urelay" title="#-047">#-047</label></td></tr>
+<tr><td><input TYPE="checkbox" NAME="uspam" id="uspam"$-MZ title="#-069"><label for="uspam" title="#-069">#-069</label></td></tr>
+<tr>
+<td><BR><INPUT TYPE="SUBMIT" NAME="Submit" VALUE="#-033">
+<INPUT TYPE="HIDDEN" NAME="nav" VALUE="mod_domain">
+</td>
+</tr>
+</table>
+<br>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi?dname=$-DN&nav=show_users">Show Users</a>
+<hr size="1" noshade>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi">#-000</a><BR><BR>
+%-V
+</BODY></HTML>

@@ -1,0 +1,12 @@
+Here's a quick explanation of the access lists:
+
+  Format: <user group> <access restrictions> <users>
+
+          user group: Any single alphanumeric word you wish.
+                      It's purely for human recognition (except for the "default" group)
+          access restrictions: See vqadmin.acl for a list of these and what they mean.
+          users: Comma seperated list of users.  When a user logs in via Apache's htaccess
+                 system, the CGI will recognize them.  If they don't belong to any of the groups
+                 they are set to the default permissions.          
+
+vol@inter7.com

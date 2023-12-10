@@ -1,0 +1,9 @@
+#undef VPOPUSER
+
+#undef ENABLE_ISOQLOG
+
+#undef ISOQLOGPATH 
+
+#undef VPOPGROUP
+
+#undef QMAILDIR

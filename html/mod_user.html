@@ -1,0 +1,59 @@
+<HTML><HEAD><TITLE>#-038 %-U (%-G)</TITLE>
+      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
+</HEAD>
+<body onLoad="javascript:form1.eaddr.focus();">
+
+
+<div align="center"><B>%-W</B></div>
+<div align="center">#-038 %-U (%-G)</div>
+<B>#-038</B>
+<hr size="1" noshade>
+<form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
+<table>
+<tr><td class="clsLabelR">#-020</td>
+    <td><INPUT TYPE="TEXT" NAME="eaddr" SIZE="30" VALUE="$-UA"></td></tr>
+<tr><td class="clsLabelR">#-021</td>
+    <td><INPUT TYPE="TEXT" NAME="cpass" SIZE="30" VALUE="$-UO"></td></tr>
+<tr><td class="clsLabelR">#-039</td>
+    <td><INPUT TYPE="TEXT" NAME="quota" SIZE="30" VALUE="$-UQ"></td></tr>
+<tr><td class="clsLabelR">#-022</td>
+    <td><INPUT TYPE="TEXT" NAME="fname" SIZE="30" VALUE="$-UN"></td></tr>
+</table>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr><td class="clsLabelR">#-035</td> 
+    <td >$-UD</td></tr>
+<tr><td class="clsLabelR">#-051</td> 
+    <td>$-UT</td></tr>
+<tr><td class="clsLabelR">#-052</td> 
+    <td>$-UZ</td></tr>
+</table>
+<BR><B>#-040</B>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td><INPUT TYPE="CHECKBOX" NAME="udisable" id="udisable" $-UP title="#-042"><label for="udisable" title="#-042">#-042</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb" $-UW title="#-043"><label for="uweb" title="#-043">#-043</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap" $-UI title="#-044"><label for="uimap" title="#-044">#-044</label></td> </tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" $-UC title="#-045"><label for="upassc" title="#-045">#-045</label></td> </tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="ubounce" id="ubounce" $-UB title="#-046"><label for="ubounce" title="#-046">#-046</label></td> </tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay" $-US title="#-047"><label for="urelay" title="#-047">#-047</label></td> </tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam" $-UF title="#-069"><label for="uspam" title="#-069">#-069</label></td> </tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uqadmin" id="uqadmin" $-UK title="#-048"><label for="uqadmin" title="#-048">#-048</label></td></tr>
+</tr>
+<tr><td>
+    <BR>
+    <INPUT TYPE="SUBMIT" NAME="Submit" VALUE="#-038">  </td></tr>
+</table>
+  <INPUT TYPE="HIDDEN" NAME="nav" VALUE="mod_user">
+</FORM>
+<FORM METHOD="POST" ACTION="/cgi-bin/vqadmin/vqadmin.cgi">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td><INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Delete user">
+	<INPUT TYPE="HIDDEN" NAME="nav" VALUE="del_user">
+	<INPUT TYPE="HIDDEN" NAME="eaddr" VALUE="$-UA"></td>
+    <td>$-UA</td></tr>
+</table>
+
+</FORM>
+<hr size="1" noshade>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
+%-V
+</BODY></HTML>
