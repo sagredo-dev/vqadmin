@@ -1,7 +1,6 @@
 2.4
 10/12/2023 Roberto Puzzanghera https://notes.sagredo.eu
 
-
 * edit lang.c to lowercase the language file to solve compatibility issues with google-chrome and to avoid
   errors due to "invalid language file" in some browsers.
 * replace the files config.sub and config.guess (copied from vpopmail dir) to allow compilation on 64b
