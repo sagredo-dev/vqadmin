@@ -1,15 +1,22 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(vqadmin.c)
-AM_INIT_AUTOMAKE(vqadmin,2.3.6)
-AM_CONFIG_HEADER(config.h)
-AC_CANONICAL_HOST
+
+AC_PREREQ([2.71])
+AC_INIT([vqadmin],[2.4])
+AM_INIT_AUTOMAKE()
+
+AC_USE_SYSTEM_EXTENSIONS
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
 
-AC_ISC_POSIX
-AC_AIX
+AC_CANONICAL_HOST
+AC_CONFIG_HEADERS([config.h])
+
+AC_SEARCH_LIBS([strerror],[cposix])
+
+AC_DEFINE_UNQUOTED(VQA_PACKAGE,"$PACKAGE_NAME",Package name)
+AC_DEFINE_UNQUOTED(VQA_VERSION,"$PACKAGE_VERSION",Package version)
 
 if test "$GCC" = yes ; then
         CXXFLAGS="$CXXFLAGS -Wall"
@@ -33,7 +40,7 @@ AC_ARG_ENABLE(qmaildir, [  --enable-qmaildir=dir   directory where qmail is inst
             AC_MSG_ERROR([Unable to find your qmaildir directory, specify --enable-qmaildir.])
         fi
     ] )
-AC_DEFINE_UNQUOTED(QMAILDIR,"$qmaildir")
+AC_DEFINE_UNQUOTED(QMAILDIR,"$qmaildir","")
 
 vpopuser="vpopmail"
 AC_ARG_ENABLE(vpopuser, [  --enable-vpopuser=vpopmail   user vchkpw was installed as.],
@@ -44,7 +51,7 @@ AC_ARG_ENABLE(vpopuser, [  --enable-vpopuser=vpopmail   user vchkpw was installe
             AC_MSG_ERROR([Unable to find your vpopuser user, specify --enable-vpopuser.])
         fi
     ] )
-AC_DEFINE_UNQUOTED(VPOPUSER,"$vpopuser")
+AC_DEFINE_UNQUOTED(VPOPUSER,"$vpopuser","")
 AC_SUBST(vpopuser)
 echo $vpopuser > vpopusername
 
@@ -57,10 +64,10 @@ AC_ARG_ENABLE(vpopgroup, [  --enable-vpopgroup=vchkpw   group vchkpw was install
             AC_MSG_ERROR([Unable to find your vpopgroup group, specify --enable-vpopgroup.])
         fi
     ] )
-AC_DEFINE_UNQUOTED(VPOPGROUP,"$vpopgroup")
+AC_DEFINE_UNQUOTED(VPOPGROUP,"$vpopgroup","")
 AC_SUBST(vpopgroup)
 
-AC_TRY_RUN( [
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
 
 #include <stdio.h>
 #include <pwd.h>
@@ -96,11 +103,8 @@ FILE *f;
         }
         return(0);
 }
-],
-    AC_MSG_RESULT(yes),
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.),
-    AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.))
+]])],[AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
+    AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.)],[AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.)])
 
 if test ! -f vpopmail.uid
 then
@@ -181,7 +185,7 @@ AC_ARG_ENABLE(isoqlog,
 case $ENABLE_ISOQLOG in
 1*|y*|Y*)
         ENABLE_ISOQLOG=1
-        AC_DEFINE_UNQUOTED(ENABLE_ISOQLOG,$ENABLE_ISOQLOG)
+        AC_DEFINE_UNQUOTED(ENABLE_ISOQLOG,$ENABLE_ISOQLOG,"")
         ;;
 *)
         ENABLE_ISOQLOG=0
@@ -196,12 +200,13 @@ AC_ARG_ENABLE(isoqlogpath, [  --enable-isoqlogpath={path}   override default pat
 		isoqlogpath="/usr/local/etc/isoqlog.domains"
         fi
     ] )
-AC_DEFINE_UNQUOTED(ISOQLOGPATH,"$isoqlogpath")
+AC_DEFINE_UNQUOTED(ISOQLOGPATH,"$isoqlogpath","")
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
-AC_HEADER_STDC
-AC_CHECK_HEADERS(unistd.h)
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+# AC_CHECK_HEADERS(unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -213,9 +218,11 @@ AC_CHECK_LIB(crypt,crypt)
 AC_CHECK_LIB(m,floor)
 AC_CHECK_LIB(z,compress)
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
 
 echo ""
+echo "            $PACKAGE_NAME $PACKAGE_VERSION           "
 echo "            Current settings"
 echo "---------------------------------------"
 echo "vpopmail directory = "$vpopmaildir""
