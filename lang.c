@@ -84,7 +84,7 @@ int open_lang( char *lang)
 
   if ( lang_fs == NULL ) {
     memset(tmpfile, 0, MAX_TMPBUF);
-    snprintf(tmpfile, MAX_TMPBUF - 1, "html/%s", lang);
+    snprintf(tmpfile, MAX_TMPBUF - 1, "lang/%s", lang);
 
     /* check for symbolic link */
     if ( lstat(tmpfile, &mystat) == 0 && S_ISLNK(mystat.st_mode) ) {
