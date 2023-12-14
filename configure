@@ -652,7 +652,6 @@ LIBOBJS
 EGREP
 GREP
 cgibindir
-wwwroot
 inc_deps
 lib_deps
 vpopmailgid
@@ -5871,22 +5870,14 @@ inc_deps=`cat $vpopmaildir/etc/inc_deps`
 
 
 cgibindir=""
-wwwroot=""
 
-for f in /home/httpd /usr/local/apache /usr/local/www /var/lib/httpd /var/www /usr/local/www /var/www
+for f in /home/httpd /usr/local/apache /usr/local/www /var/lib/httpd /var/www/htdocs /usr/local/www /var/www
 do
-    if test -d $f/html
-    then
-        wwwroot=$f/html
-    fi
-
     if test -d $f/cgi-bin
     then
         cgibindir=$f/cgi-bin
     fi
 done
-
-
 
 # Check whether --enable-cgibindir was given.
 if test ${enable_cgibindir+y}

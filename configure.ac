@@ -149,22 +149,14 @@ inc_deps=`cat $vpopmaildir/etc/inc_deps`
 AC_SUBST(inc_deps)
 
 cgibindir=""
-wwwroot=""
 
-for f in /home/httpd /usr/local/apache /usr/local/www /var/lib/httpd /var/www /usr/local/www /var/www
+for f in /home/httpd /usr/local/apache /usr/local/www /var/lib/httpd /var/www/htdocs /usr/local/www /var/www
 do
-    if test -d $f/html
-    then 
-        wwwroot=$f/html
-    fi
-
     if test -d $f/cgi-bin
     then
         cgibindir=$f/cgi-bin
     fi
 done
-
-AC_SUBST(wwwroot)
 
 AC_ARG_ENABLE(cgibindir, [  --enable-cgibindir={dir}   HTTP server's cgi-bin directory.],
     cgibindir="$enableval",
