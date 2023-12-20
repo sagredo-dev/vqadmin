@@ -1,56 +1,66 @@
-<HTML><HEAD><TITLE>#-003 %-U (%-G)</TITLE>
-      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
-</HEAD>
-<body onLoad="javascript:form1.dname.focus();">
-
-<div align="center"><B>%-W</B></div>
-<div align="center">#-003 %-U (%-G)</div>
-
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
-<table border="0" cellspacing="2" cellpadding="2">
-<tr><td colspan="3"><B>#-003</B></td></tr>
-<tr><td colspan="3"><hr size="1" noshade></td></tr>
-<tr>
-    <td class="clsLabelR" width="200">#-010</td>
-    <td colspan="2"><input type="text" name="dname" size="30" title="#-010"></td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-011</td>
-    <td colspan="2"><input type="password" name="ppass" size="30" title="#-011"></td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-035</td>
-    <td colspan="2"><input type="text" value="" size="50" disabled></td>
-</tr>
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3"><b>#-012</b></td></tr>
-<tr><td colspan="3"><hr size="1" noshade></td>
-<tr>
-    <td class="clsLabelR">#-015</td>
-    <td><input type="text" name="lusers" value="" size="4" title="#-015"></td>
-    <td class="clsInfo">#-050</td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-016</td>
-    <td><INPUT TYPE="TEXT" NAME="lfor" value="" SIZE="4" title="#-016"></td>
-    <td class="clsInfo">#-050</td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-017</td>
-    <td><INPUT TYPE="TEXT" NAME="lalias" value="" SIZE="4" title="#-017"></td>
-    <td class="clsInfo">#-050</td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-018</td>
-    <td><INPUT TYPE="TEXT" NAME="lresponder" value="" SIZE="4" title="#-018"></td>
-    <td class="clsInfo">#-050</td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-019</td>
-    <td><INPUT TYPE="TEXT" NAME="llists" value="" SIZE="4" title="#-019"></td>
-    <td class="clsInfo">#-050</td>
-</tr>
-<!-- README.quotas file in vpopmail disttribution says domain quotas are broken. Hide these options.
+
+<!-- add domain --> 
+<h2>#-003</h2>
+
+<!-- Domain Name -->
+<div class="mb-3">
+   <label for="dname">#-010</label>
+   <input type="text" class="form-control" name="dname" id="dname" required>
+</div>
+
+<!-- Postmaster Password -->
+<div class="mb-3">
+   <label for="ppass">#-011</label>
+   <input type="password" class="form-control" name="ppass" id="ppass">
+</div>
+
+<!-- Mail Directory -->
+<div class="mb-3">
+   <label for="dmail">#-035</label>
+   <input type="text" class="form-control" name="dmail" id="dmail" disabled>
+</div>
+
+
+<!-- Domain Limits -->
+<h3>#-012</h3>
+
+<!-- Accounts -->
+<div class="mb-3">
+   <label for="lusers">#-015</label>
+   <input type="text" class="form-control" name="lusers" id="lusers" value="">
+   <small class="form-text text-muted">#-050</small>
+</div>
+
+<!-- Forwards -->
+<div class="mb-3">
+   <label for="lfor">#-016</label>
+   <input type="text" class="form-control" name="lfor" id="lfor" value="">
+   <small class="form-text text-muted">#-050</small>
+</div>
+
+<!-- Aliases -->
+<div class="mb-3">
+   <label for="lalias">#-017</label>
+   <input type="text" class="form-control" name="lalias" id="lalias" value="">
+   <small class="form-text text-muted">#-050</small>
+</div>
+
+<!-- Autoresponders -->
+<div class="mb-3">
+   <label for="lresponder">#-018</label>
+   <input type="text" class="form-control" name="lresponder" id="lresponder" value="">
+   <small class="form-text text-muted">#-050</small>
+</div>
+
+<!-- Mailing Lists -->
+<div class="mb-3">
+   <label for="llists">#-019</label>
+   <input type="text" class="form-control" name="llists" id="llists" value="">
+   <small class="form-text text-muted">#-050</small>
+</div>
+
+<!-- README.quotas file in vpopmail distribution says domain quotas are broken. Hide these options.
 <tr>
     <td class="clsLabelR">#-039</td>
     <td><input type="text" name="quota" value="" size="10" title="#-039" disabled></td>
@@ -62,52 +72,77 @@
     <td class="clsInfo">#-077</td>
 </tr>
 -->
-<tr>
-    <td class="clsLabelR">#-074</td>
-    <td><input type="text" name="defaultquota" value="" size="10" title="#-074"></td>
-    <td class="clsInfo">#-077</td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-075</td>
-    <td><input type="text" name="defaultmaxmsgcount" value="" size="10" title="#-075"></td>
-    <td class="clsInfo">#-077</td>
-</tr>
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3"><B>#-078</B></td></tr>
-<tr><td colspan="3"><hr size="1" noshade></td></tr>
-<tr>
-    <td colspan="3" align="center">
-	<table border="0" cellspacing="0" cellpadding="0">
-	    <tr>
-		<td>
-		<table border="0" cellspacing="0" cellpadding="0">
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="upop" id="upop" value="1"><label for="upop" title="#-042">#-042</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap" value="1"><label for="uimap" title="#-044">#-044</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="udialup" id="udialup" value="1"><label for="udialup" title="#-049">#-049</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" value="1"><label for="upassc" title="#-045">#-045</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb" value="1"><label for="uweb" title="#-043">#-043</label></td></tr>
-		</table>
-		</td>
-		<td width="20">&nbsp;</td>
-		<td>
-		<table border="0" cellspacing="0" cellpadding="0">
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay" value="1"><label for="urelay" title="#-047">#-047</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam" value="1"><label for="uspam" title="#-069">#-069</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="usmtp" id="usmtp" value="1"><label for="usmtp" title="#-070">#-070</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="umaildrop" id="udisablemaildrop" value="1"><label for="udisablemaildrop" title="#-072">#-072</label></td></tr>
-		    <tr><td><INPUT TYPE="CHECKBOX" NAME="udeletespam" id="udeletespam" value="1"><label for="udeletespam" title="#-071">#-071</label></td></tr>
-		</table>
-		</td>
-	    </tr>
-	</table>
-    </td>
-</tr>
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3" align="center"><input type="submit" value="#-003" title="#-003"></td></tr>
-</table>
-<INPUT TYPE="HIDDEN" NAME="nav" VALUE="add_domain">
+
+<!-- Quota/User -->
+<div class="mb-3">
+   <label for="defaultquota">#-074</label>
+   <input type="text" class="form-control" name="defaultquota" id="defaultquota" value="">
+   <small class="form-text text-muted">#-077</small>
+</div>
+
+<!-- Mails/User -->
+<div class="mb-3">
+   <label for="defaultmaxmsgcount">#-075</label>
+   <input type="text" class="form-control" name="defaultmaxmsgcount" id="defaultmaxmsgcount" value="">
+   <small class="form-text text-muted">#-077</small>
+</div>
+
+
+<!-- Domain Permissions -->
+<h3>#-078</h3>
+
+<!-- disable pop -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="upop" id="upop" value="1">
+  <label class="form-check-label" for="upop">#-042</label>
+</div>
+<!-- disable imap -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="uimap" id="uimap" value="1">
+  <label class="form-check-label" for="uimap">#-044</label>
+</div>
+<!-- disable dialup -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="udialup" id="udialup" value="1">
+  <label class="form-check-label" for="udialup">#-049</label>
+</div>
+<!-- Disable change password -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="upassc" id="upassc" value="1">
+  <label class="form-check-label" for="upassc">#-045</label>
+</div>
+<!-- Disable webmail access -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="uweb" id="uweb" value="1">
+  <label class="form-check-label" for="uweb">#-043</label>
+</div>
+<!-- Disable email relay -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="urelay" id="urelay" value="1">
+  <label class="form-check-label" for="urelay">#-047</label>
+</div>
+<!-- Disable spamassassin-->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="uspam" id="uspam" value="1">
+  <label class="form-check-label" for="uspam">#-069</label>
+</div>
+<!-- Disable SMTP access -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="usmtp" id="usmtp" value="1">
+  <label class="form-check-label" for="usmtp">#-070</label>
+</div>
+<!-- Disable maildrop -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="umaildrop" id="umaildrop" value="1">
+  <label class="form-check-label" for="umaildrop">#-072</label>
+</div>
+<!-- Delete spam mails -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" name="udeletespam" id="udeletespam" value="1">
+  <label class="form-check-label" for="udeletespam">#-071</label>
+</div>
+
+<div class="my-5"><input class="btn btn-primary btn-sm" type="submit" value="#-003"></div>
+
+<input type="hidden" name="nav" id="nav" value="add_domain">
 </form>
-<hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi">#-000</a><BR><BR>
-%-V
-</BODY></HTML>

@@ -5894,6 +5894,9 @@ fi
 
 
 
+printf "%s\n" "#define CGIBINDIR \"$cgibindir\"" >>confdefs.h
+
+
 # Check whether --enable-isoqlog was given.
 if test ${enable_isoqlog+y}
 then :

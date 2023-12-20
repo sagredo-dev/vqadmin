@@ -62,8 +62,8 @@
 061 Qmail Control Files
 062 Modify Control File
 063 Modify File
-067 utente:
-068 permessi:
+067 Utente:
+068 Permessi:
 069 Disabilita SpamAssassin
 070 Disabilita accesso SMTP
 071 Cancella email spam
@@ -74,3 +74,4 @@
 076 Aggiorna
 077 Lascia in bianco per defaults
 078 Permessi per il dominio
+079 Lasciare in bianco per ottenere la lista di tutti i domini

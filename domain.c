@@ -79,21 +79,21 @@ void add_domain()
 
   if (!(acl_features & ACL_DOMAIN_CREATE)) {
     global_warning("Create Domain: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   /* get the domain name */
   domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0) {
     global_warning("Create Domain: Failed: Must supply domain name");
-    t_open("html/add_domain.html", 1);
+    t_page("html/add_domain.html", 1);
   }
 
   /* add the domain with defaults */
   ret = vadddomain(domain, VPOPMAILDIR, VPOPMAILUID, VPOPMAILGID );
   if (ret != VA_SUCCESS) {
     global_warning(verror(ret));
-    t_open(T_MAIN, 1);
+    t_page("html/add_domain.html",1);
   } else {
     global_warning("Created Domain");
   }
@@ -102,14 +102,14 @@ void add_domain()
   passwd = cgi_is_var("ppass");
   if (passwd==NULL || strlen(passwd)==0 ) {
     global_warning("Create Domain: Failed: Must supply password");
-    t_open("html/add_domain.html", 1);
+    t_page("html/add_domain.html", 1);
   }
 
   /* add the postmaster user */
   ret = vadduser("postmaster", domain, passwd, "Postmaster", USE_POP );
   if (ret != VA_SUCCESS) {
     global_warning(verror(ret));
-    t_open(T_MAIN, 1);
+    t_main(1);
   } else {
     global_warning("Domain postmaster added");
   }
@@ -147,7 +147,7 @@ void add_domain()
     snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to get limits from vlimits_default_file for domain %s", domain); 
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
 
   // CLONE DEFAULT LIMITS TO DETECT IF THE USER CHANGED THE DEFAULTS
@@ -227,7 +227,7 @@ void add_domain()
       snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to set limits for domain %s", domain);
       global_warning(WarningBuff);
       global_par("DN", domain);
-      t_open("html/view_domain.html", 1);
+      t_page("html/view_domain.html", 1);
     }
   }
 
@@ -237,8 +237,7 @@ void add_domain()
   add_isoqlog(domain); /* add the domain to isoqlog's domains file */
 #endif
 
-  t_open(T_MAIN, 1);
-
+  t_page("html/view_domain.html", 1);
 }
 
 void del_domain()
@@ -248,13 +247,13 @@ void del_domain()
 
   if (!(acl_features & ACL_DOMAIN_DELETE)) {
     global_warning("Delete Domain: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0 ) {
     global_warning("Delete Domain: Failed: Must supply domain name");
-    t_open("html/del_domain.html", 1);
+    t_page("html/del_domain.html", 1);
   }
 
   ret = vdeldomain(domain);
@@ -265,7 +264,7 @@ void del_domain()
   del_isoqlog(domain); /* remove the domain from the isoqlog domains file */
 #endif
 
-  t_open(T_MAIN, 1);
+  t_main(1);
 }
 
 void view_domain()
@@ -275,19 +274,18 @@ void view_domain()
 
   if (!(acl_features & ACL_DOMAIN_VIEW)) {
     global_warning("View Domain: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0 ) {
     global_warning("View Domain: Failed: Must supply domain name");
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
 
   post_domain_info(domain);
 
-  t_open("html/mod_domain.html", 1);
-
+  t_page("html/mod_domain.html", 1);
 }
 
 
@@ -325,14 +323,14 @@ void mod_domain()
 
   if (!(acl_features & ACL_DOMAIN_MOD)) {
     global_warning("Mod Domain: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   /* get the domain name */
   domain = cgi_is_var("dname");
   if (domain==NULL || strlen(domain)==0) {
     global_warning("Mod Domain: Failed: Missing domain name");
-    t_open("html/mod_domain.html", 1);
+    t_page("html/mod_domain.html", 1);
   }
 
   /* Change the postmaster password (if requested) */
@@ -383,7 +381,7 @@ void mod_domain()
     snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to get limits from vlimits_default_file for domain %s", domain); 
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
 
 #ifdef ENABLE_MYSQL_LIMITS
@@ -392,7 +390,7 @@ void mod_domain()
     snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to vget_limits for domain %s", domain);
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
 #endif
 
@@ -472,7 +470,7 @@ void mod_domain()
     snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to reset limits for domain %s", domain); 
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
 
   // APPLY NEW LIMITS, IF ANY CHANGE DETECTED
@@ -481,13 +479,13 @@ void mod_domain()
       snprintf(WarningBuff, MAX_WARNING_BUFF,"Failed to set limits for domain %s", domain);
       global_warning(WarningBuff);
       global_par("DN", domain);
-      t_open("html/view_domain.html", 1);
+      t_page("html/view_domain.html", 1);
     }
   }
 //-------------- DOMAIN LIMITS FINISHED --------------
 
   post_domain_info(domain);
-  t_open("html/mod_domain.html", 1);
+  t_page("html/mod_domain.html", 1);
 }
 
 void post_domain_info(char *domain)
@@ -508,7 +506,7 @@ void post_domain_info(char *domain)
         "Domain %s does not exist", domain); 
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   }
   global_par("DN", domain);
   global_par("DD", Dir);
@@ -536,7 +534,7 @@ void post_domain_info(char *domain)
         "Failed to vget_limits for domain %s", domain); 
     global_warning(WarningBuff);
     global_par("DN", domain);
-    t_open("html/view_domain.html", 1);
+    t_page("html/view_domain.html", 1);
   } else {
     char buffer[20];
 
@@ -616,7 +614,7 @@ void list_domains()
   tmpbuf = malloc(500);
   if (!(acl_features & ACL_DOMAIN_VIEW)) {
     global_warning("List Domains: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   domain = cgi_is_var("dname");
@@ -633,20 +631,22 @@ void list_domains()
   strncpy( face, get_lang_code("057"), 30);
   strncpy( size, get_lang_code("058"), 30);
 
-  printf("<HTML><HEAD><TITLE>List Domains</TITLE><link href=\"/images/vqadmin/vqadmin.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\" media=\"all\"></HEAD>\n");
-  printf("<body>\n");
-  printf("<FONT face=\"%s\" SIZE=\"%s\" color=\"%s\">\n",
-    face, size, fgcolor);
+  /* initialize html template */
+  t_open(T_HEADER,0);
+  /* ended. go on filling with the contents */
 
-  if ( matchit == 1 ) printf("<B>Domains containing %s</B><BR>\n", domain);
-  else printf("<B>All domains</B><BR>\n");
+  if ( matchit == 1 ) printf("<h2>Domains containing <mark>%s</mark></h2>\n", domain);
+  else printf("<h2>All domains</h2>\n");
 
   snprintf(tmpbuf, 500, "%s/users/assign", QMAILDIR);
   if ( (fs = fopen(tmpbuf, "r")) == NULL ) {
     global_warning("List Domains: could not open assign file");
-    t_open(T_MAIN, 1);
+    /* close the html template */
+    t_open(T_COL,0);
+    t_open(T_FOOTER,1);
   }
 
+  printf("<nav class=\"nav flex-column\">\n");
   while( fgets(tmpbuf,500,fs) != NULL ) {
     if ( (assign_domain = strtok(tmpbuf, TOKENS)) == NULL ) continue;
     if ( (assign_alias_domain = strtok(NULL, TOKENS)) == NULL ) continue;
@@ -659,25 +659,22 @@ void list_domains()
     if ( matchit == 1 && strstr(assign_domain, domain) == NULL ) continue;
 
     if ( strcmp(assign_domain, assign_alias_domain) == 0 ) {
-      printf("<a href=vqadmin.cgi?nav=view_domain&dname=%s>%s</a><BR>\n",
+      printf("<a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a>\n",
         assign_alias_domain, assign_alias_domain);
     } else {
-      printf("<a href=vqadmin.cgi?nav=view_domain&dname=%s>%s</a> Aliased to %s<BR>\n",
+      printf("<a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a> Aliased to %s\n",
         assign_alias_domain, assign_domain, assign_alias_domain);
     }
   }
+  printf("</nav>\n");
   fclose(fs);
 
-  printf("<HR>\n");
-  printf("<a href=\"/cgi-bin/vqadmin/vqadmin.cgi\">Main VqAdmin Menu</a><BR><BR>\n");
-  printf("<a href=http://www.inter7.com/vqadmin/>%s</a> %s<BR>\n",
-    VQA_PACKAGE, VQA_VERSION);
-  printf("<a href=http://www.inter7.com/vpopmail/>%s</a> %s<BR>\n",
-    PACKAGE, VERSION);
+  /* close the html template */
+  t_open(T_COL,0);
+  t_open(T_FOOTER,1);
 
   free(tmpbuf);
   vexit(0);
-
 }
 
 void add_alias_domain()
@@ -688,7 +685,7 @@ void add_alias_domain()
 
   if (!(acl_features & ACL_DOMAIN_CREATE)) {
     global_warning("Add Alias Domain: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   domain = cgi_is_var("dname");
@@ -697,26 +694,25 @@ void add_alias_domain()
   /* get the domain name */
   if (domain==NULL || strlen(domain)==0) {
     global_warning("Add Alias Domain: Failed: Must supply domain name");
-    t_open("html/add_domain.html", 1);
+    t_page("html/add_alias_domain.html", 1);
   }
 
   /* get the domain name */
   if (alias_domain==NULL || strlen(alias_domain)==0) {
     global_warning("Add Alias Domain: Failed: Must supply alias domain name");
-    t_open("html/add_domain.html", 1);
+    t_page("html/add_alias_domain.html", 1);
   }
 
   /* add the domain with defaults */
   ret = vaddaliasdomain(alias_domain, domain);
   if (ret != VA_SUCCESS) {
     global_warning(verror(ret));
-    t_open(T_MAIN, 1);
+    t_page("html/add_alias_domain.html", 1);
   } else {
     global_warning("Alias Domain Added");
   }
 
-  t_open(T_MAIN, 1);
-
+  t_main(1);
 }
 
 

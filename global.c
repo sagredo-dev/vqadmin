@@ -176,8 +176,8 @@ void global_f_warning(void)
     if ((*h == '$') || (!(*h))) {
       if (*h) *h++ = '\0';
       else h = NULL;
-    
-      printf("%s<BR>", t);
+
+      if (h != NULL) printf("<p>%s</p>", t);
 
       if (h == NULL) break;
 

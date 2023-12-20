@@ -1,74 +1,107 @@
-<HTML>
-<HEAD>
-    <TITLE>#-008 %-U (%-G)</TITLE>
-    <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
-</HEAD>
-<body onLoad="javascript:form1.eaddr.focus();">
-<div align="center"><B>%-W</B></div>
-<div align="center">#-008 %-U (%-G)</div>
-<br>
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
-<table border="0" cellspacing="2" cellpadding="2">
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3"><B>#-008</B></td></tr>
-<tr><td colspan="3"><hr size="1" noshade></td></tr>
-<tr>
-    <td class="clsLabelR">#-020</td>
-    <td><INPUT TYPE="TEXT" NAME="eaddr" SIZE="30" VALUE="$-UA"></td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-021</td>
-    <td><INPUT TYPE="PASSWORD" NAME="cpass" SIZE="30" VALUE="$-UO"></td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-039</td>
-    <td><INPUT TYPE="TEXT" NAME="quota" SIZE="30" VALUE="$-UQ"></td>
-</tr>
-<tr>
-    <td class="clsLabelR">#-022</td>
-    <td><INPUT TYPE="TEXT" NAME="fname" SIZE="30" VALUE="$-UN"></td>
-</tr>
-<tr><td class="clsLabelR">#-051</td><td><input type="text" value="" size="30" disabled></td></tr>
-<tr><td class="clsLabelR">#-052</td><td><input type="text" value="" size="30" disabled></td></tr>
-<tr><td class="clsLabelR">#-035</td><td><input type="text" value="" size="50" disabled></td></tr>
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3"><B>#-040</B></td></tr>
-<tr><td colspan="3"><hr size="1" noshade></td></tr>
-<tr>
-    <td colspan="3" align="center">
-        <table border="0" cellspacing="2" cellpadding="0">
-            <tr>
-                <td>
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <tr><td><input TYPE="checkbox" NAME="upop" id="upop" title="#-042" value="1"><label for="upop" title="#-042">#-042</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="uimap" id="uimap" title="#-044" value="1"><label for="uimap" title="#-044">#-044</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="udialup" id="udialup" title="#-049" value="1"><label for="udialup" title="#-049">#-049</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="upassc" id="upassc" title="#-045" value="1"><label for="upassc" title="#-045">#-045</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="uweb" id="uweb" title="#-043" value="1"><label for="uweb" title="#-043">#-043</label></td></tr>
-                    <tr><td><INPUT TYPE="checkbox" NAME="ubounce" id="ubounce" title="#-046" value="1"><label for="ubounce" title="#-046">#-046</label></td> </tr>
-                </table>
-                </td>
-                <td width="20">&nbsp;</td>
-                <td>
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <tr><td><input TYPE="checkbox" NAME="urelay" id="urelay" title="#-047" value="1"><label for="urelay" title="#-047">#-047</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="uspam" id="uspam" title="#-069" value="1"><label for="uspam" title="#-069">#-069</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="usmtp" id="usmtp" title="#-070" value="1"><label for="usmtp" title="#-070">#-070</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="umaildrop" id="udisablemaildrop" title="#-072" value="1"><label for="udisablemaildrop" title="#-072">#-072</label></td></tr>
-                    <tr><td><input TYPE="checkbox" NAME="udeletespam" id="udeletespam" title="#-071" value="1"><label for="udeletespam" title="#-071">#-071</label></td></tr>
-                    <tr><td><INPUT TYPE="checkbox" NAME="uqadmin" id="uqadmin" title="#-048" value="1"><label for="uqadmin" title="#-048">#-048</label></td></tr>
-                </table>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
-<tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3" align="center"><input TYPE="SUBMIT" NAME="Submit" VALUE="#-008"></td></tr>
-</table>
-<input TYPE="HIDDEN" NAME="nav" VALUE="add_user">
-</FORM>
-<hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
-%-V
-</BODY></HTML>
+
+<h2>#-008</h2>
+
+<!-- Email Address -->
+<div class="mb-3">
+   <label for="dname">#-020</label>
+   <input type="text" class="form-control" name="eaddr" id="eaddr" value="$-UA" required>
+</div>
+
+<!-- Password -->
+<div class="mb-3">
+   <label for="dname">#-021</label>
+   <input type="password" class="form-control" name="cpass" id="cpass" value="$-UO" required>
+</div>
+
+<!-- quota -->
+<div class="mb-3">
+   <label for="dname">#-039</label>
+   <input type="text" class="form-control" name="quota" id="quota" value="$-UQ">
+</div>
+
+<!-- full name -->
+<div class="mb-3">
+   <label for="dname">#-022</label>
+   <input type="text" class="form-control" name="fname" id="fname" value="$-UN">
+</div>
+
+
+<h3>#-040</h3>
+
+<!-- Disable POP access -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MP name="upop" id="upop" value="1">
+  <label class="form-check-label" for="upop">#-042</label>
+</div>
+
+<!-- Disable IMAP access -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MI name="uimap" id="uimap" value="1">
+  <label class="form-check-label" for="uimap">#-044</label>
+</div>
+
+<!-- Disable dialup -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MD name="udialup" id="udialup" value="1">
+  <label class="form-check-label" for="udialup">#-049</label>
+</div>
+
+<!-- Disable change password -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MC name="upassc" id="upassc" value="1">
+  <label class="form-check-label" for="upassc">#-045</label>
+</div>
+
+<!-- Disable webmail -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MW name="uweb" id="uweb" value="1">
+  <label class="form-check-label" for="uweb">#-043</label>
+</div>
+
+<!-- Bounce email -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MB name="ubounce" id="ubounce" value="1">
+  <label class="form-check-label" for="ubounce">#-046</label>
+</div>
+
+<!-- Disable email relay -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MS name="urelay" id="urelay" value="1">
+  <label class="form-check-label" for="urelay">#-047</label>
+</div>
+
+<!-- Disable spamassassin -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MZ name="uspam" id="uspam" value="1">
+  <label class="form-check-label" for="uspam">#-069</label>
+</div>
+
+<!-- Disable SMTP -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MH name="usmtp" id="usmtp" value="1">
+  <label class="form-check-label" for="usmtp">#-070</label>
+</div>
+
+<!-- Disable maildrop -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MN name="umaildrop" id="umaildrop" value="1">
+  <label class="form-check-label" for="umaildrop">#-072</label>
+</div>
+
+<!-- Delete spam mails -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-ML name="udeletespam" id="udeletespam" value="1">
+  <label class="form-check-label" for="udeletespam">#-071</label>
+</div>
+
+<!-- Domain Administrator -->
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" $-MK name="uqadmin" id="uqadmin" value="1">
+  <label class="form-check-label" for="uqadmin">#-048</label>
+</div>
+
+<div class="my-5"><input class="btn btn-primary btn-sm" type="submit" value="#-008"></div>
+
+<input type="hidden" name="nav" id="nav" value="add_user">
+</form>

@@ -35,57 +35,101 @@
 
 char *ControlFiles[] = {
 "badmailfrom",
+"badrcptto",
 "bouncefrom",
 "bouncehost",
+"brtlimit",
+"concurrencyincoming",
 "concurrencylocal",
 "concurrencyremote",
+"defaultdelivery",
 "defaultdomain",
 "defaulthost",
 "databytes",
+"dnsbllist",
 "doublebouncehost",
 "doublebounceto",
 "envnoathost",
+"greylisting",
 "helohost",
 "idhost",
 "localiphost",
+"locals",
+"maxrcpt",
 "me",
+"moreipme",
+"morercpthosts",
 "percenthack",
 "plusdomain",
 "qmapservers",
 "queuelifetime",
+"rcpthosts",
+"simcontrol",
+"simsizelimit",
 "smtpgreeting",
 "smtproutes",
+"spfbehavior",
+"spfexp",
+"spfguess",
+"spfrules",
+"srs_domain",
+"srs_maxage",
+"srs_secrets",
+"taps",
 "timeoutconnect",
 "timeoutremote",
 "timeoutsmtpd",
+"virtualdomains",
 NULL
 };
 
 char *ControlDefaults[] = {
 "none",
+"none",
 "MAILER-DAEMON",
 "me",
+"0",
+"200",
 "10",
 "20",
+"| ~vpopmail/bin/vdelivermail '' delete",
 "me",
 "me",
 "0",
+"none",
 "me",
 "postmaster",
 "me",
+"none",
 "me",
 "me",
 "me",
 "me",
+"100",
+"me",
+"none",
+"none",
 "none",
 "me",
 "none",
 "60480 (7 days)",
+"none",
+"none",
+"256000",
 "me",
+"none",
+"0",
+"default",
+"none",
+"none",
+"none",
+"7",
+"asrw_ntu/5$D",
 "none",
 "60",
 "1200",
 "1200",
+"none",
 NULL
 };
 
@@ -115,20 +159,20 @@ void display_file()
   global_par("NM", fname);
   global_par("RW", rows);
   global_par("CL", cols);
-		
+
   snprintf(path, 254, "%s/control/%s", QMAILDIR, fname);
   if( lstat(path, &finfo) != 0) {
     global_par("CF", "");
-    t_open(T_CTRL_FILE, 1);
+    t_page(T_CTRL_FILE, 1);
   }
-	
+
   if(S_ISLNK(finfo.st_mode) != 0) global_error(": not a file", 1, 0);
-	
+
   if((f=fopen(path, "r")) == NULL) {
     snprintf(path, 254, "could not open %s", fname);
     global_error(path, 1, 0);
   }
-				
+
   fcontent=(char*)malloc(finfo.st_size+1);
   memset(fcontent, 0, finfo.st_size+1);
   fread(fcontent,sizeof(char),finfo.st_size,f);
@@ -136,8 +180,7 @@ void display_file()
 
   global_par("CF", fcontent);
   free(fcontent);
-  t_open(T_CTRL_FILE, 1);
-
+  t_page(T_CTRL_FILE, 1);
 }
 
 
@@ -192,7 +235,7 @@ void modify_file()
   if ( tarea_data[i-1]!='\n') fputc('\n', filer);
   fclose(filer);
 
-  snprintf(path, 254, "%s updated successfully", filenm);	
+  snprintf(path, 254, "%s updated successfully", filenm);
   global_warning(path);
 
   if((rws=cgi_is_var("rws")) == NULL) rws="20";
@@ -204,7 +247,7 @@ void modify_file()
   global_par("CL", cls);
 
   show_controls();
-}						
+}
 
 void show_controls()
 {
@@ -213,30 +256,32 @@ void show_controls()
  FILE *fs;
 
   tmpbuf = calloc(sizeof(char), 1000 );
+  t_open(T_HEADER,0);
   t_open("html/qmail_controls_top.html",0);
 
   for(i=0;ControlFiles[i]!=0;++i) {
-    snprintf(tmpbuf, 1000, 
-"<a href=/cgi-bin/vqadmin/vqadmin.cgi?nav=display_file&fname=%s>%s</a>\n",
+    snprintf(tmpbuf, 1000, "<a href=/cgi-bin/vqadmin/vqadmin.cgi?nav=display_file&fname=%s>%s</a>\n",
       ControlFiles[i], ControlFiles[i]);
-    global_par("a0", tmpbuf); 
+    global_par("a0", tmpbuf);
 
     /* value */
     snprintf(tmpbuf,1000,"%s/control/%s", QMAILDIR, ControlFiles[i]);
     if ( (fs=fopen(tmpbuf, "r")) == NULL ) {
-      global_par("a1", "default"); 
+      global_par("a1", "default");
     } else {
       memset(tmpbuf,0,1000);
       fread(tmpbuf,sizeof(char), 1000, fs );
       fclose(fs);
-      global_par("a1", tmpbuf); 
+      global_par("a1", tmpbuf);
     }
 
     /* default */
-    global_par("a2", ControlDefaults[i]); 
+    global_par("a2", ControlDefaults[i]);
     t_open("html/qmail_controls_middle.html",0);
   }
-  t_open("html/qmail_controls_bottom.html",1);
+  t_open("html/qmail_controls_bottom.html",0);
+//  t_open(T_COL,0);
+  t_open(T_FOOTER,1);
 }
 
 void delete_file()

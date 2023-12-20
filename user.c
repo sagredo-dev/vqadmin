@@ -51,14 +51,14 @@ void del_user()
 
   if (!(acl_features & ACL_USER_DELETE)) {
     global_warning("Delete Email Account: Permission denied");
-    t_open(T_MAIN, 1);
+    t_page(T_MAIN, 1);
   }
 
   eaddr = cgi_is_var("eaddr");
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Delete Email Account: Failed: no email address given");
-    t_open("html/del_user.html", 1);
+    t_page("html/del_user.html", 1);
   }
 
   parse_email( eaddr, user, domain, 156);
@@ -68,12 +68,11 @@ void del_user()
      global_warning(verror(ret));
   } else {
     snprintf(WarningBuff, MAX_WARNING_BUFF, 
-        "Email Acount %s deleted", eaddr);
+        "Email Account %s deleted", eaddr);
     global_warning(WarningBuff);
   }
 
-  t_open(T_MAIN, 1);
-
+  t_main(1);
 }
 
 void view_user()
@@ -85,14 +84,14 @@ void view_user()
 
   if (!(acl_features & ACL_USER_VIEW)) {
     global_warning("View Email Account: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   eaddr = cgi_is_var("eaddr");
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Add Email Account: Failed: no email address given");
-    t_open("html/view_user.html", 1);
+    t_page("html/view_user.html", 1);
   }
 
   parse_email( eaddr, user, domain, 156);
@@ -100,12 +99,12 @@ void view_user()
   vpw = vauth_getpw(user,domain);
   if (vpw == NULL) {
     global_warning("View User: account does not exist");
-    t_open("html/view_user.html", 1);
+    t_page("html/view_user.html", 1);
   }
 
   post_email_info( eaddr, vpw, domain);
 
-  t_open("html/mod_user.html", 1);
+  t_page("html/mod_user.html", 1);
 
 }
 
@@ -140,7 +139,7 @@ void mod_user()
 
   if (!(acl_features & ACL_USER_MOD)){
     global_warning("Modify Email Account: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   eaddr = cgi_is_var("eaddr");
@@ -164,7 +163,7 @@ void mod_user()
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Modify Email Account: Failed: no email address given");
-    t_open("html/mod_user.html", 1);
+    t_page("html/mod_user.html", 1);
   }
  
   parse_email( eaddr, user, domain, 156);
@@ -172,7 +171,7 @@ void mod_user()
   vpw = vauth_getpw(user, domain);
   if (vpw == NULL) {
     global_warning("Modify User: account does not exist");
-    t_open("html/mod_user.html", 1);
+    t_page("html/mod_user.html", 1);
   }
 
   if ( passwd!=NULL && strlen(passwd)>=0 ){
@@ -201,7 +200,7 @@ void mod_user()
     } else { // QUOTA IS REQUESTED, CONVERT bytes->Mbytes
       if (quota_to_bytes(qconvert, uquota)) {
         global_warning("Invalid quota string.");
-        t_open("html/mod_user.html", 1);
+        t_page("html/mod_user.html", 1);
       } else {
         formattedquota = format_maildirquota(qconvert);
       }
@@ -235,8 +234,7 @@ void mod_user()
   }
   post_email_info( eaddr, vpw, domain);
 
-  t_open("html/mod_user.html", 1);
-
+  t_page("html/mod_user.html", 1);
 }
 
 void post_email_info( char *eaddr, struct vqpasswd *vpw, char *domain)
@@ -296,9 +294,7 @@ void post_email_info( char *eaddr, struct vqpasswd *vpw, char *domain)
   global_par("UZ", "auth logging not enabled");
 #endif
 
-
-  t_open("html/mod_user.html", 1);
-
+  t_page("html/mod_user.html", 1);
 }
 
 void show_users()
@@ -315,86 +311,61 @@ void show_users()
  struct dirent *mydirent;
  int i, j;
  int found;
- char bgcolor[30];
- char fgcolor[30];
- char face[30];
- char size[30];
 #ifdef ENABLE_AUTH_LOGGING
  time_t mytime;
 #endif
 
-
   if (!(acl_features & ACL_USER_VIEW)) {
      global_warning("View Email Account: Permission denied");
-     t_open(T_MAIN, 1);
+     t_main(1);
   }
 
   domain = cgi_is_var("dname");
   if ( domain==NULL ) {
     global_warning("Show Users: Failed: no domain name given");
-    t_open(T_MAIN, 1);
+    t_page("html/show_users.html",1);
   }
 
   if ( vget_assign(domain,dir,156,NULL,NULL) == NULL ) {
     global_warning("Show Users: Failed: domain does not exist");
-    t_open(T_MAIN, 1);
+    t_page("html/show_users.html",1);
   }
 
-  memset(bgcolor, 0, 30);
-  memset(fgcolor, 0, 30);
-  memset(face, 0, 30);
-  memset(size, 0, 30);
-  strncpy( bgcolor, get_lang_code("055"), 29);
-  strncpy( fgcolor, get_lang_code("056"), 29);
-  strncpy( face, get_lang_code("057"), 29);
-  strncpy( size, get_lang_code("058"), 29);
+  /* initialize html template */
+  t_open(T_HEADER,0);
+  /* ended. go on filling with the contents */
 
-  printf("<HTML><HEAD><TITLE>Show Users</TITLE><link href=\"/images/vqadmin/vqadmin.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\" media=\"all\"></HEAD>\n");
-  printf("<body>\n");
-  printf("<FONT face=\"%s\" SIZE=\"%s\" color=\"%s\">\n",
-    face, size, fgcolor);
+  printf("<h2>Users for <mark>%s</mark></h2>\n", domain);
 
-  printf("<B>Users for %s</B>\n", domain);
-  printf("<table cellspacing=5>\n"); 
   vpw = vauth_getall(domain,1,0);
   if ( vpw == NULL ) {
-    printf("<tr><td><FONT face=%s color=\"%s\">Domain %s does not exist</FONT></td></tr></table>\n", face, fgcolor,
-          domain);
+    printf("<div class=\"alert alert-danger\" role=\"alert\">Domain %s does not exist</div>\n", domain);
   } else {
-    printf("<tr><th align=left><FONT face=%s color=\"%s\">User</FONT></th>\n",
-          face, fgcolor);
-/*
+    printf("<table class=\"table table-striped table-hover\">\n");
+    printf("<thead><tr>\n");
+    printf("<th>User</th>\n");
 #ifdef CLEAR_PASS
-    printf("<th><FONT face=%s color=\"%s\">Password</FONT></th>\n",
-          face, fgcolor);
+    printf("<th>Password</th>\n");
 #endif
-*/
-    printf("<th><FONT face=%s color=\"%s\">Forward</FONT></th>\n",
-          face, fgcolor);
-    printf("<th><FONT face=%s color=\"%s\">Vacation</FONT></th>\n",
-          face, fgcolor);
-    printf("<th><FONT face=%s color=\"%s\">Quota</FONT></th>\n",
-          face, fgcolor);
-    printf("<th><FONT face=%s color=\"%s\">Domain Administrator</FONT></th>\n",
-          face, fgcolor);
-    printf("<th><FONT face=%s color=\"%s\">Last Logon</FONT></th></tr><BR>\n",
-  face, fgcolor);
+    printf("<th>Forward</th>\n");
+    printf("<th>Vacation</th>\n");
+    printf("<th>Quota</th>\n");
+    printf("<th>Domain Administrator</th>\n");
+    printf("<th>Last Logon</th></tr>\n");
+    printf("</tr></thead><tbody>\n");
   }
+
   count = 0;
   while(vpw != NULL && count < 128000 ){
       ++count;
 
-      printf("<tr><td><FONT face=%s color=\"%s\">", face, fgcolor);
-      printf("<a href=vqadmin.cgi?nav=view_user&eaddr=%s@%s>",
-        vpw->pw_name, domain);
-      printf("%s</a></FONT></td>\n", vpw->pw_name);
-/*
+      printf("<tr><td>");
+      printf("<a href=vqadmin.cgi?nav=view_user&eaddr=%s@%s>", vpw->pw_name, domain);
+      printf("%s</a></td>\n", vpw->pw_name);
 #ifdef CLEAR_PASS
-      printf("<td align=middle><FONT face=%s color=\"%s\">%s</FONT></td>\n", 
-          face, fgcolor, vpw->pw_clear_passwd);
+      printf("<td>%s</td>\n", vpw->pw_clear_passwd);
 #endif
-*/
-      printf("<td align=middle><FONT face=%s color=\"%s\">", face, fgcolor );
+      printf("<td>");
       snprintf(workdir, 156, "%s/.qmail", vpw->pw_dir);
       fs=fopen(workdir,"r");
       if ( fs == NULL ) {
@@ -411,9 +382,9 @@ void show_users()
         printf("No");
          }
       }
-      printf("</FONT></td>\n");
+      printf("</td>\n");
 
-      printf("<td align=middle><FONT face=%s color=\"%s\">", face, fgcolor); 
+      printf("<td>");
       if ( fs == NULL ) {
           printf("No");
       } else {
@@ -431,35 +402,35 @@ void show_users()
              printf("No");
          }
       }
-      printf("</FONT></td>\n");
+      printf("</td>\n");
       if ( fs!=NULL) fclose(fs);
 
 
-      printf("<td align=middle><FONT face=%s color=\"%s\">%s</FONT></td>", 
-    face, fgcolor, vpw->pw_shell);
+      printf("<td>%s</td>", vpw->pw_shell);
 
       if (vpw->pw_gid & QA_ADMIN) {
-        printf("<td align=middle><FONT face=%s color=%s><B>Yes</B></FONT></td>\n", face, fgcolor);
-      }    else  printf("<td align=middle><FONT face=%s color=%s>No</FONT></td>\n", face, fgcolor);    
+        printf("<td>Yes</td>\n");
+      }    else  printf("<td>No</td>\n");
 
 #ifdef ENABLE_AUTH_LOGGING
   mytime = vget_lastauth(vpw, domain);
-  if ( mytime == 0 ) printf("<td align=middle><FONT face=%s color=%s><B>NEVER LOGGED IN</B></font></td></tr>\n", face, fgcolor);
-  else printf("<td align=middle><FONT face=%s color=%s>%s</font></td></tr>\n", face, fgcolor, asctime(localtime(&mytime)));
+  if ( mytime == 0 ) printf("<td>NEVER LOGGED IN</td></tr>\n");
+  else printf("<td>%s</td></tr>\n", asctime(localtime(&mytime)));
 #else
-  printf("<td align=middle><FONT face=%s color=%s>* auth logging not enabled *</font></td></tr>\n", face, fgcolor);
+  printf("<td>* auth logging not enabled *</td></tr>\n");
 #endif
 
       vpw = vauth_getall(domain,0,0);
   }
-  printf("</table>\n");
+  printf("</tbody></table>\n");
 
-  printf("<HR>\n");
-  printf("<B>Alias/Forwards for %s</B>\n", domain);
-  printf("<table cellspacing=5>\n"); 
-  printf("<tr><th align=left><FONT face=%s color=\"%s\"><B>Name</B></FONT>\n",
-   face, fgcolor);
-  printf("</th><th><FONT face=%s color=\"%s\"><B>Alias/Forward</B></FONT></th><BR></tr>\n", face, fgcolor);
+  printf("<h2 class=\"mt-5\">Alias/Forwards for <mark>%s</mark></h2>\n", domain);
+  printf("<table class=\"table table-striped table-hover\">\n");
+  printf("<thead><tr>\n");
+  printf("<th>name</th>\n");
+  printf("<th>Alias/Forward</th>\n");
+  printf("</tr></thead><tbody>\n");
+
   chdir(dir);
   mydir = opendir(".");
   count = 0;
@@ -484,30 +455,26 @@ void show_users()
           workdir[j] = 0;
           ++count;
 
-          printf("<tr><td align=left><FONT face=%s color=\"%s\">%s@%s</td>", 
-          face, fgcolor, workdir, domain);
+          printf("<tr><td>%s@%s</td>", workdir, domain);
 
-          printf("<td align=left>\n");
+          printf("<td>\n");
           fs=fopen(mydirent->d_name,"r");
       while ( fgets( tmpbuf, 156, fs ) != NULL ) {
                 if ( tmpbuf[0] == '#' || isspace(tmpbuf[0]) ) {
-            printf("<FONT face=%s color=\"%s\">&nbsp</FONT><BR>\n", 
-            face, fgcolor);
+            printf("&nbsp\n");
                 } else if ( strstr(tmpbuf, "@") != NULL ) {
                     if ( tmpbuf[0] == '&' ) i = 1;
                     else i = 0;
 
-            printf("<FONT face=%s color=\"%s\">forward: %s</FONT><BR>\n", 
-            face, fgcolor, &tmpbuf[i]);
+            printf("forward: %s<br>\n", &tmpbuf[i]);
                 } else {
             tmpstr = &tmpbuf[strlen(tmpbuf)-2];
-            *tmpstr = 0; 
+            *tmpstr = 0;
                     while (*tmpstr!='/') --tmpstr;
             *tmpstr = 0;
                     while (*tmpstr!='/') --tmpstr;
                     ++tmpstr;
-            printf("<FONT face=%s color=\"%s\">alias: %s</FONT><BR>\n", 
-            face, fgcolor, tmpstr);
+            printf("alias: %s<br>\n", tmpstr);
                 }
       }
           printf("</td></tr>\n");
@@ -516,13 +483,11 @@ void show_users()
       }
   }
   closedir(mydir);
-  printf("</table>\n");
-  printf("<HR>\n");
+  printf("</tbody></table>\n");
 
+  printf("<h2 class=\"mt-5\">Mailing lists for <mark>%s</mark></h2>\n", domain);
+  printf("<table class=\"table table-striped table-hover\"><tbody>\n");
 
-
-  printf("<B>Mailing lists for %s</B><BR>\n", domain);
-  printf("<table>\n"); 
   chdir(dir);
   mydir = opendir(".");
   count = 0;
@@ -537,21 +502,20 @@ void show_users()
               workdir[j] = 0;
               ++count;
 
-              printf("<tr><td><FONT face=%s color=\"%s\">%s@%s</td></tr>", 
-        face, fgcolor, workdir, domain);
-          } 
+              printf("<tr><td>%s@%s</td></tr>", workdir, domain);
+          }
           fclose(fs);
       }
   }
   closedir(mydir);
-  printf("</table>\n");
-  printf("<HR>\n");
+  printf("</tbody></table>\n");
 
-  printf("<a href=\"/cgi-bin/vqadmin/vqadmin.cgi\">Main VqAdmin Menu</a><BR><BR>\n");
-  printf("<a href=http://www.inter7.com/vqadmin/>%s</a> %s<BR>\n", 
-    VQA_PACKAGE, VQA_VERSION);
-  printf("<a href=http://www.inter7.com/vpopmail/>%s</a> %s<BR>\n", 
-    PACKAGE, VERSION);
+  /* close the html template */
+  snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_COL);
+  t_open(tmpbuf,0);
+  memset(tmpbuf,0,sizeof(tmpbuf));
+  snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_FOOTER);
+  t_open(tmpbuf,1);
 
   vexit(0);
 }
@@ -586,7 +550,7 @@ void add_user()
 
   if (!(acl_features & ACL_USER_CREATE)) {
     global_warning("Add Email Account: Permission denied");
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 
   eaddr = cgi_is_var("eaddr");
@@ -611,18 +575,18 @@ void add_user()
 
   if ( eaddr==NULL || strlen(eaddr)==0 ) {
     global_warning("Add Email Account: Failed: no email address given");
-    t_open("html/add_user.html", 1);
+    t_page("html/add_user.html", 1);
   }
 
   if ( parse_email( eaddr, user, domain, 156) == -1 ) {
     global_warning("Add Email Account: Failled: invalid characters in email address ");
-    t_open("html/add_user.html", 1);
+    t_page("html/add_user.html", 1);
   }
 
   vpw = vauth_getpw(user,domain);
   if (vpw != NULL) {
     global_warning("Add User: Failed: account already exist");
-    t_open("html/add_user.html", 1);
+    t_page("html/add_user.html", 1);
   }
 
   if ( gecos==NULL || strlen(gecos)==0 ){
@@ -631,12 +595,11 @@ void add_user()
 
   ret = vadduser(user, domain, passwd, gecos, USE_POP );
   if (ret != VA_SUCCESS) {
-    snprintf(WarningBuff, MAX_WARNING_BUFF, 
-        "Create Account %s error %s", eaddr, verror(ret));
+    snprintf(WarningBuff, MAX_WARNING_BUFF, "Create Account %s error: %s", eaddr, verror(ret));
     global_warning(WarningBuff);
+    t_page("html/add_user.html", 1);
   } else {
-    snprintf(WarningBuff, MAX_WARNING_BUFF, 
-        "Email Account %s created", eaddr);
+    snprintf(WarningBuff, MAX_WARNING_BUFF, "Email Account %s created", eaddr);
     global_warning(WarningBuff);
   }
 
@@ -650,7 +613,7 @@ void add_user()
     } else { // QUOTA IS REQUESTED, CONVERT bytes->Mbytes
       if (quota_to_bytes(qconvert, uquota)) {
         global_warning("Invalid quota string.");
-        t_open("html/mod_user.html", 1);
+        t_page("html/mod_user.html", 1);
       } else {
         formattedquota = format_maildirquota(qconvert);
       }
@@ -685,6 +648,5 @@ void add_user()
 
   post_email_info(eaddr, vpw, domain);
 
-  t_open(T_MAIN, 1);
-
+  t_main(1);
 }

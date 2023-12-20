@@ -1,27 +1,15 @@
-<HTML><HEAD><TITLE>#-007 %-U (%-G)</TITLE>
-      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
-</HEAD>
-<body onLoad="javascript:form1.dname.focus();">
-
-<div align="center"><B>%-W</B></div>
-<div align="center">#-007 %-U (%-G)</div>
-<B>#-007</B>
-<hr size="1" noshade>
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
-<table border="0" cellspacing="2" cellpadding="2">
-<tr>
-  <td>#-010</FONT></td>
-  <td><input type="text" name="dname" value="$-DN" size="30" title="#-010"></td>
-</tr>
-<tr>
-  <td></td>
-  <td><input type="submit" name="Submit" value="#-007" title="#-007">
-  <INPUT TYPE="HIDDEN" NAME="nav" VALUE="show_users"></td>
-</tr>
-</table>
 
-</FORM>
-<hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
-%-V
-</BODY></HTML>
+<!-- show users -->
+<h2>#-007</h2>
+
+<!-- Domain Name -->
+<div class="mb-3">
+   <label for="dname">#-010</label>
+   <input type="text" class="form-control" name="dname" id="dname" value="$-DN" required>
+</div>
+
+<div class="my-5"><input class="btn btn-primary btn-sm" type="submit" value="#-007"></div>
+
+<input type="hidden" name="nav" id="nav" value="show_users">
+</form>

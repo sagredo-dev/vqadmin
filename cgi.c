@@ -53,9 +53,7 @@ struct env_t *envlist = NULL;
 */
 void cgi_nav(void)
 {
-  char *r = NULL, i = 0;
-
-  i = 0;
+  char *r = NULL; /*, i = 0;*/
 
   r = cgi_is_var("nav");
   if (r) {
@@ -89,10 +87,10 @@ void cgi_nav(void)
       modify_file();
     } else if (!(strcasecmp(r, "delete_file"))) {
       delete_file();
-    }		  
+    }
   }
-  
-  t_open(T_MAIN, 1);
+
+  t_main();
 }
 
 /*

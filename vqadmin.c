@@ -26,15 +26,16 @@
 
 int main(int argc, char *argv[])
 {
- char *pi;
+  char *pi;
 
   printf("Content-type: text/html\n\n");
 
-  global_init(); 
+  global_init();
   set_language();
   cgi_init();
 
   pi = getenv("PATH_INFO");
+
   if ( pi && strncmp(pi,"/show/", 6) == 0 ) send_html(pi);
   else cgi_nav();
 
@@ -47,15 +48,30 @@ int main(int argc, char *argv[])
  */
 void send_html(char *command)
 {
- char tmpbuf[255];
+  char tmpbuf[255];
 
   /* only open files in the local directory */
   if ( strstr(&command[6], "..")!=NULL || strstr(&command[6], "/")!=NULL ) {
     global_error("invalid file",1,0); 
   }
 
+  /* header */
+  memset(tmpbuf, 0, 255);
+  snprintf(tmpbuf, 254, T_HEADER);
+  t_open(tmpbuf, 0);
+
+  /* requested file */
   memset(tmpbuf, 0, 255);
   snprintf(tmpbuf, 254, "html/%s", &command[6]);
+  t_open(tmpbuf, 0);
 
+  /* colonna dx */
+  memset(tmpbuf, 0, 255);
+  snprintf(tmpbuf, 254, T_COL);
+  t_open(tmpbuf, 0);
+
+  /* footer and close*/
+  memset(tmpbuf, 0, 255);
+  snprintf(tmpbuf, 254, T_FOOTER);
   t_open(tmpbuf, 1);
 }

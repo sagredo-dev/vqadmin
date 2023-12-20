@@ -1,4 +1,4 @@
-2.4
+2.4.0
 10/12/2023 Roberto Puzzanghera https://notes.sagredo.eu
 
 * edit lang.c to lowercase the language file to solve compatibility issues with google-chrome and to avoid
@@ -10,8 +10,17 @@
 * edited html/mod_user.html to prevent the erase of the password when modifying a user in case clear passwords
   are disabled. Now the password field is not shown anymore.
 * edit user.c and domain.c to make the dynamic web page retrieve the vqadmin.css style sheet
-* edit Makefile.in to solve a bug that caused me a missing vqadmin.css file
-
+* modified Makefile.am to remove the @wwwroot@ variable, as it's not used
+* new responsive skin
+  ** modified all files under the html/ dir and the html code inside many .c files
+  ** added functions to template.c to add a common header and footer to all html files
+  ** dropped the images/ dir
+  ** created the assets/ dir and copied there the stylesheet style.css and the qmail icons
+  ** udisablemaildrop field is now umaildrop (didn't work)
+* added the following control files: badrcptto, brtlimit, concurrencyincoming, defaultdelivery, dnsbllist,
+  greylisting, locals, moreipme, morercpthosts, rcpthosts, simcontrol, simsizelimit, softlimit, spfbehavior,
+  spfexp, spfguess, spfrules, srs_domain, srs_maxage, srs_secrets, taps, virtualdomains.
+* language files moved to lang/ dir. Modifiend lang.c accordingly
 * added a big patch by Ali Erturk TURKER:
   ** gets vqadmin to save vpopmail limits to database
   ** fixed a core-dump due to SIGILL caused by memcpy

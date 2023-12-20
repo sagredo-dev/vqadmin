@@ -33,15 +33,15 @@
 extern char vqa_error[],
             vqa_user[],
             vqa_group[],
-            vqa_warning[];            
+            vqa_warning[];
 
 void t_code(char code)
 {
   switch(code) {
    case 'V':
-    printf("<a href=http://www.inter7.com/vqadmin/>%s</a> %s<BR>\n", 
+    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html\" target=\"_blank\">%s</a> %s     ~     ",
       VQA_PACKAGE, VQA_VERSION);
-    printf("<a href=http://www.inter7.com/vpopmail/>%s</a> %s<BR>\n", 
+    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/installing-and-configuring-vpopmail-81.html\" target=\"_blank\">%s</a> %s\n",
       PACKAGE, VERSION);
     break;
    case 'E':
@@ -81,9 +81,10 @@ void t_open(char *filename, int exit_when_done)
  struct stat mystat;
 
   if ( lstat( filename, &mystat ) == -1 || S_ISLNK(mystat.st_mode) ) {
+    printf("Unable to retrieve file informations: %s\n",filename);
     vclose();
     exit(-1);
-  } 
+  }
 
   stream = fopen(filename, "r");
   if (stream == NULL) {
@@ -122,4 +123,36 @@ void t_open(char *filename, int exit_when_done)
     vclose();
     exit(0);
   }
+}
+
+/* internal page template */
+void t_page(char *filename, int exit_when_done) {
+  char tmpbuf[256];
+
+  snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_HEADER);
+  t_open(tmpbuf,0);
+  memset(tmpbuf,0,sizeof(tmpbuf));
+
+  snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, filename);
+  t_open(tmpbuf,0);
+  memset(tmpbuf,0,sizeof(tmpbuf));
+
+  if ( strcmp(filename, T_MAIN) != 0 ) {
+    snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_COL);
+    t_open(tmpbuf,0);
+    memset(tmpbuf,0,sizeof(tmpbuf));
+  }
+
+  snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_FOOTER);
+  if ( exit_when_done == 1 ) {
+    t_open(tmpbuf,1);
+    vclose();
+    exit(0);
+  }
+  else t_open(tmpbuf,0);
+}
+
+/* home page template (no side menu) */
+void t_main(int exit_when_done) {
+  t_page(T_MAIN, exit_when_done);
 }

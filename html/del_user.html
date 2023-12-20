@@ -1,27 +1,15 @@
-<HTML><HEAD><TITLE>#-009 %-U (%-G)</TITLE>
-      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
-</HEAD>
-<body onLoad="javascript:form1.eaddr.focus();">
-
-<div align="center"><B>%-W</B></div>
-<div align="center">#-009 %-U (%-G)</div>
-<B>#-009</B>
-<hr size="1" noshade>
 <form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
-<table border="0" cellspacing="2" cellpadding="2">
-<tr>
-    <td class="clsLabelR">#-020</td>
-    <td><input type="text" name="eaddr" value="$-UA" size="30" title="#-020"></td>
-<tr>
-  <td></td>
-  <td><input type="submit" name="Submit" value="#-009" title="#-009">
-  	<INPUT TYPE="HIDDEN" NAME="nav" VALUE="del_user">
-  </td>
-</tr>
-</table>
-  
-</FORM>
-<hr size="1" noshade>
-<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
-%-V
-</BODY></HTML>
+
+<!-- del user -->
+<h2>#-009</h2>
+
+<!-- Email Address -->
+<div class="mb-3">
+   <label for="eaddr">#-010</label>
+   <input type="text" class="form-control" name="eaddr" id="eaddr" required>
+</div>
+
+<div class="my-5"><input class="btn btn-primary btn-sm" type="submit" value="#-009"></div>
+
+<input type="hidden" name="nav" id="nav" value="del_user">
+</form>

@@ -73,6 +73,10 @@ ACL_DOMAIN_MOD )
 #define T_EDIT "html/edit.html"
 #define T_QONTROL "html/control.html"
 #define T_CTRL_FILE "html/ctrl_file.html"
+#define T_HEADER "html/header.html"
+#define T_FOOTER "html/footer.html"
+#define T_COL "html/col.html"
+
 
 /* main.c */
 void send_html(char *command);
@@ -93,6 +97,8 @@ void t_code(char);
 void g_code(char *);
 void t_printf(char *);
 void t_open(char *template, int exit_when_done);
+void t_page(char *template, int exit_when_done);
+void t_main();
 
 /* global.c */
 void global_init(void);
