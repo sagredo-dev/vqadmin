@@ -12,11 +12,11 @@
 * edit user.c and domain.c to make the dynamic web page retrieve the vqadmin.css style sheet
 * modified Makefile.am to remove the @wwwroot@ variable, as it's not used
 * new responsive skin
-  ** modified all files under the html/ dir and the html code inside many .c files
-  ** added functions to template.c to add a common header and footer to all html files
-  ** dropped the images/ dir
-  ** created the assets/ dir and copied there the stylesheet style.css and the qmail icons
-  ** udisablemaildrop field is now umaildrop (didn't work)
+  - modified all files under the html/ dir and the html code inside many .c files
+  - added functions to template.c to add a common header and footer to all html files
+  - dropped the images/ dir
+  - created the assets/ dir and copied there the stylesheet style.css and the qmail icons
+  - udisablemaildrop field is now umaildrop (didn't work)
 * added the following control files: badrcptto, brtlimit, concurrencyincoming, defaultdelivery, dnsbllist,
   greylisting, locals, moreipme, morercpthosts, rcpthosts, simcontrol, simsizelimit, softlimit, spfbehavior,
   spfexp, spfguess, spfrules, srs_domain, srs_maxage, srs_secrets, taps, virtualdomains.
@@ -29,9 +29,9 @@
 * fixed compilation warnings -Wformat-overflow and -Wformat-truncation in domain.c
 * corrected the README file for obsolete informations and renemed to README.md
 * added a big patch by Ali Erturk TURKER:
-  ** gets vqadmin to save vpopmail limits to database
-  ** fixed a core-dump due to SIGILL caused by memcpy
-  ** adds missing limits and permissions, changed the UI to be more user-friendly
+  - gets vqadmin to save vpopmail limits to database
+  - fixed a core-dump due to SIGILL caused by memcpy
+  - adds missing limits and permissions, changed the UI to be more user-friendly
   more info here https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825
   https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch
 
