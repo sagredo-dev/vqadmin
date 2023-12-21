@@ -52,12 +52,31 @@ to have ExecCGI permissions, allows the directory to override
 authority, and sets the directory to deny everyone by default.
 vQadmin will not function without this setup.
 ```
-<Directory "/usr/local/apache/cgi-bin/vqadmin">
-    deny from all
+Define QMAILROOT /var/www/qmail/
+<VirtualHost *:80>
+  ServerName vqadminyourdomain.tld
+  DocumentRoot ${QMAILROOT}
+  ScriptAlias /cgi-bin/ ${QMAILROOT}/cgi-bin/
+  AddHandler cgi-script .cgi
+  <Directory ${QMAILROOT}>
+    AllowOverride None
+    Require all granted
+  </Directory>
+  <Directory ${QMAILROOT}/cgi-bin>
+    AllowOverride None
+    Options ExecCGI
+    Require all granted
+  </Directory>
+  <Directory ${QMAILROOT}/cgi-bin/vqadmin>
+    Require all denied
     Options ExecCGI
     AllowOverride AuthConfig
-    Order deny,allow
-</Directory>
+  </Directory>
+  Alias /assets/ ${QMAILROOT}/cgi-bin/vqadmin/assets/
+  <Directory ${QMAILROOT}/cgi-bin/vqadmin/assets>
+    Require all granted
+  </Directory>
+</VirtualHost>
 ```
 After you've created the directory, you will need to create an
 htaccess for the directory so Apache knows how to authenticate
@@ -70,10 +89,9 @@ so you may call it whatever you'd like.  You will want to chown
 the file to the webserver user, and chmod it 600.
 ```
 AuthType Basic
-AuthUserFile /usr/local/apache/conf/vqadmin.passwd
-AuthName vqadmin
-require valid-user
-satisfy any
+AuthUserFile /etc/httpdpwd/vqadmin.passwd
+AuthName "Authentication required"
+Require valid-user
 ```
 Now, create a user.  In your Apache installation root directory, under
 the bin subdirectory is a program called 'htpasswd'.  This program is used
@@ -96,7 +114,7 @@ We're only interested in the c (or maybe b) option for now.
 To create a vqadmin.passwd file, with a login of 'test', and a
 password of 'test'.
 ```
-  /usr/local/apache/bin/htpasswd -bc /usr/local/apache/conf/vqadmin.passwd test test
+  htpasswd -bc /etc/httpdpwd/vqadmin.passwd test test
 ```
 That's it.  Just remember that you made a user named 'test'!  You need
 to know this for configuring vqadmin.
@@ -117,27 +135,44 @@ Here we go, a very quick and dirty key-by-key installation guide...
 # ./configure
 # make
 # make install
-# cd /usr/local/apache/conf
+# cd /etc/httpd
 # vi httpd.conf
-  <Directory "/usr/local/apache/cgi-bin/vqadmin">
-    deny from all
-    Options ExecCGI 
-    AllowOverride AuthConfig
-    Order deny,allow
+Define QMAILROOT /var/www/qmail/
+<VirtualHost *:80>
+  ServerName vqadminyourdomain.tld
+  DocumentRoot ${QMAILROOT}
+  ScriptAlias /cgi-bin/ ${QMAILROOT}/cgi-bin/
+  AddHandler cgi-script .cgi    
+  <Directory ${QMAILROOT}>
+    AllowOverride None
+    Require all granted
   </Directory>
-# cd /usr/local/apache/cgi-bin/vqadmin
+  <Directory ${QMAILROOT}/cgi-bin>
+    AllowOverride None
+    Options ExecCGI
+    Require all granted
+  </Directory>
+  <Directory ${QMAILROOT}/cgi-bin/vqadmin>
+    Require all denied
+    Options ExecCGI
+    AllowOverride AuthConfig
+  </Directory>
+  Alias /assets/ ${QMAILROOT}/cgi-bin/vqadmin/assets/
+  <Directory ${QMAILROOT}/cgi-bin/vqadmin/assets>
+    Require all granted
+  </Directory>
+</VirtualHost>
+# cd /var/www//cgi-bin/vqadmin
 # vi vqadmin.acl
 # vi .htaccess
   AuthType Basic
-  AuthUserFile /usr/local/apache/conf/vqadmin.passwd
-  AuthName vQadmin
-  require valid-user
-  satisfy any
+  AuthUserFile /etc/httpd/httpdpwd/vqadmin.passwd
+  AuthName "Authentication required"
+  Require valid-user
 # chown nobody .htaccess
 # chmod 600 .htaccess
-# /usr/local/apache/bin/htpasswd -bc /usr/local/apache/conf/vqadmin.passwd admin adminpass
-# /usr/local/apache/bin/apachectl stop 
-# /usr/local/apache/bin/apachectl start 
+# htpasswd -bc /etc/httpd/httpdpwd/vqadmin.passwd admin adminpass
+# apachectl restart 
 ```
 As you can see, once you've done it once, it's pretty simple to just run
 through it in 5 or 10 minutes.
@@ -155,17 +190,13 @@ production testing.
   * Compile-time errors
   + vQadmin compiles on all Unix-based systems.  If you get any
     errors when compiling, check to see if you have the required
-    libraries compiled in at link time.  If all else fails,
-    mail info@inter7.com.
+    libraries compiled in at link time.
  
   * '500 Internal Server Error' message from the webserver
     when trying to use the CGI.
   + This could be a great deal of things.  Most likely it's
     related to the .htaccess file you setup.  Make sure it's
     readable by the webserver.
-
-  * Other
-  + info@inter7.com
 ```
 
 ## 6. More info and support

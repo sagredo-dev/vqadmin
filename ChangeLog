@@ -27,6 +27,7 @@
   code seems to know what is doing)
 * fixed compilation warnings in acl.c
 * fixed compilation warnings -Wformat-overflow and -Wformat-truncation in domain.c
+* corrected the README file for obsolete informations and renemed to README.md
 * added a big patch by Ali Erturk TURKER:
   ** gets vqadmin to save vpopmail limits to database
   ** fixed a core-dump due to SIGILL caused by memcpy
