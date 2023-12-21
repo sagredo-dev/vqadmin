@@ -1,6 +1,6 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* "cgi bin directory" */
+/* cgi bin directory */
 #undef CGIBINDIR
 
 /* "" */

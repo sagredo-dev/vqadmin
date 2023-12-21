@@ -102,8 +102,12 @@ void acl_parse(char *b)
  
   if (i != 2) global_error("Syntax erorr in access lists", 1, 0);
 
-  for (h = b; *h != ' '; h++); *h++ = '\0'; group = t;
-  for (t = h; *h != ' '; h++); *h++ = '\0';
+  for (h = b; *h != ' '; h++) {
+    *h++ = '\0'; group = t;
+  }
+  for (t = h; *h != ' '; h++) {
+   *h++ = '\0';
+  }
   
   if (*t == '*') f = ACL_ALL;
   else f = acl_parse_features(t);

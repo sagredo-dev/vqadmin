@@ -28,6 +28,13 @@
 #include <memory.h>
 #include "config.h"
 #include "global.h"
+/* undefine vaiables conflicting with analog vpopmail vars imported from vpopmail config.h */
+#undef VERSION
+#undef QMAILDIR
+#undef PACKAGE_VERSION
+#undef PACKAGE_TARNAME
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
 #include "vpopmail.h"
 #include "vpopmail_config.h"
 #include "vauth.h"
@@ -511,16 +518,16 @@ void post_domain_info(char *domain)
   global_par("DN", domain);
   global_par("DD", Dir);
 
-  sprintf(cuid,"%lu", (long unsigned)uid);
+  snprintf(cuid, sizeof(cuid)+1, "%lu", (long unsigned)uid);
   global_par("DU", cuid);
 
-  sprintf(cgid,"%lu", (long unsigned)gid);
+  snprintf(cgid, sizeof(cgid)+1, "%lu", (long unsigned)gid);
   global_par("DG", cgid);
 
   open_big_dir(domain, uid, gid);
   close_big_dir(domain,uid,gid);
 
-  sprintf(cusers,"%lu", (long unsigned)vdir.cur_users);
+  snprintf(cusers, sizeof(cusers)+1, "%lu", (long unsigned)vdir.cur_users);
   global_par("DS", cusers);
 
   vpw = vauth_getpw("postmaster", domain);
@@ -564,12 +571,12 @@ void post_domain_info(char *domain)
     }
 
     if(limits.diskquota != 0) {
-      snprintf(buffer, sizeof(buffer), "%lu", limits.diskquota);
+      snprintf(buffer, sizeof(buffer)+1, "%lu", limits.diskquota);
       global_par("MQ", buffer);
     }
 
     if(limits.maxmsgcount != 0) {
-      snprintf(buffer, sizeof(buffer), "%lu", limits.maxmsgcount);
+      snprintf(buffer, sizeof(buffer)+1, "%lu", limits.maxmsgcount);
       global_par("ME", buffer);
     }
 
@@ -580,7 +587,7 @@ void post_domain_info(char *domain)
     }
 
     if(limits.defaultmaxmsgcount != 0) {
-      snprintf(buffer, sizeof(buffer), "%lu", limits.defaultmaxmsgcount);
+      snprintf(buffer, sizeof(buffer)+1, "%lu", limits.defaultmaxmsgcount);
       global_par("MG", buffer);
     }
 

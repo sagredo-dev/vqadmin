@@ -19,8 +19,8 @@ AC_DEFINE_UNQUOTED(VQA_PACKAGE,"$PACKAGE_NAME",Package name)
 AC_DEFINE_UNQUOTED(VQA_VERSION,"$PACKAGE_VERSION",Package version)
 
 if test "$GCC" = yes ; then
-        CXXFLAGS="$CXXFLAGS -Wall"
-        CFLAGS="$CFLAGS -Wall"
+        CXXFLAGS="$CXXFLAGS -Wall -Wno-stringop-truncation"
+        CFLAGS="$CFLAGS -Wall -Wno-stringop-truncation"
 fi
 
 qmaildir=""
@@ -167,7 +167,7 @@ AC_ARG_ENABLE(cgibindir, [  --enable-cgibindir={dir}   HTTP server's cgi-bin dir
         fi
     ] )
 AC_SUBST(cgibindir)
-AC_DEFINE_UNQUOTED(CGIBINDIR,"$cgibindir","cgi bin directory")
+AC_DEFINE_UNQUOTED(CGIBINDIR,"$cgibindir",cgi bin directory)
 
 AC_ARG_ENABLE(isoqlog,
         [  --enable-isoqlog=n|y   enable support for isoqlog, default is no],

@@ -28,6 +28,13 @@
 #include <string.h>
 #include "global.h"
 #include "config.h"
+/* undefine vaiables conflicting with analog vpopmail vars imported from vpopmail config.h */
+#undef VERSION
+#undef QMAILDIR
+#undef PACKAGE_VERSION
+#undef PACKAGE_TARNAME
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
 #include "vpopmail_config.h"
 
 extern char vqa_error[],
@@ -39,13 +46,11 @@ void t_code(char code)
 {
   switch(code) {
    case 'V':
-    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html\" target=\"_blank\">%s</a> %s     ~     ",
-      VQA_PACKAGE, VQA_VERSION);
-    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/installing-and-configuring-vpopmail-81.html\" target=\"_blank\">%s</a> %s\n",
-      PACKAGE, VERSION);
+    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html\" target=\"_blank\">%s</a> %s ~ ", VQA_PACKAGE, VQA_VERSION);
+    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/installing-and-configuring-vpopmail-81.html\">%s</a> %s", PACKAGE, VERSION);
     break;
    case 'E':
-    t_printf(vqa_error); 
+    t_printf(vqa_error);
     break;
    case 'W':
     global_f_warning();

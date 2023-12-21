@@ -30,11 +30,18 @@
 #include <time.h>
 #include <memory.h>
 #include <ctype.h>
+#include "config.h"
 #include "global.h"
+/* undefine vaiables conflicting with analog vpopmail vars imported from vpopmail config.h */
+#undef VERSION
+#undef QMAILDIR
+#undef PACKAGE_VERSION
+#undef PACKAGE_TARNAME
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
 #include "vpopmail.h"
 #include "vpopmail_config.h"
 #include "vauth.h"
-#include "config.h"
 
 extern unsigned int acl_features;
 extern char WarningBuff[MAX_WARNING_BUFF];

@@ -28,10 +28,16 @@
 #include <memory.h>
 #include "config.h"
 #include "global.h"
+/* undefine vaiables conflicting with analog vpopmail vars imported from vpopmail config.h */
+#undef VERSION
+#undef QMAILDIR
+#undef PACKAGE_VERSION
+#undef PACKAGE_TARNAME
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
 #include "vpopmail.h"
 #include "vpopmail_config.h"
 #include "vauth.h"
-
 
 char *ControlFiles[] = {
 "badmailfrom",
