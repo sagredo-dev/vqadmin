@@ -35,6 +35,7 @@
 #undef PACKAGE_TARNAME
 #undef PACKAGE_STRING
 #undef PACKAGE_NAME
+#undef PACKAGE
 #include "vpopmail_config.h"
 
 extern char vqa_error[],
@@ -81,9 +82,9 @@ void t_printf(char *str)
 
 void t_open(char *filename, int exit_when_done)
 {
- FILE *stream = NULL;
- char *p = NULL, b[MAX_TEMPLATE_LINE_LENGTH], t = 0;
- struct stat mystat;
+  FILE *stream = NULL;
+  char *p = NULL, b[MAX_TEMPLATE_LINE_LENGTH], t = 0;
+  struct stat mystat;
 
   if ( lstat( filename, &mystat ) == -1 || S_ISLNK(mystat.st_mode) ) {
     printf("Unable to retrieve file informations: %s\n",filename);

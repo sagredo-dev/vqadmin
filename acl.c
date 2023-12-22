@@ -58,8 +58,8 @@ void acl_init(void)
 
 void acl_read(void)
 {
- FILE *stream = NULL;
- char b[80], *p = NULL;  
+  FILE *stream = NULL;
+  char b[80], *p = NULL;
 
   stream = fopen(ACL_FILENAME, "r");
   if (stream == NULL) global_error("Unable to read access lists", 1, 0);
@@ -69,7 +69,7 @@ void acl_read(void)
     fgets(b, 80, stream);
 
     if (feof(stream)) break;
-    
+
     if ((*b) && (*b != '#') && (*b != '\n') && (*b != '\r')) {
       for (p = b; *p; p++) {
         if ((*p == '\n') || (*p == '\r')) {
@@ -102,13 +102,12 @@ void acl_parse(char *b)
  
   if (i != 2) global_error("Syntax erorr in access lists", 1, 0);
 
-  for (h = b; *h != ' '; h++) {
-    *h++ = '\0'; group = t;
-  }
-  for (t = h; *h != ' '; h++) {
-   *h++ = '\0';
-  }
-  
+  for (h = b; *h != ' '; h++);
+  *h++ = '\0';
+  group = t;
+  for (t = h; *h != ' '; h++);
+  *h++ = '\0';
+
   if (*t == '*') f = ACL_ALL;
   else f = acl_parse_features(t);
   

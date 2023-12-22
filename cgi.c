@@ -53,44 +53,28 @@ struct env_t *envlist = NULL;
 */
 void cgi_nav(void)
 {
-  char *r = NULL; /*, i = 0;*/
+  char *r = NULL;
 
   r = cgi_is_var("nav");
   if (r) {
-    if (!(strcasecmp(r, "add_domain"))) {
-      add_domain();     
-    } else if (!(strcasecmp(r, "del_domain"))) {
-      del_domain();     
-    } else if (!(strcasecmp(r, "view_domain"))) {
-      view_domain();     
-    } else if (!(strcasecmp(r, "add_user"))) {
-      add_user();     
-    } else if (!(strcasecmp(r, "del_user"))) {
-      del_user();     
-    } else if (!(strcasecmp(r, "view_user"))) {
-      view_user();     
-    } else if (!(strcasecmp(r, "mod_user"))) {
-      mod_user();     
-    } else if (!(strcasecmp(r, "show_users"))) {
-      show_users();     
-    } else if (!(strcasecmp(r, "show_controls"))) {
-      show_controls();     
-    } else if (!(strcasecmp(r, "mod_domain"))) {
-      mod_domain();     
-    } else if (!(strcasecmp(r, "list_domains"))) {
-      list_domains();     
-    } else if (!(strcasecmp(r, "add_alias_domain"))) {
-      add_alias_domain();     
-    } else if (!(strcasecmp(r, "display_file"))) {
-      display_file();
-    } else if (!(strcasecmp(r, "modify_file"))) {
-      modify_file();
-    } else if (!(strcasecmp(r, "delete_file"))) {
-      delete_file();
-    }
+         if (!(strcasecmp(r, "add_domain")))       add_domain();
+    else if (!(strcasecmp(r, "del_domain")))       del_domain();
+    else if (!(strcasecmp(r, "view_domain")))      view_domain();
+    else if (!(strcasecmp(r, "add_user")))         add_user();
+    else if (!(strcasecmp(r, "del_user")))         del_user();
+    else if (!(strcasecmp(r, "view_user")))        view_user();
+    else if (!(strcasecmp(r, "mod_user")))         mod_user();
+    else if (!(strcasecmp(r, "show_users")))       show_users();
+    else if (!(strcasecmp(r, "show_controls")))    show_controls();
+    else if (!(strcasecmp(r, "mod_domain")))       mod_domain();
+    else if (!(strcasecmp(r, "list_domains")))     list_domains();
+    else if (!(strcasecmp(r, "add_alias_domain"))) add_alias_domain();
+    else if (!(strcasecmp(r, "display_file")))     display_file();
+    else if (!(strcasecmp(r, "modify_file")))      modify_file();
+    else if (!(strcasecmp(r, "delete_file")))      delete_file();
   }
 
-  t_main();
+  t_main(1);
 }
 
 /*
@@ -228,13 +212,12 @@ void cgi_init(void)
   env = cgi_is_env("REMOTE_USER");
   if (!env) {
     global_error("Username unknown", 0, 1);
-    t_open(T_AUTH_FAILED, 1);
+    t_page(T_AUTH_FAILED, 1);
   }
 
   memcpy((char *)vqa_user, (char *)env, MAX_GLOBAL_LENGTH);
-   
-  acl_init();
 
+  acl_init();
   env = cgi_is_env("REQUEST_METHOD");
   if (env == NULL) global_error("Unknown request method", 1, 0);
 
@@ -266,11 +249,11 @@ void cgi_init(void)
     gdata = env; 
     cgi_var();
 
-    /*t_open(T_MAIN);*/
+    /*t_main(1);*/
 
   } else {
     global_error("Unsupported request method", 1, 0);
-    t_open(T_MAIN, 1);
+    t_main(1);
   }
 }
 

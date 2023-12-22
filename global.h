@@ -98,7 +98,7 @@ void g_code(char *);
 void t_printf(char *);
 void t_open(char *template, int exit_when_done);
 void t_page(char *template, int exit_when_done);
-void t_main();
+void t_main(int exit_when_done);
 
 /* global.c */
 void global_init(void);

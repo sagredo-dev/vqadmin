@@ -39,6 +39,7 @@
 #undef PACKAGE_TARNAME
 #undef PACKAGE_STRING
 #undef PACKAGE_NAME
+#undef PACKAGE
 #include "vpopmail.h"
 #include "vpopmail_config.h"
 #include "vauth.h"

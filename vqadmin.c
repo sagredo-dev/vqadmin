@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-/* 
+/*
  * send an html file and run it
  * through the variable substitution code
  */
@@ -65,7 +65,7 @@ void send_html(char *command)
   snprintf(tmpbuf, 254, "html/%s", &command[6]);
   t_open(tmpbuf, 0);
 
-  /* colonna dx */
+  /* dx column */
   memset(tmpbuf, 0, 255);
   snprintf(tmpbuf, 254, T_COL);
   t_open(tmpbuf, 0);

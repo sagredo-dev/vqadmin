@@ -71,9 +71,9 @@ void global_error(char *err, char init, char recoverable)
   memset((char *)vqa_error, 0, MAX_GLOBAL_LENGTH);
   memcpy((char *)vqa_error, (char *)err, MAX_GLOBAL_LENGTH);
 
-  if (init) t_open(T_INIT_ERROR, 1);  
-  
-  if (!recoverable) t_open(T_ERROR, 1);
+  if (init) t_page(T_INIT_ERROR, 1);
+
+  if (!recoverable) t_page(T_ERROR, 1);
 }
 
 void global_warning(char *warn)
