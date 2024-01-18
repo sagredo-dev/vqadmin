@@ -19,8 +19,8 @@ AC_DEFINE_UNQUOTED(VQA_PACKAGE,"$PACKAGE_NAME",Package name)
 AC_DEFINE_UNQUOTED(VQA_VERSION,"$PACKAGE_VERSION",Package version)
 
 if test "$GCC" = yes ; then
-        CXXFLAGS="$CXXFLAGS -Wall -Wno-stringop-truncation"
-        CFLAGS="$CFLAGS -Wall -Wno-stringop-truncation"
+        CXXFLAGS="$CXXFLAGS -Wall"
+        CFLAGS="$CFLAGS -Wall"
 fi
 
 qmaildir=""

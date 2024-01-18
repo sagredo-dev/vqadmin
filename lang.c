@@ -50,7 +50,7 @@ void set_language()
   tmpstr = getenv("HTTP_ACCEPT_LANGUAGE");
 
   if ( tmpstr != NULL ) {
-    strncpy(tmpbuf, tmpstr, MAX_TMPBUF);
+    strncpy(tmpbuf, tmpstr, 50);
     tmpstr = strtok(tmpbuf, " ,\n");
 
     for(lang_err = -1;tmpstr!=NULL && lang_err!=0;) {

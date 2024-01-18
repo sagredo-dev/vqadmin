@@ -614,10 +614,11 @@ void list_domains()
  char *tmpbuf;
  char *assign_domain;
  char *assign_alias_domain;
- char bgcolor[30];
- char fgcolor[30];
- char face[30];
- char size[30];
+#define MAX_TMPBUF 200
+ char bgcolor[MAX_TMPBUF];
+ char fgcolor[MAX_TMPBUF];
+ char face[MAX_TMPBUF];
+ char size[MAX_TMPBUF];
 
   tmpbuf = malloc(500);
   if (!(acl_features & ACL_DOMAIN_VIEW)) {

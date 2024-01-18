@@ -5700,8 +5700,8 @@ printf "%s\n" "#define VQA_VERSION \"$PACKAGE_VERSION\"" >>confdefs.h
 
 
 if test "$GCC" = yes ; then
-        CXXFLAGS="$CXXFLAGS -Wall -Wno-stringop-truncation"
-        CFLAGS="$CFLAGS -Wall -Wno-stringop-truncation"
+        CXXFLAGS="$CXXFLAGS -Wall"
+        CFLAGS="$CFLAGS -Wall"
 fi
 
 qmaildir=""
