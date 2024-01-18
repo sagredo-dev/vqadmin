@@ -499,9 +499,9 @@ void mod_domain()
 void post_domain_info(char *domain)
 {
  char Dir[156];
- char cuid[10];
- char cgid[10];
- char cusers[10];
+ char cuid[11];
+ char cgid[11];
+ char cusers[11];
  char qconvert[11];
  uid_t uid;
  gid_t gid;
@@ -519,16 +519,16 @@ void post_domain_info(char *domain)
   global_par("DN", domain);
   global_par("DD", Dir);
 
-  snprintf(cuid, sizeof(cuid)+1, "%lu", (long unsigned)uid);
+  snprintf(cuid, sizeof(cuid), "%lu", (long unsigned)uid);
   global_par("DU", cuid);
 
-  snprintf(cgid, sizeof(cgid)+1, "%lu", (long unsigned)gid);
+  snprintf(cgid, sizeof(cgid), "%lu", (long unsigned)gid);
   global_par("DG", cgid);
 
   open_big_dir(domain, uid, gid);
   close_big_dir(domain,uid,gid);
 
-  snprintf(cusers, sizeof(cusers)+1, "%lu", (long unsigned)vdir.cur_users);
+  snprintf(cusers, sizeof(cusers), "%lu", (long unsigned)vdir.cur_users);
   global_par("DS", cusers);
 
   vpw = vauth_getpw("postmaster", domain);
