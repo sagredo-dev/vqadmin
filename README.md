@@ -202,6 +202,3 @@ production testing.
 ## 6. More info and support
 
 You can find more info and ask for support at https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html.
-
-------------------------------------------------------------------------------
-Inter7 Internet Technologies, Inc.
