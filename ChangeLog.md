@@ -1,6 +1,7 @@
 # ChangeLog
 
-## 5 Mar, 2024 - Roberto Puzzanghera https://notes.sagredo.eu
+## 5 Mar, 2024
+Roberto Puzzanghera - https://notes.sagredo.eu
 
 * ChangeLog ranamed to ChangeLog.md
 * solved stringop-truncation warnings in domain.c and lang.c
