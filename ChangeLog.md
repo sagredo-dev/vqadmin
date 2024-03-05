@@ -1,6 +1,8 @@
-5 Mar, 2024
-Roberto Puzzanghera https://notes.sagredo.eu
+# ChangeLog
 
+## 5 Mar, 2024 - Roberto Puzzanghera https://notes.sagredo.eu
+
+* ChangeLog ranamed to ChangeLog.md
 * solved stringop-truncation warnings in domain.c and lang.c
   and removed -Wno-stringop-truncation on CFLAGS in configure.ac
 * fixed buffer overflows in domain.c
@@ -33,8 +35,10 @@ Roberto Puzzanghera https://notes.sagredo.eu
   - gets vqadmin to save vpopmail limits to database
   - fixed a core-dump due to SIGILL caused by memcpy
   - adds missing limits and permissions, changed the UI to be more user-friendly
-  more info here https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825
-  https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch
+more info (here)[https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825] and 
+(here)[https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch]
+
+---------------------------------------------------
 
 2.3.7
 1/11/05		Jeremy Kitchen
