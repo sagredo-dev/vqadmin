@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 5 Mar, 2024
+## Mar 5, 2024
 Roberto Puzzanghera - https://notes.sagredo.eu
 
 * ChangeLog ranamed to ChangeLog.md
