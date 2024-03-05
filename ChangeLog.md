@@ -36,6 +36,7 @@ Roberto Puzzanghera - https://notes.sagredo.eu
   - gets vqadmin to save vpopmail limits to database
   - fixed a core-dump due to SIGILL caused by memcpy
   - adds missing limits and permissions, changed the UI to be more user-friendly
+  
 more info [here](https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825) and 
 [here](https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch)
 
