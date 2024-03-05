@@ -1,4 +1,4 @@
-unreleased
+5 Mar, 2024
 Roberto Puzzanghera https://notes.sagredo.eu
 
 * solved stringop-truncation warnings in domain.c and lang.c
