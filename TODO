@@ -1,8 +1,0 @@
-Allow for adding domain under /etc/passwd user
-
-Parse qmailadmin-limits file for 
-defaults when adding user
-
---enable-htmldir for /images directory.
-
-Display default quota when adding domain
