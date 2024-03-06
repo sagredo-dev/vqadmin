@@ -1,9 +1,0 @@
-1.4 - International language support
-      English translation
-      Spanish translation
-      Support for edit user gecos field "full name"
-      Support for enable/disable "smtp relay after authentication"
-
-1.3 - New configure code (autoconf)
-      New makefiles (automake)
-      New INSTALL instructions
