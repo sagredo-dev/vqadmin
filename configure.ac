@@ -69,6 +69,8 @@ AC_SUBST(vpopgroup)
 
 AC_RUN_IFELSE([AC_LANG_SOURCE([[
 
+#include <unistd.h>
+#include <string.h>
 #include <stdio.h>
 #include <pwd.h>
 #include <stdlib.h>
