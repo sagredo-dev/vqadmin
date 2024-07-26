@@ -1,5 +1,9 @@
 # ChangeLog
 
+## Jul 26, 2024
+Roberto Puzzanghera - https://notes.sagredo.eu
+* Fixed configure break. Trivial C test program breaks on gcc-14.1 due to missing headers
+
 ## Mar 5, 2024
 Roberto Puzzanghera - https://notes.sagredo.eu
 
