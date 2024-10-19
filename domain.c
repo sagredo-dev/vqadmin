@@ -655,7 +655,7 @@ void list_domains()
     t_open(T_FOOTER,1);
   }
 
-  printf("<nav class=\"nav flex-column\">\n");
+  printf("<ul class=\"nav flex-column\">\n");
   while( fgets(tmpbuf,500,fs) != NULL ) {
     if ( (assign_domain = strtok(tmpbuf, TOKENS)) == NULL ) continue;
     if ( (assign_alias_domain = strtok(NULL, TOKENS)) == NULL ) continue;
@@ -668,14 +668,14 @@ void list_domains()
     if ( matchit == 1 && strstr(assign_domain, domain) == NULL ) continue;
 
     if ( strcmp(assign_domain, assign_alias_domain) == 0 ) {
-      printf("<a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a>\n",
+      printf("<li><a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a></li>\n",
         assign_alias_domain, assign_alias_domain);
     } else {
-      printf("<a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a> Aliased to %s\n",
+      printf("<li><a href=\"vqadmin.cgi?nav=view_domain&dname=%s\">%s</a> (aliased to %s)</li>\n",
         assign_alias_domain, assign_domain, assign_alias_domain);
     }
   }
-  printf("</nav>\n");
+  printf("</ul>\n");
   fclose(fs);
 
   /* close the html template */
