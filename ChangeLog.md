@@ -1,10 +1,16 @@
 # ChangeLog
 
-## Jul 26, 2024
+## Oct 20, 2024 (v. 2.4.2)
+Roberto Puzzanghera - https://notes.sagredo.eu
+* Minor fix to view_domain.html
+* Minor fix to the html of list all domains
+* aclocal fix
+
+## Jul 26, 2024 (v. 2.4.1)
 Roberto Puzzanghera - https://notes.sagredo.eu
 * Fixed configure break. Trivial C test program breaks on gcc-14.1 due to missing headers [(commit)](https://github.com/sagredo-dev/vqadmin/commit/26a8c35381ce0e480749de5055d137dcaac49435)
 
-## Mar 5, 2024
+## Mar 5, 2024 (v. 2.4.0)
 Roberto Puzzanghera - https://notes.sagredo.eu
 
 * ChangeLog ranamed to ChangeLog.md
