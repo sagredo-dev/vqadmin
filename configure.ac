@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.71])
-AC_INIT([vqadmin],[2.4.2])
+AC_INIT([vqadmin],[2.4.3])
 AM_INIT_AUTOMAKE()
 
 AC_USE_SYSTEM_EXTENSIONS
