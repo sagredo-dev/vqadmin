@@ -359,15 +359,19 @@ void show_users()
     printf("<th>Vacation</th>\n");
     printf("<th>Quota</th>\n");
     printf("<th>Domain Administrator</th>\n");
-    printf("<th>Last Logon</th></tr>\n");
-    printf("</tr></thead><tbody>\n");
+    printf("<th>Last Logon</th>\n");
+    printf("<th>Restrictions</th>\n");
+    printf("</tr></thead>\n\n<tbody>\n");
   }
 
   count = 0;
   while(vpw != NULL && count < 128000 ){
       ++count;
 
-      printf("<tr><td>");
+      if (vpw->pw_gid == 0) printf("<tr><td>");
+      else if (vpw->pw_gid == 4096) printf("<tr class=\"trgreen\"><td>");
+      else printf("<tr class=\"trred\"><td>");
+
       printf("<a href=vqadmin.cgi?nav=view_user&eaddr=%s@%s>", vpw->pw_name, domain);
       printf("%s</a></td>\n", vpw->pw_name);
 #ifdef CLEAR_PASS
@@ -421,12 +425,15 @@ void show_users()
       }    else  printf("<td>No</td>\n");
 
 #ifdef ENABLE_AUTH_LOGGING
-  mytime = vget_lastauth(vpw, domain);
-  if ( mytime == 0 ) printf("<td>NEVER LOGGED IN</td></tr>\n");
-  else printf("<td>%s</td></tr>\n", asctime(localtime(&mytime)));
+      mytime = vget_lastauth(vpw, domain);
+      if ( mytime == 0 ) printf("<td>NEVER LOGGED IN</td>\n");
+      else printf("<td>%s</td>\n", asctime(localtime(&mytime)));
 #else
-  printf("<td>* auth logging not enabled *</td></tr>\n");
+      printf("<td>* auth logging not enabled *</td></tr>\n");
 #endif
+
+      if (vpw->pw_gid != 0 && vpw->pw_gid != 4096) printf("<td>Yes</td>\n</tr>\n");
+      else printf("<td>No</td>\n</tr>\n");
 
       vpw = vauth_getall(domain,0,0);
   }
