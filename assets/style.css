@@ -25,6 +25,14 @@ a:hover {text-decoration: underline !important; --bs-link-underline-opacity: 0 !
 }
 
 .table.big thead th {
-        font-size: 0.8rem;
-        padding: .40rem;
+  font-size: 0.8rem;
+  padding: .40rem;
+}
+
+.trgreen > td {
+  background-color: #c8ff91;
+}
+
+.trred > td {
+  background-color: #ffa5a5;
 }
