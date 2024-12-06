@@ -66,6 +66,7 @@ char *ControlFiles[] = {
 "me",
 "moreipme",
 "morercpthosts",
+"notlshosts_auto",
 "percenthack",
 "plusdomain",
 "qmapservers",
@@ -86,6 +87,7 @@ char *ControlFiles[] = {
 "timeoutconnect",
 "timeoutremote",
 "timeoutsmtpd",
+"tlsserverciphers",
 "virtualdomains",
 NULL
 };
@@ -116,6 +118,7 @@ char *ControlDefaults[] = {
 "me",
 "none",
 "none",
+"0",
 "none",
 "me",
 "none",
@@ -136,6 +139,7 @@ char *ControlDefaults[] = {
 "60",
 "1200",
 "1200",
+"none",
 "none",
 NULL
 };
