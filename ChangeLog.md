@@ -1,5 +1,9 @@
 # ChangeLog
 
+## unreleased
+Roberto Puzzanghera - https://notes.sagredo.eu
+* simsizelimit dropeed from control files list
+
 ## Dec 06, 2024 (v. 2.4.3)
 * added a patch to highlight users with restrictions and with admin privileges (thanks Bai Borko)
 * added control files notlshosts_auto and tlsserverciphers
