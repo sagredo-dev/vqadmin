@@ -1,0 +1,5 @@
+Reports: info@inter7.com
+
+if /var/www/html doesn't exist, it will place the images
+  directory in / .  This can be fixed by adding a
+  --enable-htmldir or similar ./configure option.

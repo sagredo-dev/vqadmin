@@ -1,0 +1,45 @@
+<vol@inter7.com>
+- Author
+
+<kbo@inter7.com>
+- Package maintainer
+
+"Neil Blakey-Milner" <nbm@mithrandr.moria.org>
+- FreeBSD and portability fixes
+
+Jesus Arnaiz <jesus@pasapues.com>
+- Spanish translation
+
+"Joe Modjeski" <jmodjeski@ms1.northlink.com>
+- fix to Makefile.am for FreeBSD, which has
+  no root group, instead uses `id -g root`
+- remove crypt.h from edit.c 
+
+"Simone E. Sidwell" <ssidwell@uiuc.edu>
+- Portuguese translation
+
+"Nicolas Croiset (Radio campus Grenoble)" <nicolas.croiset@brume.org>
+- French translation
+
+"Ronny Grner" <office@sachsenprovider.de>
+- German translation
+
+Claudiu Costin <claudiuc@work.ro>
+- Romanian translation
+
+Robert Jonker <rjjonker@chello.nl>
+- Dutch translation
+
+Maciej Gruszczynski <maciek@mgt.pl>
+- Polish translation
+
+Jeff Keys <jeff@gvinfosvcs.net>
+- Added vpop.css
+- Updated/enhanced HTML templates
+
+Chris Stump <chris@inter7.com>
+- Added qmail control file viewing/modification functionality
+- Modified configure.in & Makefile.am to correctly place vpop.css
+
+Jeremy Kitchen <jeremy@inter7.com>
+- Added isoqlog support

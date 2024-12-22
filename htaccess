@@ -1,0 +1,5 @@
+AuthType Basic
+AuthUserFile /etc/httpd/conf/vqadmin.passwd
+AuthName vQadmin
+require valid-user
+satisfy any

@@ -1,0 +1,19 @@
+vqadmin faq file
+
+
+Index
+1. I keep getting "Unknown email" error when I try to edit a user! I am sure 
+   the user exists on the system, any idea? 
+
+
+Answers...
+
+1. I keep getting "Unknown email" error when I try to edit a user! I am sure 
+   the user exists on the system, any idea? 
+
+(it was a way of vqadmin saying, I could not find the user, could be either 
+the user does not exist, or inappropriate permissions on the acl that makes 
+you unable to access vpasswd files). Doing make ---> make install fixes the 
+file permissions on the cgi and the acl file. You have to edit the Makefile 
+however to reflect your paths, mileage would vary). 
+

@@ -1,0 +1,69 @@
+<HTML><HEAD><TITLE>#-003 %-U (%-G)</TITLE>
+      <link href="/images/vqadmin/vqadmin.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all">
+</HEAD>
+<body onLoad="javascript:form1.dname.focus();">
+
+
+<div align="center"><B>%-W</B></div>
+<div align="center">#-003 %-U (%-G)</div>
+<B>#-003</B><BR>
+<hr size="1" noshade>
+<form action="/cgi-bin/vqadmin/vqadmin.cgi" method="post" name="form1" id="form1">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr><td class="clsLabelR">#-010</td>
+    <td><input type="text" name="dname" size="30" title="#-010" onBlur="fillForm();"></td></tr>
+<tr><td class="clsLabelR">#-011</td>
+    <td><input type="text" name="pp" size="30" title="#-011"></td></tr>
+</table>
+  <INPUT TYPE="HIDDEN" NAME="nav" VALUE="add_domain">
+<HR>
+<b>#-012</b><BR>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr><td class="clsLabelR">#-015</td>
+    <td><input type="text" name="lusers" size="4" title="#-015"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-016</td>
+    <td><INPUT TYPE="TEXT" NAME="lfor" SIZE="4" title="#-016" ></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-017</td>
+    <td><INPUT TYPE="TEXT" NAME="lalias" SIZE="4" title="#-017"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-018</td>
+    <td><INPUT TYPE="TEXT" NAME="lresponder" SIZE="4" title="#-018"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-019</td>
+    <td><INPUT TYPE="TEXT" NAME="llists" SIZE="4" title="#-019"></td>
+    <td class="clsInfo">#-050</td></tr>
+<tr><td class="clsLabelR">#-039</td>
+    <td><input type="text" name="quota" size="10" title="#-039"></td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="0">
+
+<tr><td><INPUT TYPE="CHECKBOX" NAME="upop" id="upop"><label for="upop" title="#-042">#-042</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uimap" id="uimap"><label for="uimap" title="#-044">#-044</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="udialup" id="udialup"><label for="udialup" title="#-049">#-049</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="upassc" id="upassc" ><label for="upassc" title="#-045">#-045</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uweb" id="uweb"><label for="uweb" title="#-043">#-043</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="urelay" id="urelay"><label for="urelay" title="#-047">#-047</label></td></tr>
+<tr><td><INPUT TYPE="CHECKBOX" NAME="uspam" id="uspam"><label for="uspam" title="#-069">#-069</label></td></tr>
+
+<tr><td><br>
+  <input type="submit" name="Submit" value="#-003" title="#-003"></td></tr>
+</table>
+</FORM>
+<script language="JavaScript">
+	function fillForm() {
+	form1.lusers.value = '';
+	form1.lfor.value = '';
+	form1.lalias.value = '';
+	form1.lresponder.value = '';
+	form1.llists.value = '';
+	form1.quota.value = '';
+	}
+</script>
+
+<hr size="1" noshade>
+<a href="/cgi-bin/vqadmin/vqadmin.cgi" title="#-000">#-000</a><BR><BR>
+%-V
+</BODY></HTML>

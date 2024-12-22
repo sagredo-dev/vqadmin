@@ -1,0 +1,53 @@
+#
+# vol@inter7.com
+#
+
+CC = gcc
+BIN = vqadmin
+DEFS = -I/home/vpopmail/include
+LINKDEFS =
+LIBS = -L/home/vpopmail/lib -lvpopmail -lcrypt
+OBJS = main.o cgi.o template.o global.o acl.o edit.o misc.o domain.o
+
+INSTALL_DIR = /usr/local/apache/cgi-bin/vqadmin
+INSTALL_BIN = vqadmin.cgi
+INSTALL_UID = root
+INSTALL_GID = vchkpw
+
+all: $(BIN)
+
+$(BIN): $(OBJS)
+	$(CC) $(LINKDEFS) -o $(BIN) $(OBJS) $(LIBS)
+
+main.o: main.c global.h
+	$(CC) $(DEFS) -o main.o -c main.c
+cgi.o: cgi.c global.h
+	$(CC) $(DEFS) -o cgi.o -c cgi.c
+template.o: template.c global.h
+	$(CC) $(DEFS) -o template.o -c template.c
+global.o: global.c global.h
+	$(CC) $(DEFS) -o global.o -c global.c
+acl.o: acl.c global.h
+	$(CC) $(DEFS) -o acl.o -c acl.c
+edit.o: edit.c global.h
+	$(CC) $(DEFS) -o edit.o -c edit.c
+misc.o: misc.c global.h
+	$(CC) $(DEFS) -o misc.o -c misc.c
+domain.o: domain.c global.h
+	$(CC) $(DEFS) -o domain.o -c domain.c
+
+install: $(BIN)
+	@echo "Installing..."
+	mkdir -p $(INSTALL_DIR)
+	mkdir -p $(INSTALL_DIR)/html
+	cp $(BIN) $(INSTALL_DIR)/$(INSTALL_BIN)
+	cp html/* $(INSTALL_DIR)/html
+	cp vqadmin.acl $(INSTALL_DIR)
+	chown -R $(INSTALL_UID) $(INSTALL_DIR)
+	chgrp -R $(INSTALL_GID) $(INSTALL_DIR)
+	chmod u+s $(INSTALL_DIR)/$(INSTALL_BIN)
+
+clean:
+	@echo -n "Cleaning up..."
+	@rm -rf *.core core $(BIN) *.o
+	@echo "done."

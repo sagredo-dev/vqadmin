@@ -1,0 +1,16 @@
+Template codes:
+  %-E              Last error
+  %-W              Last warning(s)
+  %-V              vQadmin version
+  %-U              Remote username
+  %-G              Remote username's group
+
+Internal template codes:
+  $-[0-9,A-Z]      Any internal functions of the CGI may create, and use it's own template codes.
+                   Removal of these codes from templates may cause undesired results.
+
+Removal of options (such as 'Create Domain'), is perfectly legal.  It's a good idea not to give anyone
+access to these features if you're going to remove them from the templates, because someone with
+knowledge of how the CGI functions could post a request to the CGI trying to use the feature.
+
+vol@inter7.com

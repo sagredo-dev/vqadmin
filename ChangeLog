@@ -1,0 +1,329 @@
+2.3.7
+1/11/05		Jeremy Kitchen
+		  - added SpamAssassin support from vpopmail
+
+11/29/04    Rafael Ledesma Serrano
+           - Spanish Translation
+
+2.3.6
+11/11/03    Jeremy Kitchen
+          - added isoqlog support
+
+05/30/03    Ken Jones
+          - allow blanking passwords
+
+03/23/03    Peter Nagy
+          - Hungarian translation
+
+02/14/03  - Change href for vpop.css style sheet in all html files
+            to be /images/vqadmin
+          - update Makefile.am to use "DocumentRoot"/images/vqadmin 
+            instead of  "DocumentRoot"/vqadmin
+          - rename style sheet from vpop.css to vqadmin.css
+   
+01/27/03  - qmail control file, make sure there is a newline at the end
+            of every control file.
+          - new show_controls function to display all the qmail control
+            files along with their current value and default.
+          - clicking on any file brings you to the edit screen, even
+            if the file does not exist.
+          - modifying a control file brings you back to the show
+            control file screen 
+          - updated global_par with robomail's version. Lets us set
+            a value multiple times for the multiline displays
+          - support deleting control files (sets it back to defaults
+            by deleting the file
+
+01/26/03  - Main menu tile changed to "VqAdmin Main Menu"
+
+2.3.4
+01/22/03  - editing qmail control files section wasn't adding a newline
+            to the end of the files. Fixed
+
+01/09/03  - update style sheet to set all text to white except black
+            in text input fields.
+          - Change Main Menu to Main VqAdmin Menu to differentiate between
+            sugarbox main menu and vqadmin main menu
+          - update style sheet to match sugarbox blue background.
+
+2.3.3
+08/08/02    <vol@inter7.com>
+          - Various trivial overflow fixes
+08/07/02    "Chris Stump" <chris at inter7 dot com>
+	  - Qmail control file viewing/modification functionality 
+	  - Modified configure.in and Makefile.am to correctly place vpop.css	 
+
+	    "Jeff Keys" <jeff at gvinfosvcs dot net>
+	  - Added vpop.css and improved HTML templates
+
+07/30/02    "Maciej Gruszczynski" <maciek at mgt dot pl>
+	  - New Polish translation
+
+07/29/02    "Robert Jonker" <rjjonker at chello dot nl>
+	  - New Dutch translation
+
+2.3.2
+05/08/02  - user.c needed string.h included for solaris
+          - user.c needed string.h included for solaris
+
+04/12/02  - lang file is symbolic link change
+
+            Steve Fulton steve at esoteric dot ca
+          - This patch adds a column to the show_users() screen called "Last
+            Logon".  For each user listed, an additional field which states 
+            their last logon if auth_logging is enabled.  If it is not, then 
+            a message states auth logging is not enabled.
+
+2.3.1
+03/25/02    Cyril Herbez cyril at dfi dot ch
+          - New French translation
+
+03/20/02  - Makefile will not over write .htaccess or vqadmin.acl files
+            during make install.
+          - support for adding aliased domains
+          - change menu from "Show Domains" to "List Domains"
+          - list domains show aliased domains with link to real domain 
+          - delete domain works with aliased domains
+          - use QMAILDIR instead of hard coded /var/qmail/users/assign
+            in domain.c
+
+2.3
+03/15/02    "Nishikizawa" at valuecommerce dot ne dot jp
+            Japanese translation.
+
+03/13/02  - cgi.c: make unsigned char be char
+            domain.c: add #include <string.h> for strtok function
+
+03/12/02    "Daniel Schildt" <daniel at mikrotohtori dot net>
+          - Finnish translation
+
+02/28/02    "Thorsten Spaeth" <tspaeth at netactive dot de>
+          - German translation
+
+02/16/02    "Davide Giunchi" <davidegiunchi at libero dot it>
+          - new italian translation. Nice job!
+            "the previous translation was horrible! it doesn't seems to 
+             be written by an italian person" - Davide
+
+02/14/02  - show users was assuming forwarded email addresses always
+            start with "&" so would skip the first character.
+          - change show domains to list domains
+2.2
+02/12/02  - public version number increase for new stable release
+          - clicking on del user from the modify user page shows
+            incorrect error message, fixed
+          - deleting a user from the mod user page would fail, fixed
+
+2.1
+02/11/02  - code for ACCEPT_LANGUAGE and PATH_INFO are checked to
+            only open files in the local directory, and no symlinks
+          - remove global_exit() calls on errors from domain.c and user.c
+
+02/05/02  - internal development changes and testing
+
+2.0
+01/31/02  - use @ sign to determine if .qmail file has a forward
+          - don't check any .qmail-*default files because they
+            are also for mailing lists
+          - skip # or white space lines in .qmail files
+       
+01/20/02  - make variables passed to parse_email static
+
+01/17/02  Pablo Costa <pablo at 3light dot com dot br>
+          - brazilian translation
+
+01/10/01  - more html changes
+          - link en file to en-us on make install
+
+01/09/02  - update to use new vpopmail 5.1.7 auth logging method
+          - display users directory
+          - set permissions of .htaccess to rw-r-r
+          - add user: make all options available 
+          - rearrange the fields on add user and mod user, most used
+            at the top
+          - rearrange main menu
+          - put font,bgcolor,fgcolor,font size in language file
+          - add new function get_lang_code(char *);
+          - fixup some html syntax
+          - update user.c and domain.c html code to use font info 
+            from language file
+
+01/02/02  - set default background to be white with black text
+
+12/30/01  - change error message "SHIT" to "Dag Nabit"
+          - add in "Show Domains" on main menu
+          - add new list_domains function and show_domains.html page
+            allow for string matches
+
+12/29/01  - add support for last_auth ip and time
+            display in modify user page
+          - update show users to not display clear password if
+            clear passwords were not enabled in vpopmail
+
+12/28/01 
+          - acl.c change to use int subscripts instead of char
+          - add support for quota, disable pop, disable imap,
+            disable password changing, disable smtp relay used by
+            qmailadmin-1.0
+          - mod domain no longer requires postmaster password entry
+
+1.19
+12/19/01: - change order of headers to include "global.h" before "vauth.h"
+
+11/07/01: - Change PACKAGE and VERSION to use VQA_PACKAGE and VQA_VERSION
+            so as not to conflict with vpopmail or other packages.
+          - update html to use VQA_VERSION and VQA_PACKGE
+          - update show vpopmail version and package 
+          - update html to use new version stuff
+           
+
+11/05/01: New changes from vqadmin guy, damn, I don't
+          have his email address to put in here. I'll
+          try to get it later.
+
+          - spelling error 
+          - "hello" page fix
+          - user bit flags work, like NO_RELAY, NO_WEBMAIL, etc
+          - HTML format fixes
+
+          
+
+1.18
+07/13/01: update to support multiple forwards
+
+1.17
+07/10/01: change the show users page format
+
+1.14 
+07/01/01: add the abilty for general GET processing
+          update cgi processing to parse both POST an GET variables
+
+1.11    
+06/28/01: review all html files and put in translation codes
+          add new english translation file
+          add new italian translation file (bad translation)
+
+          display .qmail-user forwards in show users
+          display .qmail forwards in users dir
+
+1.10
+06/27/01: review the acl functions/features and make changes
+          add display of postmaster password to domain view
+          add display of user password to show users 
+ 
+
+1.9
+06/25/01: add support for displaying html files
+
+          completely re-write user interface
+
+1.8
+06/19/01: update INSTALL doc to work 
+
+1.7
+06/04/01: update to support vpopmail 4.9.11+ vqpasswd structure
+
+          removed "could not open lang" error message
+
+1.6
+05/07/01: remove AC_CHECK_FUNCS() from configure.in
+          add #include <memory.h> to template.c
+          some other include fixes and cleanup
+ 
+1.5
+04/02/01: update configure.in for new version
+
+          acl.c parse_multi now allows spaces as a delimiter
+          as well as the comma
+
+1.4
+03/22/01: Claudiu Costin <claudiuc at work dot ro>
+          Romanian translation
+
+03/20/01: add check for floor in -lm and compress in -lz
+
+03/18/01: Ronny Grner 
+          - German translation
+
+03/17/01: Nicolas Croiset
+          - French translation
+
+03/16/01: Jesus Arnaiz
+          - changes to Spanish translation 
+
+          kbo
+          - remove unused lines in acconfig.h
+          - update INSTALL for correct .htaccess and <Directory> syntax
+
+          Joe Modjeski
+          - remove crypt.h from edit.c
+          - change Makefile.am to use `id -g root` instead of root
+            since FreeBSD has no root group
+           
+03/14/01: kbo
+          - added enable/disable of authentication based relay control
+          - added update of users full name field "pw_gecos"
+
+03/13/01: kbo
+          - add AUTOMAKE_OPTIONS to Makefile.am to be more portable
+          - add multilanguage support code
+          - add english language translation
+
+1.3
+03/13/01: kbo
+          - added configure script support
+          - fixed add domain problem
+          - added support to create domains owned by any /etc/passwd user
+
+02/13/01: kbo
+          - New INSTALL file
+          - updated html template to remove host name from http:// urls
+
+1.2
+02/06/01: vol
+          - New FAQ file
+
+02/05/01: "Neil Blakey-Milner" <nbm at mithrandr.moria.org>
+          - FreeBSD and portability fixes.
+          
+1.1
+01/09/00: kbo
+	  - create version 1.1 for public release
+	  - update domain.c to accept new vadddomain UID, GID parameters
+
+9/11/00: vol
+          - Base CGI code done; HTTP, templates, etc
+          - *phew* Time for food.
+
+9/12/00: vol
+          - Added access list code
+
+9/13/00: vol
+         - Added edit user interface
+         - Added access list restriction code
+
+9/14/00: vol
+         - Added 'Remove User' to the edit user interface
+         - Fixed a dumb little memory problem with warning messages
+         - Added 'Create Domain' feature
+         - Added 'Delete Domain' feature
+         - Created a few README-type files
+
+9/15/00: vol
+         - Added hidden navigation form variable to edit template
+         - Fixed bug in quota code that allows people to corrupt vpasswd files
+           with extremely long quota lengths
+         - Fixed same bug in rest of fields
+
+9/18/00: vol
+         - Fixed a 'Invalid Quota' bug on 'NOQUOTA' content
+         - Added 'Password Updated' message after password change
+         - Added some more confusing, uninformative documentation
+         - Went GPL!   
+
+9/20/00: vol
+         - Added optional postmaster user creation with domain creation
+
+9/25/00: vol
+         - Fixed some 'current working directory' problems
+         - Upgraded to version 1.0b
