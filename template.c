@@ -48,7 +48,7 @@ void t_code(char code)
   switch(code) {
    case 'V':
     printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html\" target=\"_blank\">%s</a> %s ~ ", VQA_PACKAGE, VQA_VERSION);
-    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/installing-and-configuring-vpopmail-81.html\">%s</a> %s", PACKAGE, VERSION);
+    printf("<a href=\"https://notes.sagredo.eu/en/qmail-notes-185/installing-and-configuring-vpopmail-81.html\" target=\"_blank\">%s</a> %s", PACKAGE, VERSION);
     break;
    case 'E':
     t_printf(vqa_error);
