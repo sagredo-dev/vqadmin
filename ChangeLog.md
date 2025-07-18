@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## unreleased
-Roberto Puzzanghera - https://notes.sagredo.eu
+Roberto Puzzanghera - https://www.sagredo.eu
 * simsizelimit dropped from control files list
 
 ## Dec 06, 2024 (v. 2.4.3)
@@ -9,17 +9,17 @@ Roberto Puzzanghera - https://notes.sagredo.eu
 * added control files notlshosts_auto and tlsserverciphers
 
 ## Oct 20, 2024 (v. 2.4.2)
-Roberto Puzzanghera - https://notes.sagredo.eu
+Roberto Puzzanghera - https://www.sagredo.eu
 * Minor fix to view_domain.html
 * Minor fix to the html of list all domains
 * aclocal fix
 
 ## Jul 26, 2024 (v. 2.4.1)
-Roberto Puzzanghera - https://notes.sagredo.eu
+Roberto Puzzanghera - https://www.sagredo.eu
 * Fixed configure break. Trivial C test program breaks on gcc-14.1 due to missing headers [(commit)](https://github.com/sagredo-dev/vqadmin/commit/26a8c35381ce0e480749de5055d137dcaac49435)
 
 ## Mar 5, 2024 (v. 2.4.0)
-Roberto Puzzanghera - https://notes.sagredo.eu
+Roberto Puzzanghera - https://www.sagredo.eu
 
 * ChangeLog ranamed to ChangeLog.md
 * solved stringop-truncation warnings in domain.c and lang.c
@@ -50,8 +50,8 @@ Roberto Puzzanghera - https://notes.sagredo.eu
 * fixed compilation warnings in acl.c
 * fixed compilation warnings -Wformat-overflow and -Wformat-truncation in domain.c
 * corrected the README file for obsolete informations and renamed to README.md
-* added a big patch by Ali Erturk TURKER (more info [here](https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825) and 
-[here](https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch)):
+* added a big patch by Ali Erturk TURKER (more info [here](https://www.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825) and 
+[here](https://www.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch)):
   - gets vqadmin to save vpopmail limits to database
   - fixed a core-dump due to SIGILL caused by memcpy
   - adds missing limits and permissions, changed the UI to be more user-friendly
