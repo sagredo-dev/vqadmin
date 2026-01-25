@@ -1,8 +1,10 @@
 # ChangeLog
 
-## unreleased
+## Jan 25, 2026
 Roberto Puzzanghera - https://www.sagredo.eu
 * simsizelimit dropped from control files list
+* domain's users shown sorted alphabetically
+* navbar hidden in case of enabled clear pwd to avoid overlapping
 
 ## Dec 06, 2024 (v. 2.4.3)
 * added a patch to highlight users with restrictions and with admin privileges (thanks Bai Borko)

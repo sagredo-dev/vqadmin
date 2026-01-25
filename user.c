@@ -525,10 +525,14 @@ void show_users()
   closedir(mydir);
   printf("</tbody></table>\n");
 
-  /* close the html template */
+  /* close the html template
+     do not show the side menu on this page if clear pwds column
+   */
+#ifndef CLEAR_PASS
   snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_COL);
   t_open(tmpbuf,0);
   memset(tmpbuf,0,sizeof(tmpbuf));
+#endif
   snprintf(tmpbuf, sizeof(tmpbuf), "%s/vqadmin/%s", CGIBINDIR, T_FOOTER);
   t_open(tmpbuf,1);
 
