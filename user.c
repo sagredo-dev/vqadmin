@@ -439,6 +439,7 @@ void show_users()
   }
   printf("</tbody></table>\n");
 
+/* forwards */
   printf("<h2 class=\"mt-5\">Alias/Forwards for <mark>%s</mark></h2>\n", domain);
   printf("<table class=\"table table-striped table-hover\">\n");
   printf("<thead><tr>\n");
@@ -500,6 +501,7 @@ void show_users()
   closedir(mydir);
   printf("</tbody></table>\n");
 
+/* mailing lists */
   printf("<h2 class=\"mt-5\">Mailing lists for <mark>%s</mark></h2>\n", domain);
   printf("<table class=\"table table-striped table-hover\"><tbody>\n");
 
