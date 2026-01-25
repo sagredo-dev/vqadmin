@@ -345,7 +345,7 @@ void show_users()
 
   printf("<h2>Users for <mark>%s</mark></h2>\n", domain);
 
-  vpw = vauth_getall(domain,1,0);
+  vpw = vauth_getall(domain,1,1);
   if ( vpw == NULL ) {
     printf("<div class=\"alert alert-danger\" role=\"alert\">Domain %s does not exist</div>\n", domain);
   } else {
