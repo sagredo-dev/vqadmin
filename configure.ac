@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.71])
-AC_INIT([vqadmin],[2.4.4])
-AM_INIT_AUTOMAKE()
-
+AC_INIT([vqadmin],[2.4.5])
+AM_INIT_AUTOMAKE([foreign subdir-objects])
+AM_MAINTAINER_MODE([disable])
 AC_USE_SYSTEM_EXTENSIONS
 
 dnl Checks for programs.

@@ -1,8 +1,9 @@
 # ChangeLog
 
-## unreleased
+## Jan 31, 2025
 Roberto Puzzanghera - https://www.sagredo.eu
 * relaylimits added to control files
+* disabled maintainer mode to avoid autotools regeneration on user builds
 
 ## Jan 25, 2026
 Roberto Puzzanghera - https://www.sagredo.eu
