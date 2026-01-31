@@ -1,5 +1,9 @@
 # ChangeLog
 
+## unreleased
+Roberto Puzzanghera - https://www.sagredo.eu
+* relaylimits added to control files
+
 ## Jan 25, 2026
 Roberto Puzzanghera - https://www.sagredo.eu
 * simsizelimit dropped from control files list
