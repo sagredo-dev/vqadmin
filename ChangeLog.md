@@ -1,5 +1,9 @@
 # ChangeLog
 
+## Feb 11, 2026
+Roberto Puzzanghera - https://www.sagredo.eu
+* html/mod_domain.html: Mailing Lists domain limit was not copied correctly
+
 ## Jan 31, 2025
 Roberto Puzzanghera - https://www.sagredo.eu
 * relaylimits added to control files
