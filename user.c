@@ -499,6 +499,27 @@ void show_users()
       }
   }
   closedir(mydir);
+
+/* valias */
+#ifdef VALIAS
+  char alias_name[MAX_FILE_NAME];
+  char *alias_line;
+  char *p1, *p2;
+  int isforward;
+
+  alias_line = valias_select_all(alias_name, domain);
+  while (alias_line != NULL) {
+      if (*alias_line != '#') {
+        isforward = 1;
+        p1 = strstr(alias_line, "/ezmlm-");
+        p2 = strchr(alias_line, ' ');
+        if ((p1 != NULL) && (p2 == NULL || p1 < p2)) isforward = 0;
+        if (strstr(alias_line, "/autorespond "))   isforward = 0;
+        if (isforward) printf("<tr>\n<td>%s</td>\n<td>%s</td>\n</tr>\n", alias_name, alias_line);
+      }
+      alias_line = valias_select_all_next(alias_name); // next line
+  }
+#endif
   printf("</tbody></table>\n");
 
 /* mailing lists */

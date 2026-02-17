@@ -1,5 +1,9 @@
 # ChangeLog
 
+## Feb 17, 2026
+Roberto Puzzanghera - https://www.sagredo.eu
+* show domain's users page lists valiases too
+
 ## Feb 11, 2026
 Roberto Puzzanghera - https://www.sagredo.eu
 * mod_domain.html: Mailing Lists domain limit was not copied correctly
