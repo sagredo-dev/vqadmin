@@ -1,5 +1,9 @@
 # ChangeLog
 
+## unreleased
+Roberto Puzzanghera - https://www.sagredo.eu
+* show domain's users page group forwards belonging to the same alias_name 90a3be9
+
 ## Feb 17, 2026
 Roberto Puzzanghera - https://www.sagredo.eu
 * show domain's users page lists valiases too
