@@ -503,21 +503,36 @@ void show_users()
 /* valias */
 #ifdef VALIAS
   char alias_name[MAX_FILE_NAME];
+  char this_alias[MAX_FILE_NAME];
   char *alias_line;
   char *p1, *p2;
   int isforward;
+  int printed = 0;
 
   alias_line = valias_select_all(alias_name, domain);
   while (alias_line != NULL) {
       if (*alias_line != '#') {
         isforward = 1;
+
+        /* check if is m/l or autoresponder */
         p1 = strstr(alias_line, "/ezmlm-");
         p2 = strchr(alias_line, ' ');
         if ((p1 != NULL) && (p2 == NULL || p1 < p2)) isforward = 0;
         if (strstr(alias_line, "/autorespond "))   isforward = 0;
-        if (isforward) printf("<tr>\n<td>%s</td>\n<td>%s</td>\n</tr>\n", alias_name, alias_line);
+
+        if (isforward) {
+          if (strcmp(this_alias, alias_name) != 0) {
+            printf("<tr>\n<td>%s</td>\n<td>\n", alias_name);
+            printed = 1;
+          }
+          if (strstr(alias_line, "deliver") == NULL) printf("forward: %s<br>\n", alias_line);
+          else printf("lda: %s<br>\n", alias_line);
+        }
       }
+      strcpy (this_alias, alias_name);
       alias_line = valias_select_all_next(alias_name); // next line
+      /* close <tr> tag if still open */
+      if (printed && strcmp(this_alias, alias_name) != 0) printf("</td>\n</tr>\n");
   }
 #endif
   printf("</tbody></table>\n");
