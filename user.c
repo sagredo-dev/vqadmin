@@ -525,8 +525,9 @@ void show_users()
             printf("<tr>\n<td>%s</td>\n<td>\n", alias_name);
             printed = 1;
           }
-          if (strstr(alias_line, "deliver") == NULL) printf("forward: %s<br>\n", alias_line);
-          else printf("lda: %s<br>\n", alias_line);
+          if (strstr(alias_line, "deliver") != NULL) printf("lda: %s<br>\n", alias_line);
+          else if (*alias_line == '|') printf("alias: %s<br>\n", alias_line);
+          else printf("forward: %s<br>\n", alias_line);
         }
       }
       strcpy (this_alias, alias_name);
