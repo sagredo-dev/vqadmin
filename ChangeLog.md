@@ -1,24 +1,24 @@
 # ChangeLog
 
 ## unreleased
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * show domain's users page group forwards belonging to the same alias_name 90a3be9
 
 ## Feb 17, 2026
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * show domain's users page lists valiases too
 
 ## Feb 11, 2026
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * mod_domain.html: Mailing Lists domain limit was not copied correctly
 
 ## Jan 31, 2025
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * relaylimits added to control files
 * disabled maintainer mode to avoid autotools regeneration on user builds
 
 ## Jan 25, 2026
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * simsizelimit dropped from control files list
 * domain's users shown sorted alphabetically
 * navbar hidden in case of enabled clear pwd to avoid overlapping
@@ -28,17 +28,17 @@ Roberto Puzzanghera - https://www.sagredo.eu
 * added control files notlshosts_auto and tlsserverciphers
 
 ## Oct 20, 2024 (v. 2.4.2)
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * Minor fix to view_domain.html
 * Minor fix to the html of list all domains
 * aclocal fix
 
 ## Jul 26, 2024 (v. 2.4.1)
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 * Fixed configure break. Trivial C test program breaks on gcc-14.1 due to missing headers [(commit)](https://github.com/sagredo-dev/vqadmin/commit/26a8c35381ce0e480749de5055d137dcaac49435)
 
 ## Mar 5, 2024 (v. 2.4.0)
-Roberto Puzzanghera - https://www.sagredo.eu
+Roberto Puzzanghera - https://notes.sagredo.eu
 
 * ChangeLog ranamed to ChangeLog.md
 * solved stringop-truncation warnings in domain.c and lang.c
@@ -69,8 +69,8 @@ Roberto Puzzanghera - https://www.sagredo.eu
 * fixed compilation warnings in acl.c
 * fixed compilation warnings -Wformat-overflow and -Wformat-truncation in domain.c
 * corrected the README file for obsolete informations and renamed to README.md
-* added a big patch by Ali Erturk TURKER (more info [here](https://www.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825) and 
-[here](https://www.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch)):
+* added a big patch by Ali Erturk TURKER (more info [here](https://notes.sagredo.eu/en/qmail-notes-185/vqadmin-26.html#comment2825) and 
+[here](https://notes.sagredo.eu/files/qmail/patches/vqadmin/aet_vqadmin_fixes_20230218_1256.patch)):
   - gets vqadmin to save vpopmail limits to database
   - fixed a core-dump due to SIGILL caused by memcpy
   - adds missing limits and permissions, changed the UI to be more user-friendly
