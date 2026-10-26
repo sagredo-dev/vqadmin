@@ -476,22 +476,28 @@ void show_users()
           printf("<td>\n");
           fs=fopen(mydirent->d_name,"r");
       while ( fgets( tmpbuf, 156, fs ) != NULL ) {
-                if ( tmpbuf[0] == '#' || isspace(tmpbuf[0]) ) {
-            printf("&nbsp\n");
-                } else if ( strstr(tmpbuf, "@") != NULL ) {
-                    if ( tmpbuf[0] == '&' ) i = 1;
-                    else i = 0;
+            if ( tmpbuf[0] == '#' || isspace(tmpbuf[0]) ) {
+              printf("&nbsp\n");
+            }
+            else if ( strstr(tmpbuf, "@") != NULL ) {
+              if ( tmpbuf[0] == '&' ) i = 1;
+              else i = 0;
 
-            printf("forward: %s<br>\n", &tmpbuf[i]);
-                } else {
-            tmpstr = &tmpbuf[strlen(tmpbuf)-2];
-            *tmpstr = 0;
-                    while (*tmpstr!='/') --tmpstr;
-            *tmpstr = 0;
-                    while (*tmpstr!='/') --tmpstr;
-                    ++tmpstr;
-            printf("alias: %s<br>\n", tmpstr);
-                }
+              printf("forward: %s<br>\n", &tmpbuf[i]);
+            }
+            else if ( tmpbuf[0] == ':' ) {
+              i = 0;
+              printf("save to Maildir (%s)<br>\n", &tmpbuf[i]);
+            }
+            else {
+              tmpstr = &tmpbuf[strlen(tmpbuf)-2];
+              *tmpstr = 0;
+              while (*tmpstr!='/') --tmpstr;
+              *tmpstr = 0;
+              while (*tmpstr!='/') --tmpstr;
+              ++tmpstr;
+              printf("alias: %s<br>\n", tmpstr);
+            }
       }
           printf("</td></tr>\n");
 
@@ -526,6 +532,7 @@ void show_users()
             printed = 1;
           }
           if (strstr(alias_line, "deliver") != NULL) printf("lda: %s<br>\n", alias_line);
+          else if (*alias_line == ':') printf("save to Maildir (%s)<br>\n", alias_line);
           else if (*alias_line == '|') printf("alias: %s<br>\n", alias_line);
           else printf("forward: %s<br>\n", alias_line);
         }
