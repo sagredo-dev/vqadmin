@@ -6,6 +6,7 @@ Roberto Puzzanghera - https://notes.sagredo.eu
 * show :default info in alias.c
 * dropped control/defaultdelivery from control files as per new vpopmail-5.7, which
   replaces it with ~vpopmail/etc/vdefaultdelivery
+* Removed all maildrop references, as vpopmail 5.7 dropped it
 
 ## Feb 17, 2026
 Roberto Puzzanghera - https://notes.sagredo.eu
