@@ -72,7 +72,6 @@ void add_domain()
  char *uspam = NULL;
  char *usmtp = NULL;
  char *udeletespam  = NULL;
- char *umaildrop  = NULL;
 
  char *quota = NULL;
  char *maxmsgcount = NULL;
@@ -145,7 +144,6 @@ void add_domain()
   uspam  = cgi_is_var("uspam");
   usmtp  = cgi_is_var("usmtp");
   udeletespam  = cgi_is_var("udeletespam");
-  umaildrop  = cgi_is_var("umaildrop"); 
 
   // INITIALIZE DEFAULT STRUCTS
   vdefault_limits (&defaultlimits);
@@ -204,7 +202,6 @@ void add_domain()
   if (uspam!=NULL) {limits.disable_spamassassin = 1;}
   if (usmtp!=NULL) {limits.disable_smtp = 1;}
   if (udeletespam!=NULL) {limits.delete_spam = 1;}
-  if (umaildrop!=NULL) {limits.disable_maildrop = 1;}
 
   // DETECT DEVIATIONS FROM DEFAULT LIMITS, IF ANY
   if (limits.maxpopaccounts != defaultlimits.maxpopaccounts) {limitsmodified = 1;}
@@ -227,7 +224,6 @@ void add_domain()
   if (limits.disable_smtp != defaultlimits.disable_smtp) {limitsmodified = 1;}
   if (limits.disable_spamassassin != defaultlimits.disable_spamassassin) {limitsmodified = 1;}
   if (limits.delete_spam != defaultlimits.delete_spam) {limitsmodified = 1;}
-  if (limits.disable_maildrop != defaultlimits.disable_maildrop) {limitsmodified = 1;}
 
   // APPLY NEW LIMITS, IF ANY CHANGE DETECTED
   if (limitsmodified) {
@@ -318,7 +314,6 @@ void mod_domain()
  char *uspam = NULL;
  char *usmtp = NULL;
  char *udeletespam  = NULL;
- char *umaildrop  = NULL;
  char *maxmsgcount = NULL;
  char *defaultquota = NULL;
  char *defaultmaxmsgcount = NULL;
@@ -378,7 +373,6 @@ void mod_domain()
   uspam  = cgi_is_var("uspam");
   usmtp  = cgi_is_var("usmtp");
   udeletespam  = cgi_is_var("udeletespam");
-  umaildrop  = cgi_is_var("umaildrop");
 
 
   // INITIALIZE DEFAULT STRUCT
@@ -448,7 +442,6 @@ void mod_domain()
   if (uspam!=NULL) {limits.disable_spamassassin = 1;}
   if (usmtp!=NULL) {limits.disable_smtp = 1;}
   if (udeletespam!=NULL) {limits.delete_spam = 1;}
-  if (umaildrop!=NULL) {limits.disable_maildrop = 1;}
 
   // DETECT DEVIATIONS FROM DEFAULT, IF ANY
   if (limits.maxpopaccounts != defaultlimits.maxpopaccounts) {limitsmodified = 1;}
@@ -471,7 +464,6 @@ void mod_domain()
   if (limits.disable_smtp != defaultlimits.disable_smtp) {limitsmodified = 1;}
   if (limits.disable_spamassassin != defaultlimits.disable_spamassassin) {limitsmodified = 1;}
   if (limits.delete_spam != defaultlimits.delete_spam) {limitsmodified = 1;}
-  if (limits.disable_maildrop != defaultlimits.disable_maildrop) {limitsmodified = 1;}
 
   // PURGE EXISTING DOMAIN LIMITS
   if (vdel_limits(domain)!=0) {
@@ -601,7 +593,6 @@ void post_domain_info(char *domain)
     if (limits.disable_smtp) global_par("MH", "checked");
     if (limits.disable_spamassassin) global_par("MZ", "checked");
     if (limits.delete_spam) global_par("ML", "checked");
-    if (limits.disable_maildrop) global_par("MN", "checked");
   }
 
 }

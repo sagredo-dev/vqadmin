@@ -67,7 +67,6 @@
 069 Disable spamassassin
 070 Disable SMTP access
 071 Delete spam mails
-072 Disable maildrop
 073 Max Mail Count/Domain
 074 Quota/User (Mbytes)
 075 Mails/User

@@ -134,7 +134,6 @@ void mod_user()
  char *urelay;
  char *uspam;
  char *usmtp;
- char *umaildrop;
  char *udeletespam;
  char *uqadmin;
 
@@ -165,7 +164,6 @@ void mod_user()
   urelay = cgi_is_var("urelay"); 
   uspam = cgi_is_var("uspam"); 
   usmtp = cgi_is_var("usmtp"); 
-  umaildrop = cgi_is_var("umaildrop"); 
   udeletespam = cgi_is_var("udeletespam"); 
   uqadmin = cgi_is_var("uqadmin");
 
@@ -227,7 +225,6 @@ void mod_user()
   if (usmtp!=NULL) GidFlag |= NO_SMTP;
   if (uspam!=NULL) GidFlag |= NO_SPAMASSASSIN;
   if (udeletespam!=NULL) GidFlag |= DELETE_SPAM;
-  if (umaildrop!=NULL) GidFlag |= NO_MAILDROP;
   if (uqadmin!=NULL) GidFlag |= QA_ADMIN;
 
   vpw->pw_gid = GidFlag;
@@ -283,7 +280,6 @@ void post_email_info( char *eaddr, struct vqpasswd *vpw, char *domain)
   if (vpw->pw_gid & NO_SMTP) global_par("MH", "CHECKED");
   if (vpw->pw_gid & NO_SPAMASSASSIN) global_par("MZ", "CHECKED");
   if (vpw->pw_gid & DELETE_SPAM) global_par("ML", "CHECKED");
-  if (vpw->pw_gid & NO_MAILDROP) global_par("MN", "CHECKED");
   if (vpw->pw_gid & QA_ADMIN) global_par("MK", "CHECKED");
 
 #ifdef ENABLE_AUTH_LOGGING
@@ -603,7 +599,6 @@ void add_user()
  char *urelay;
  char *uspam;
  char *usmtp;
- char *umaildrop;
  char *udeletespam;
  char *uqadmin;
 
@@ -630,11 +625,10 @@ void add_user()
   uweb = cgi_is_var("uweb");
   ubounce = cgi_is_var("ubounce");
 
-  urelay = cgi_is_var("urelay"); 
-  uspam = cgi_is_var("uspam"); 
-  usmtp = cgi_is_var("usmtp"); 
-  umaildrop = cgi_is_var("umaildrop"); 
-  udeletespam = cgi_is_var("udeletespam"); 
+  urelay = cgi_is_var("urelay");
+  uspam = cgi_is_var("uspam");
+  usmtp = cgi_is_var("usmtp");
+  udeletespam = cgi_is_var("udeletespam");
   uqadmin = cgi_is_var("uqadmin");
 
 
@@ -697,7 +691,6 @@ void add_user()
   if (usmtp!=NULL) GidFlag |= NO_SMTP;
   if (uspam!=NULL) GidFlag |= NO_SPAMASSASSIN;
   if (udeletespam!=NULL) GidFlag |= DELETE_SPAM;
-  if (umaildrop!=NULL) GidFlag |= NO_MAILDROP;
   if (uqadmin!=NULL) GidFlag |= QA_ADMIN;
 
   vpw->pw_gid = GidFlag;
