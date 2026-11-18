@@ -1,6 +1,6 @@
 # ChangeLog
 
-## unreleased
+## Nov 20, 2026 (v.2.4.8)
 Roberto Puzzanghera - https://notes.sagredo.eu
 * show domain's users page group forwards belonging to the same alias_name 90a3be9
 * show :default info in alias.c
